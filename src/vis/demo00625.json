@@ -1,0 +1,4212 @@
+{
+    "pathway": {
+        "@number": "00625",
+        "@link": "http://www.kegg.jp/kegg-bin/show_pathway?ec00625",
+        "relation": [
+            {
+                "@entry1": "22",
+                "subtype": {
+                    "@value": "39",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "25"
+            },
+            {
+                "@entry1": "23",
+                "subtype": {
+                    "@value": "43",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "24"
+            },
+            {
+                "@entry1": "22",
+                "subtype": {
+                    "@value": "38",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "23"
+            },
+            {
+                "@entry1": "21",
+                "subtype": {
+                    "@value": "38",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "22"
+            },
+            {
+                "@entry1": "21",
+                "subtype": {
+                    "@value": "38",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "23"
+            },
+            {
+                "@entry1": "21",
+                "subtype": {
+                    "@value": "37",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "27"
+            },
+            {
+                "@entry1": "21",
+                "subtype": {
+                    "@value": "37",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "31"
+            },
+            {
+                "@entry1": "27",
+                "subtype": {
+                    "@value": "37",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "31"
+            },
+            {
+                "@entry1": "27",
+                "subtype": {
+                    "@value": "42",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "32"
+            },
+            {
+                "@entry1": "30",
+                "subtype": {
+                    "@value": "36",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "31"
+            },
+            {
+                "@entry1": "29",
+                "subtype": {
+                    "@value": "36",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "31"
+            },
+            {
+                "@entry1": "29",
+                "subtype": {
+                    "@value": "36",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "30"
+            },
+            {
+                "@entry1": "32",
+                "subtype": {
+                    "@value": "40",
+                    "@name": "compound"
+                },
+                "@type": "maplink",
+                "@entry2": "33"
+            },
+            {
+                "@entry1": "30",
+                "subtype": {
+                    "@value": "28",
+                    "@name": "compound"
+                },
+                "@type": "maplink",
+                "@entry2": "35"
+            },
+            {
+                "@entry1": "29",
+                "subtype": {
+                    "@value": "44",
+                    "@name": "compound"
+                },
+                "@type": "maplink",
+                "@entry2": "33"
+            },
+            {
+                "@entry1": "48",
+                "subtype": {
+                    "@value": "49",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "54"
+            },
+            {
+                "@entry1": "54",
+                "subtype": {
+                    "@value": "55",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "60"
+            },
+            {
+                "@entry1": "60",
+                "subtype": {
+                    "@value": "61",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "64"
+            },
+            {
+                "@entry1": "64",
+                "subtype": {
+                    "@value": "65",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "67"
+            },
+            {
+                "@entry1": "64",
+                "subtype": {
+                    "@value": "65",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "68"
+            },
+            {
+                "@entry1": "67",
+                "subtype": {
+                    "@value": "65",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "68"
+            },
+            {
+                "@entry1": "62",
+                "subtype": {
+                    "@value": "63",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "67"
+            },
+            {
+                "@entry1": "57",
+                "subtype": {
+                    "@value": "58",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "62"
+            },
+            {
+                "@entry1": "51",
+                "subtype": {
+                    "@value": "52",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "57"
+            },
+            {
+                "@entry1": "32",
+                "subtype": {
+                    "@value": "40",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "68"
+            },
+            {
+                "@entry1": "68",
+                "subtype": {
+                    "@value": "40",
+                    "@name": "compound"
+                },
+                "@type": "maplink",
+                "@entry2": "33"
+            },
+            {
+                "@entry1": "70",
+                "subtype": {
+                    "@value": "71",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "75"
+            },
+            {
+                "@entry1": "70",
+                "subtype": {
+                    "@value": "71",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "72"
+            },
+            {
+                "@entry1": "75",
+                "subtype": {
+                    "@value": "71",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "72"
+            },
+            {
+                "@entry1": "35",
+                "subtype": {
+                    "@value": "83",
+                    "@name": "compound"
+                },
+                "@type": "maplink",
+                "@entry2": "106"
+            },
+            {
+                "@entry1": "104",
+                "subtype": {
+                    "@value": "103",
+                    "@name": "compound"
+                },
+                "@type": "maplink",
+                "@entry2": "35"
+            },
+            {
+                "@entry1": "105",
+                "subtype": {
+                    "@value": "103",
+                    "@name": "compound"
+                },
+                "@type": "maplink",
+                "@entry2": "35"
+            },
+            {
+                "@entry1": "102",
+                "subtype": {
+                    "@value": "100",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "104"
+            },
+            {
+                "@entry1": "102",
+                "subtype": {
+                    "@value": "100",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "105"
+            },
+            {
+                "@entry1": "98",
+                "subtype": {
+                    "@value": "96",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "102"
+            },
+            {
+                "@entry1": "99",
+                "subtype": {
+                    "@value": "96",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "102"
+            },
+            {
+                "@entry1": "95",
+                "subtype": {
+                    "@value": "93",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "98"
+            },
+            {
+                "@entry1": "95",
+                "subtype": {
+                    "@value": "93",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "99"
+            },
+            {
+                "@entry1": "90",
+                "subtype": {
+                    "@value": "88",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "87"
+            },
+            {
+                "@entry1": "107",
+                "subtype": {
+                    "@value": "85",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "87"
+            },
+            {
+                "@entry1": "107",
+                "subtype": {
+                    "@value": "85",
+                    "@name": "compound"
+                },
+                "@type": "maplink",
+                "@entry2": "91"
+            },
+            {
+                "@entry1": "87",
+                "subtype": {
+                    "@value": "85",
+                    "@name": "compound"
+                },
+                "@type": "maplink",
+                "@entry2": "91"
+            },
+            {
+                "@entry1": "26",
+                "subtype": {
+                    "@value": "127",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "70"
+            },
+            {
+                "@entry1": "26",
+                "subtype": {
+                    "@value": "127",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "78"
+            },
+            {
+                "@entry1": "26",
+                "subtype": {
+                    "@value": "127",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "79"
+            },
+            {
+                "@entry1": "26",
+                "subtype": {
+                    "@value": "127",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "106"
+            },
+            {
+                "@entry1": "26",
+                "subtype": {
+                    "@value": "127",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "107"
+            },
+            {
+                "@entry1": "70",
+                "subtype": {
+                    "@value": "127",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "25"
+            },
+            {
+                "@entry1": "70",
+                "subtype": {
+                    "@value": "127",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "24"
+            },
+            {
+                "@entry1": "70",
+                "subtype": {
+                    "@value": "127",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "78"
+            },
+            {
+                "@entry1": "70",
+                "subtype": {
+                    "@value": "127",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "79"
+            },
+            {
+                "@entry1": "70",
+                "subtype": {
+                    "@value": "127",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "106"
+            },
+            {
+                "@entry1": "70",
+                "subtype": {
+                    "@value": "127",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "107"
+            },
+            {
+                "@entry1": "25",
+                "subtype": {
+                    "@value": "127",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "78"
+            },
+            {
+                "@entry1": "25",
+                "subtype": {
+                    "@value": "127",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "79"
+            },
+            {
+                "@entry1": "25",
+                "subtype": {
+                    "@value": "127",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "106"
+            },
+            {
+                "@entry1": "25",
+                "subtype": {
+                    "@value": "127",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "107"
+            },
+            {
+                "@entry1": "24",
+                "subtype": {
+                    "@value": "127",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "78"
+            },
+            {
+                "@entry1": "24",
+                "subtype": {
+                    "@value": "127",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "79"
+            },
+            {
+                "@entry1": "24",
+                "subtype": {
+                    "@value": "127",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "106"
+            },
+            {
+                "@entry1": "24",
+                "subtype": {
+                    "@value": "127",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "107"
+            },
+            {
+                "@entry1": "78",
+                "subtype": {
+                    "@value": "127",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "106"
+            },
+            {
+                "@entry1": "78",
+                "subtype": {
+                    "@value": "127",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "107"
+            },
+            {
+                "@entry1": "79",
+                "subtype": {
+                    "@value": "127",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "106"
+            },
+            {
+                "@entry1": "79",
+                "subtype": {
+                    "@value": "127",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "107"
+            },
+            {
+                "@entry1": "114",
+                "subtype": {
+                    "@value": "115",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "117"
+            },
+            {
+                "@entry1": "125",
+                "subtype": {
+                    "@value": "76",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "75"
+            },
+            {
+                "@entry1": "114",
+                "subtype": {
+                    "@value": "112",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "125"
+            },
+            {
+                "@entry1": "117",
+                "subtype": {
+                    "@value": "118",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "119"
+            },
+            {
+                "@entry1": "72",
+                "subtype": {
+                    "@value": "73",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "124"
+            },
+            {
+                "@entry1": "124",
+                "subtype": {
+                    "@value": "122",
+                    "@name": "compound"
+                },
+                "@type": "maplink",
+                "@entry2": "126"
+            },
+            {
+                "@entry1": "32",
+                "subtype": {
+                    "@value": "40",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "119"
+            },
+            {
+                "@entry1": "33",
+                "subtype": {
+                    "@value": "40",
+                    "@name": "compound"
+                },
+                "@type": "maplink",
+                "@entry2": "119"
+            },
+            {
+                "@entry1": "68",
+                "subtype": {
+                    "@value": "40",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "119"
+            },
+            {
+                "@entry1": "128",
+                "subtype": {
+                    "@value": "88",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "90"
+            },
+            {
+                "@entry1": "107",
+                "subtype": {
+                    "@value": "85",
+                    "@name": "compound"
+                },
+                "@type": "ECrel",
+                "@entry2": "128"
+            },
+            {
+                "@entry1": "91",
+                "subtype": {
+                    "@value": "85",
+                    "@name": "compound"
+                },
+                "@type": "maplink",
+                "@entry2": "128"
+            },
+            {
+                "@entry1": "87",
+                "subtype": {
+                    "@value": "88",
+                    "@name": "compound"
+                },
+                "@type": "maplink",
+                "@entry2": "91"
+            },
+            {
+                "@entry1": "128",
+                "subtype": {
+                    "@value": "88",
+                    "@name": "compound"
+                },
+                "@type": "maplink",
+                "@entry2": "91"
+            },
+            {
+                "@entry1": "90",
+                "subtype": {
+                    "@value": "88",
+                    "@name": "compound"
+                },
+                "@type": "maplink",
+                "@entry2": "91"
+            }
+        ],
+        "@title": "Chloroalkane and chloroalkene degradation",
+        "@description": "Bioaugmentation Time Series",
+        "entry": [
+            {
+                "@id": "21",
+                "@reaction": "rn:R05498",
+                "@name": "ec:1.97.1.-",
+                "@type": "enzyme",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.97.1.-",
+                    "@x": "431",
+                    "@height": "17",
+                    "@y": "393",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                }
+            },
+            {
+                "@id": "22",
+                "@reaction": "rn:R05502",
+                "@name": "ec:1.97.1.-",
+                "@type": "enzyme",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.97.1.-",
+                    "@x": "324",
+                    "@height": "17",
+                    "@y": "394",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                }
+            },
+            {
+                "@id": "23",
+                "@reaction": "rn:R05503",
+                "@name": "ec:1.97.1.-",
+                "@type": "enzyme",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.97.1.-",
+                    "@x": "324",
+                    "@height": "17",
+                    "@y": "441",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                }
+            },
+            {
+                "@id": "24",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?1.97.1.8",
+                "@name": "ec:1.97.1.8",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.97.1.8",
+                    "@x": "217",
+                    "@height": "17",
+                    "@y": "441",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                },
+                "@reaction": "rn:R05501",
+                "@type": "enzyme"
+            },
+            {
+                "@id": "25",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?1.97.1.8",
+                "@name": "ec:1.97.1.8",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.97.1.8",
+                    "@x": "217",
+                    "@height": "17",
+                    "@y": "394",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                },
+                "@reaction": "rn:R05500",
+                "@type": "enzyme"
+            },
+            {
+                "@id": "26",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?1.97.1.8",
+                "@name": "ec:1.97.1.8",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.97.1.8",
+                    "@x": "108",
+                    "@height": "17",
+                    "@y": "393",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                },
+                "@reaction": "rn:R05499",
+                "@type": "enzyme"
+            },
+            {
+                "@id": "27",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?1.18.6.1",
+                "@name": "ec:1.18.6.1",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.18.6.1",
+                    "@x": "490",
+                    "@height": "17",
+                    "@y": "359",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                },
+                "@reaction": "rn:R05496",
+                "@type": "enzyme"
+            },
+            {
+                "@id": "28",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C01380",
+                "@name": "cpd:C01380",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C01380",
+                    "@x": "600",
+                    "@height": "8",
+                    "@y": "460",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "29",
+                "@reaction": "rn:R05351",
+                "@name": "ec:1.1.1.-",
+                "@type": "enzyme",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.1.1.-",
+                    "@x": "650",
+                    "@height": "17",
+                    "@y": "394",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                }
+            },
+            {
+                "@id": "30",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?3.3.2.10",
+                "@name": "ec:3.3.2.10",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "3.3.2.10",
+                    "@x": "601",
+                    "@height": "17",
+                    "@y": "423",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                },
+                "@reaction": "rn:R05842",
+                "@type": "enzyme"
+            },
+            {
+                "@id": "31",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?1.14.13.69",
+                "@name": "ec:1.14.13.69",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.14.13.69",
+                    "@x": "543",
+                    "@height": "17",
+                    "@y": "394",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                },
+                "@reaction": "rn:R05444",
+                "@type": "enzyme"
+            },
+            {
+                "@id": "32",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?4.2.1.112",
+                "@name": "ec:4.2.1.112",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "4.2.1.112",
+                    "@x": "606",
+                    "@height": "17",
+                    "@y": "334",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                },
+                "@reaction": "rn:R05380",
+                "@type": "enzyme"
+            },
+            {
+                "@id": "33",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?ec00620",
+                "@name": "path:ec00620",
+                "@type": "map",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "Pyruvate metabolism",
+                    "@x": "804",
+                    "@height": "34",
+                    "@y": "392",
+                    "@type": "roundrectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "75"
+                }
+            },
+            {
+                "@id": "34",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?ec00625",
+                "@name": "path:ec00625",
+                "@type": "map",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "TITLE:Chloroalkane and chloroalkene degradation",
+                    "@x": "240",
+                    "@height": "25",
+                    "@y": "58",
+                    "@type": "roundrectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "400"
+                }
+            },
+            {
+                "@id": "35",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?ec00630",
+                "@name": "path:ec00630",
+                "@type": "map",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "Glyoxylate and dicarboxylate metabolism",
+                    "@x": "662",
+                    "@height": "34",
+                    "@y": "544",
+                    "@type": "roundrectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "164"
+                }
+            },
+            {
+                "@id": "36",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C06548",
+                "@name": "cpd:C06548",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C06548",
+                    "@x": "600",
+                    "@height": "8",
+                    "@y": "393",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "37",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C06547",
+                "@name": "cpd:C06547",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C06547",
+                    "@x": "491",
+                    "@height": "8",
+                    "@y": "393",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "38",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C06793",
+                "@name": "cpd:C06793",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C06793",
+                    "@x": "383",
+                    "@height": "8",
+                    "@y": "393",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "39",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C06791",
+                "@name": "cpd:C06791",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C06791",
+                    "@x": "275",
+                    "@height": "8",
+                    "@y": "393",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "40",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C00084",
+                "@name": "cpd:C00084",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C00084",
+                    "@x": "707",
+                    "@height": "8",
+                    "@y": "333",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "41",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C06789",
+                "@name": "cpd:C06789",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C06789",
+                    "@x": "59",
+                    "@height": "8",
+                    "@y": "393",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "42",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C01548",
+                "@name": "cpd:C01548",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C01548",
+                    "@x": "491",
+                    "@height": "8",
+                    "@y": "333",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "43",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C06792",
+                "@name": "cpd:C06792",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C06792",
+                    "@x": "275",
+                    "@height": "8",
+                    "@y": "440",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "44",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C00024",
+                "@name": "cpd:C00024",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C00024",
+                    "@x": "707",
+                    "@height": "8",
+                    "@y": "393",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "45",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C06609",
+                "@name": "cpd:C06609",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C06609",
+                    "@x": "275",
+                    "@height": "8",
+                    "@y": "124",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "46",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C06610",
+                "@name": "cpd:C06610",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C06610",
+                    "@x": "275",
+                    "@height": "8",
+                    "@y": "179",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "48",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?3.8.1.5",
+                "@name": "ec:3.8.1.5",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "3.8.1.5",
+                    "@x": "324",
+                    "@height": "17",
+                    "@y": "125",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                },
+                "@reaction": "rn:R05367",
+                "@type": "enzyme"
+            },
+            {
+                "@id": "49",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C06611",
+                "@name": "cpd:C06611",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C06611",
+                    "@x": "383",
+                    "@height": "8",
+                    "@y": "124",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "51",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?3.8.1.5",
+                "@name": "ec:3.8.1.5",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "3.8.1.5",
+                    "@x": "324",
+                    "@height": "17",
+                    "@y": "180",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                },
+                "@reaction": "rn:R05368",
+                "@type": "enzyme"
+            },
+            {
+                "@id": "52",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C06612",
+                "@name": "cpd:C06612",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C06612",
+                    "@x": "383",
+                    "@height": "8",
+                    "@y": "179",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "54",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?1.1.1.1",
+                "@name": "ec:1.1.1.1",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.1.1.1",
+                    "@x": "434",
+                    "@height": "17",
+                    "@y": "125",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                },
+                "@reaction": "rn:R05233",
+                "@type": "enzyme"
+            },
+            {
+                "@id": "55",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C06613",
+                "@name": "cpd:C06613",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C06613",
+                    "@x": "491",
+                    "@height": "8",
+                    "@y": "124",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "57",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?1.1.1.1",
+                "@name": "ec:1.1.1.1",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.1.1.1",
+                    "@x": "434",
+                    "@height": "17",
+                    "@y": "180",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                },
+                "@reaction": "rn:R05234",
+                "@type": "enzyme"
+            },
+            {
+                "@id": "58",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C16348",
+                "@name": "cpd:C16348",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C16348",
+                    "@x": "492",
+                    "@height": "8",
+                    "@y": "179",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "60",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?1.2.1.3",
+                "@name": "ec:1.2.1.3",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.2.1.3",
+                    "@x": "541",
+                    "@height": "17",
+                    "@y": "124",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                },
+                "@reaction": "rn:R05237",
+                "@type": "enzyme"
+            },
+            {
+                "@id": "61",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C06614",
+                "@name": "cpd:C06614",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C06614",
+                    "@x": "599",
+                    "@height": "8",
+                    "@y": "124",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "62",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?1.2.1.3",
+                "@name": "ec:1.2.1.3",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.2.1.3",
+                    "@x": "542",
+                    "@height": "17",
+                    "@y": "180",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                },
+                "@reaction": "rn:R05238",
+                "@type": "enzyme"
+            },
+            {
+                "@id": "63",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C06615",
+                "@name": "cpd:C06615",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C06615",
+                    "@x": "599",
+                    "@height": "8",
+                    "@y": "179",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "64",
+                "@reaction": "rn:R05371",
+                "@name": "ec:3.8.1.-",
+                "@type": "enzyme",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "3.8.1.-",
+                    "@x": "649",
+                    "@height": "17",
+                    "@y": "124",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                }
+            },
+            {
+                "@id": "65",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C00222",
+                "@name": "cpd:C00222",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C00222",
+                    "@x": "707",
+                    "@height": "8",
+                    "@y": "179",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "67",
+                "@reaction": "rn:R05372",
+                "@name": "ec:3.8.1.-",
+                "@type": "enzyme",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "3.8.1.-",
+                    "@x": "648",
+                    "@height": "17",
+                    "@y": "179",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                }
+            },
+            {
+                "@id": "68",
+                "@reaction": "rn:R06973",
+                "@name": "ec:4.1.1.-",
+                "@type": "enzyme",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "4.1.1.-",
+                    "@x": "707",
+                    "@height": "17",
+                    "@y": "218",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                }
+            },
+            {
+                "@id": "70",
+                "@reaction": "rn:R09146",
+                "@name": "ec:1.14.-.-",
+                "@type": "enzyme",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.14.-.-",
+                    "@x": "238",
+                    "@height": "17",
+                    "@y": "358",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                }
+            },
+            {
+                "@id": "71",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C14866",
+                "@name": "cpd:C14866",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C14866",
+                    "@x": "323",
+                    "@height": "8",
+                    "@y": "358",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "72",
+                "@reaction": "rn:R09150",
+                "@name": "ec:1.1.-.-",
+                "@type": "enzyme",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.1.-.-",
+                    "@x": "412",
+                    "@height": "17",
+                    "@y": "323",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                }
+            },
+            {
+                "@id": "73",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C11150",
+                "@name": "cpd:C11150",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C11150",
+                    "@x": "412",
+                    "@height": "8",
+                    "@y": "285",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "75",
+                "@reaction": "rn:R09149",
+                "@name": "ec:1.1.-.-",
+                "@type": "enzyme",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.1.-.-",
+                    "@x": "323",
+                    "@height": "17",
+                    "@y": "323",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                }
+            },
+            {
+                "@id": "76",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C07490",
+                "@name": "cpd:C07490",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C07490",
+                    "@x": "323",
+                    "@height": "8",
+                    "@y": "285",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "78",
+                "@reaction": "rn:R09147",
+                "@name": "ec:1.14.-.-",
+                "@type": "enzyme",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.14.-.-",
+                    "@x": "238",
+                    "@height": "17",
+                    "@y": "504",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                }
+            },
+            {
+                "@id": "79",
+                "@reaction": "rn:R09141",
+                "@name": "ec:1.14.13.-",
+                "@type": "enzyme",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.14.13.-",
+                    "@x": "238",
+                    "@height": "17",
+                    "@y": "525",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                }
+            },
+            {
+                "@id": "80",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C11148",
+                "@name": "cpd:C11148",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C11148",
+                    "@x": "383",
+                    "@height": "8",
+                    "@y": "514",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "82",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C11149",
+                "@name": "cpd:C11149",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C11149",
+                    "@x": "471",
+                    "@height": "8",
+                    "@y": "514",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "83",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C00048",
+                "@name": "cpd:C00048",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C00048",
+                    "@x": "531",
+                    "@height": "8",
+                    "@y": "546",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "85",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C00058",
+                "@name": "cpd:C00058",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C00058",
+                    "@x": "383",
+                    "@height": "8",
+                    "@y": "577",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "87",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?1.2.1.46",
+                "@name": "ec:1.2.1.46",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.2.1.46",
+                    "@x": "359",
+                    "@height": "17",
+                    "@y": "612",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                },
+                "@reaction": "rn:R00604",
+                "@type": "enzyme"
+            },
+            {
+                "@id": "88",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C00067",
+                "@name": "cpd:C00067",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C00067",
+                    "@x": "383",
+                    "@height": "8",
+                    "@y": "636",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "89",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C02271",
+                "@name": "cpd:C02271",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C02271",
+                    "@x": "275",
+                    "@height": "8",
+                    "@y": "636",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "90",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?4.5.1.3",
+                "@name": "ec:4.5.1.3",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "4.5.1.3",
+                    "@x": "323",
+                    "@height": "17",
+                    "@y": "637",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                },
+                "@reaction": "rn:R00603",
+                "@type": "enzyme"
+            },
+            {
+                "@id": "91",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?ec00680",
+                "@name": "path:ec00680",
+                "@type": "map",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "Methane metabolism",
+                    "@x": "482",
+                    "@height": "34",
+                    "@y": "576",
+                    "@type": "roundrectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "74"
+                }
+            },
+            {
+                "@id": "92",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C06752",
+                "@name": "cpd:C06752",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C06752",
+                    "@x": "275",
+                    "@height": "8",
+                    "@y": "676",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "93",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C06753",
+                "@name": "cpd:C06753",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C06753",
+                    "@x": "383",
+                    "@height": "8",
+                    "@y": "676",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "95",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?3.8.1.5",
+                "@name": "ec:3.8.1.5",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "3.8.1.5",
+                    "@x": "323",
+                    "@height": "17",
+                    "@y": "677",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                },
+                "@reaction": "rn:R05284",
+                "@type": "enzyme"
+            },
+            {
+                "@id": "96",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C06754",
+                "@name": "cpd:C06754",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C06754",
+                    "@x": "491",
+                    "@height": "8",
+                    "@y": "676",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "98",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?1.1.2.7",
+                "@name": "ec:1.1.2.7",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.1.2.7",
+                    "@x": "431",
+                    "@height": "17",
+                    "@y": "666",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                },
+                "@reaction": "rn:R09128",
+                "@type": "enzyme"
+            },
+            {
+                "@id": "99",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?1.1.2.8",
+                "@name": "ec:1.1.2.8",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.1.2.8",
+                    "@x": "431",
+                    "@height": "17",
+                    "@y": "687",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                },
+                "@reaction": "rn:R05285",
+                "@type": "enzyme"
+            },
+            {
+                "@id": "100",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C06755",
+                "@name": "cpd:C06755",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C06755",
+                    "@x": "599",
+                    "@height": "8",
+                    "@y": "676",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "102",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?1.2.1.3",
+                "@name": "ec:1.2.1.3",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.2.1.3",
+                    "@x": "542",
+                    "@height": "17",
+                    "@y": "676",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                },
+                "@reaction": "rn:R05286",
+                "@type": "enzyme"
+            },
+            {
+                "@id": "103",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C00160",
+                "@name": "cpd:C00160",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C00160",
+                    "@x": "707",
+                    "@height": "8",
+                    "@y": "676",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "104",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?3.8.1.3",
+                "@name": "ec:3.8.1.3",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "3.8.1.3",
+                    "@x": "649",
+                    "@height": "17",
+                    "@y": "666",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                },
+                "@reaction": "rn:R05287",
+                "@type": "enzyme"
+            },
+            {
+                "@id": "105",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?3.8.1.2",
+                "@name": "ec:3.8.1.2",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "3.8.1.2",
+                    "@x": "649",
+                    "@height": "17",
+                    "@y": "687",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                },
+                "@reaction": "rn:R05287",
+                "@type": "enzyme"
+            },
+            {
+                "@id": "106",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?1.14.12.11",
+                "@name": "ec:1.14.12.11",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.14.12.11",
+                    "@x": "238",
+                    "@height": "17",
+                    "@y": "474",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                },
+                "@reaction": "rn:R09151",
+                "@type": "enzyme"
+            },
+            {
+                "@id": "107",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?1.14.12.11",
+                "@name": "ec:1.14.12.11",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.14.12.11",
+                    "@x": "238",
+                    "@height": "17",
+                    "@y": "577",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                },
+                "@reaction": "rn:R09152",
+                "@type": "enzyme"
+            },
+            {
+                "@id": "111",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C00237",
+                "@name": "cpd:C00237",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C00237",
+                    "@x": "438",
+                    "@height": "8",
+                    "@y": "491",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "112",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C18246",
+                "@name": "cpd:C18246",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C18246",
+                    "@x": "167",
+                    "@height": "8",
+                    "@y": "232",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "114",
+                "@reaction": "rn:R09154",
+                "@name": "ec:1.97.1.-",
+                "@type": "enzyme",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.97.1.-",
+                    "@x": "217",
+                    "@height": "17",
+                    "@y": "233",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                }
+            },
+            {
+                "@id": "115",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C18247",
+                "@name": "cpd:C18247",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C18247",
+                    "@x": "275",
+                    "@height": "8",
+                    "@y": "232",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "117",
+                "@reaction": "rn:R09155",
+                "@name": "ec:1.97.1.-",
+                "@type": "enzyme",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.97.1.-",
+                    "@x": "324",
+                    "@height": "17",
+                    "@y": "233",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                }
+            },
+            {
+                "@id": "118",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C18248",
+                "@name": "cpd:C18248",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C18248",
+                    "@x": "383",
+                    "@height": "8",
+                    "@y": "232",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "119",
+                "@reaction": "rn:R09156",
+                "@name": "ec:1.13.12.-",
+                "@type": "enzyme",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.13.12.-",
+                    "@x": "568",
+                    "@height": "17",
+                    "@y": "233",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                }
+            },
+            {
+                "@id": "122",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C00209",
+                "@name": "cpd:C00209",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C00209",
+                    "@x": "529",
+                    "@height": "8",
+                    "@y": "285",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "123",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C00011",
+                "@name": "cpd:C00011",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C00011",
+                    "@x": "494",
+                    "@height": "8",
+                    "@y": "255",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "124",
+                "@reaction": "rn:R09157",
+                "@name": "ec:3.8.1.-",
+                "@type": "enzyme",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "3.8.1.-",
+                    "@x": "468",
+                    "@height": "17",
+                    "@y": "285",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                }
+            },
+            {
+                "@id": "125",
+                "@reaction": "rn:R09148",
+                "@name": "ec:1.14.13.-",
+                "@type": "enzyme",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.14.13.-",
+                    "@x": "238",
+                    "@height": "17",
+                    "@y": "285",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                }
+            },
+            {
+                "@id": "126",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?ec00630",
+                "@name": "path:ec00630",
+                "@type": "map",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "Glyoxylate and dicarboxylate metabolism",
+                    "@x": "627",
+                    "@height": "45",
+                    "@y": "284",
+                    "@type": "roundrectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "92"
+                }
+            },
+            {
+                "@id": "127",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?C06790",
+                "@name": "cpd:C06790",
+                "@type": "compound",
+                "graphics": {
+                    "@bgcolor": "#FFFFFF",
+                    "@name": "C06790",
+                    "@x": "167",
+                    "@height": "8",
+                    "@y": "393",
+                    "@type": "circle",
+                    "@fgcolor": "#000000",
+                    "@width": "8"
+                }
+            },
+            {
+                "@id": "128",
+                "@link": "http://www.kegg.jp/dbget-bin/www_bget?1.2.98.1",
+                "@name": "ec:1.2.98.1",
+                "graphics": {
+                    "@bgcolor": "#BFBFFF",
+                    "@name": "1.2.98.1",
+                    "@x": "409",
+                    "@height": "17",
+                    "@y": "612",
+                    "@type": "rectangle",
+                    "@fgcolor": "#000000",
+                    "@width": "46"
+                },
+                "@reaction": "rn:R00614",
+                "@type": "enzyme"
+            }
+        ],
+        "compounds": {
+            "C00222": "3-Oxopropanoate",
+            "C06754": "Chloroacetaldehyde",
+            "C00209": "Oxalate",
+            "C06790": "Trichloroethene",
+            "C00160": "Glycolate",
+            "C06548": "Ethylene oxide",
+            "C00084": "Acetaldehyde",
+            "C07490": "Trichloroethanol",
+            "C11148": "TCE epoxide",
+            "C06612": "cis-3-Chloro-2-propene-1-ol",
+            "C00067": "Formaldehyde",
+            "C00237": "CO",
+            "C00011": "CO2",
+            "C14866": "Chloral",
+            "C06753": "2-Chloroethanol",
+            "C06615": "cis-3-Chloroacrylic acid",
+            "C06613": "trans-3-Chloroallyl aldehyde",
+            "C06614": "trans-3-Chloroacrylic acid",
+            "C01548": "Acetylene",
+            "C06752": "1,2-Dichloroethane",
+            "C06611": "trans-3-Chloro-2-propene-1-ol",
+            "C06610": "cis-1,3-Dichloropropene",
+            "C06792": "cis-1,2-Dichloroethene",
+            "C06547": "Ethylene",
+            "C01380": "Ethylene glycol",
+            "C02271": "Dichloromethane",
+            "C18246": "1,1,1-Trichloroethane",
+            "C06791": "trans-1,2-Dichloroethene",
+            "C11149": "Dichloroacetate",
+            "C06609": "trans-1,3-Dichloropropene",
+            "C00058": "Formate",
+            "C18247": "1,1-Dichloroethane",
+            "C00024": "Acetyl-CoA",
+            "C11150": "Trichloroacetate",
+            "C06755": "Chloroacetic acid",
+            "C06793": "Vinyl chloride",
+            "C06789": "Tetrachloroethene",
+            "C16348": "cis-3-Chloroallyl aldehyde",
+            "C18248": "Chloroethane",
+            "C00048": "Glyoxylate"
+        },
+        "reaction": [
+            {
+                "@id": "21",
+                "substrate": {
+                    "@id": "38",
+                    "@name": "cpd:C06793"
+                },
+                "@name": "rn:R05498",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "37",
+                    "@name": "cpd:C06547"
+                }
+            },
+            {
+                "@id": "22",
+                "substrate": {
+                    "@id": "39",
+                    "@name": "cpd:C06791"
+                },
+                "@name": "rn:R05502",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "38",
+                    "@name": "cpd:C06793"
+                }
+            },
+            {
+                "@id": "23",
+                "substrate": {
+                    "@id": "43",
+                    "@name": "cpd:C06792"
+                },
+                "@name": "rn:R05503",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "38",
+                    "@name": "cpd:C06793"
+                }
+            },
+            {
+                "@id": "24",
+                "substrate": {
+                    "@id": "127",
+                    "@name": "cpd:C06790"
+                },
+                "@name": "rn:R05501",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "43",
+                    "@name": "cpd:C06792"
+                }
+            },
+            {
+                "@id": "25",
+                "substrate": {
+                    "@id": "127",
+                    "@name": "cpd:C06790"
+                },
+                "@name": "rn:R05500",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "39",
+                    "@name": "cpd:C06791"
+                }
+            },
+            {
+                "@id": "26",
+                "substrate": {
+                    "@id": "41",
+                    "@name": "cpd:C06789"
+                },
+                "@name": "rn:R05499",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "127",
+                    "@name": "cpd:C06790"
+                }
+            },
+            {
+                "@id": "27",
+                "substrate": {
+                    "@id": "42",
+                    "@name": "cpd:C01548"
+                },
+                "@name": "rn:R05496",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "37",
+                    "@name": "cpd:C06547"
+                }
+            },
+            {
+                "@id": "29",
+                "substrate": {
+                    "@id": "36",
+                    "@name": "cpd:C06548"
+                },
+                "@name": "rn:R05351",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "44",
+                    "@name": "cpd:C00024"
+                }
+            },
+            {
+                "@id": "30",
+                "substrate": {
+                    "@id": "36",
+                    "@name": "cpd:C06548"
+                },
+                "@name": "rn:R05842",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "28",
+                    "@name": "cpd:C01380"
+                }
+            },
+            {
+                "@id": "31",
+                "substrate": {
+                    "@id": "37",
+                    "@name": "cpd:C06547"
+                },
+                "@name": "rn:R05444",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "36",
+                    "@name": "cpd:C06548"
+                }
+            },
+            {
+                "@id": "32",
+                "substrate": {
+                    "@id": "42",
+                    "@name": "cpd:C01548"
+                },
+                "@name": "rn:R05380",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "40",
+                    "@name": "cpd:C00084"
+                }
+            },
+            {
+                "@id": "48",
+                "substrate": {
+                    "@id": "45",
+                    "@name": "cpd:C06609"
+                },
+                "@name": "rn:R05367",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "49",
+                    "@name": "cpd:C06611"
+                }
+            },
+            {
+                "@id": "51",
+                "substrate": {
+                    "@id": "46",
+                    "@name": "cpd:C06610"
+                },
+                "@name": "rn:R05368",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "52",
+                    "@name": "cpd:C06612"
+                }
+            },
+            {
+                "@id": "54",
+                "substrate": {
+                    "@id": "49",
+                    "@name": "cpd:C06611"
+                },
+                "@name": "rn:R05233",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "55",
+                    "@name": "cpd:C06613"
+                }
+            },
+            {
+                "@id": "57",
+                "substrate": {
+                    "@id": "52",
+                    "@name": "cpd:C06612"
+                },
+                "@name": "rn:R05234",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "58",
+                    "@name": "cpd:C16348"
+                }
+            },
+            {
+                "@id": "60",
+                "substrate": {
+                    "@id": "55",
+                    "@name": "cpd:C06613"
+                },
+                "@name": "rn:R05237",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "61",
+                    "@name": "cpd:C06614"
+                }
+            },
+            {
+                "@id": "62",
+                "substrate": {
+                    "@id": "58",
+                    "@name": "cpd:C16348"
+                },
+                "@name": "rn:R05238",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "63",
+                    "@name": "cpd:C06615"
+                }
+            },
+            {
+                "@id": "64",
+                "substrate": {
+                    "@id": "61",
+                    "@name": "cpd:C06614"
+                },
+                "@name": "rn:R05371",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "65",
+                    "@name": "cpd:C00222"
+                }
+            },
+            {
+                "@id": "67",
+                "substrate": {
+                    "@id": "63",
+                    "@name": "cpd:C06615"
+                },
+                "@name": "rn:R05372",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "65",
+                    "@name": "cpd:C00222"
+                }
+            },
+            {
+                "@id": "68",
+                "substrate": {
+                    "@id": "65",
+                    "@name": "cpd:C00222"
+                },
+                "@name": "rn:R06973",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "40",
+                    "@name": "cpd:C00084"
+                }
+            },
+            {
+                "@id": "70",
+                "substrate": {
+                    "@id": "127",
+                    "@name": "cpd:C06790"
+                },
+                "@name": "rn:R09146",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "71",
+                    "@name": "cpd:C14866"
+                }
+            },
+            {
+                "@id": "72",
+                "substrate": {
+                    "@id": "71",
+                    "@name": "cpd:C14866"
+                },
+                "@name": "rn:R09150",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "73",
+                    "@name": "cpd:C11150"
+                }
+            },
+            {
+                "@id": "75",
+                "substrate": {
+                    "@id": "76",
+                    "@name": "cpd:C07490"
+                },
+                "@name": "rn:R09149",
+                "@type": "reversible",
+                "product": {
+                    "@id": "71",
+                    "@name": "cpd:C14866"
+                }
+            },
+            {
+                "@id": "78",
+                "substrate": {
+                    "@id": "127",
+                    "@name": "cpd:C06790"
+                },
+                "@name": "rn:R09147",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "80",
+                    "@name": "cpd:C11148"
+                }
+            },
+            {
+                "@id": "79",
+                "substrate": {
+                    "@id": "127",
+                    "@name": "cpd:C06790"
+                },
+                "@name": "rn:R09141",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "80",
+                    "@name": "cpd:C11148"
+                }
+            },
+            {
+                "@id": "87",
+                "substrate": {
+                    "@id": "88",
+                    "@name": "cpd:C00067"
+                },
+                "@name": "rn:R00604",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "85",
+                    "@name": "cpd:C00058"
+                }
+            },
+            {
+                "@id": "90",
+                "substrate": {
+                    "@id": "89",
+                    "@name": "cpd:C02271"
+                },
+                "@name": "rn:R00603",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "88",
+                    "@name": "cpd:C00067"
+                }
+            },
+            {
+                "@id": "95",
+                "substrate": {
+                    "@id": "92",
+                    "@name": "cpd:C06752"
+                },
+                "@name": "rn:R05284",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "93",
+                    "@name": "cpd:C06753"
+                }
+            },
+            {
+                "@id": "98",
+                "substrate": {
+                    "@id": "93",
+                    "@name": "cpd:C06753"
+                },
+                "@name": "rn:R09128",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "96",
+                    "@name": "cpd:C06754"
+                }
+            },
+            {
+                "@id": "99",
+                "substrate": {
+                    "@id": "93",
+                    "@name": "cpd:C06753"
+                },
+                "@name": "rn:R05285",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "96",
+                    "@name": "cpd:C06754"
+                }
+            },
+            {
+                "@id": "102",
+                "substrate": {
+                    "@id": "96",
+                    "@name": "cpd:C06754"
+                },
+                "@name": "rn:R05286",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "100",
+                    "@name": "cpd:C06755"
+                }
+            },
+            {
+                "@id": "104",
+                "substrate": {
+                    "@id": "100",
+                    "@name": "cpd:C06755"
+                },
+                "@name": "rn:R05287",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "103",
+                    "@name": "cpd:C00160"
+                }
+            },
+            {
+                "@id": "105",
+                "substrate": {
+                    "@id": "100",
+                    "@name": "cpd:C06755"
+                },
+                "@name": "rn:R05287",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "103",
+                    "@name": "cpd:C00160"
+                }
+            },
+            {
+                "@id": "106",
+                "substrate": {
+                    "@id": "127",
+                    "@name": "cpd:C06790"
+                },
+                "@name": "rn:R09151",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "83",
+                    "@name": "cpd:C00048"
+                }
+            },
+            {
+                "@id": "107",
+                "substrate": {
+                    "@id": "127",
+                    "@name": "cpd:C06790"
+                },
+                "@name": "rn:R09152",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "85",
+                    "@name": "cpd:C00058"
+                }
+            },
+            {
+                "@id": "114",
+                "substrate": {
+                    "@id": "112",
+                    "@name": "cpd:C18246"
+                },
+                "@name": "rn:R09154",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "115",
+                    "@name": "cpd:C18247"
+                }
+            },
+            {
+                "@id": "117",
+                "substrate": {
+                    "@id": "115",
+                    "@name": "cpd:C18247"
+                },
+                "@name": "rn:R09155",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "118",
+                    "@name": "cpd:C18248"
+                }
+            },
+            {
+                "@id": "119",
+                "substrate": {
+                    "@id": "118",
+                    "@name": "cpd:C18248"
+                },
+                "@name": "rn:R09156",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "40",
+                    "@name": "cpd:C00084"
+                }
+            },
+            {
+                "@id": "124",
+                "substrate": {
+                    "@id": "73",
+                    "@name": "cpd:C11150"
+                },
+                "@name": "rn:R09157",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "122",
+                    "@name": "cpd:C00209"
+                }
+            },
+            {
+                "@id": "125",
+                "substrate": {
+                    "@id": "112",
+                    "@name": "cpd:C18246"
+                },
+                "@name": "rn:R09148",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "76",
+                    "@name": "cpd:C07490"
+                }
+            },
+            {
+                "@id": "128",
+                "substrate": {
+                    "@id": "88",
+                    "@name": "cpd:C00067"
+                },
+                "@name": "rn:R00614",
+                "@type": "irreversible",
+                "product": {
+                    "@id": "85",
+                    "@name": "cpd:C00058"
+                }
+            }
+        ],
+        "@name": "path:ec00625",
+        "enzymes": {
+            "MW1_J1": {
+                "3.8.1.2": [
+                    "Haloacid dehalogenase, type II",
+                    "Haloacid dehalogenase, type II",
+                    "Haloacid dehalogenase, type II",
+                    "Haloacid dehalogenase, type II",
+                    "2-haloalkanoic acid dehalogenase"
+                ],
+                "1.18.6.1": [
+                    "Nitrogenase molybdenum-iron protein beta chain",
+                    "Nitrogenase molybdenum-iron protein alpha chain",
+                    "Nitrogenase protein alpha chain",
+                    "Nitrogenase molybdenum-iron cofactor biosynthesis protein NifN",
+                    "Nitrogenase iron protein"
+                ],
+                "1.97.1.-": [
+                    "Pyruvate formate-lyase-activating enzyme",
+                    "(Formate-C-acetyltransferase)-activating enzyme",
+                    "Pyruvate formate-lyase-activating enzyme",
+                    "Pyruvate formate-lyase-activating enzyme",
+                    "Pyruvate formate-lyase activating enzyme"
+                ],
+                "1.2.98.1": [
+                    "Formaldehyde dismutase"
+                ],
+                "1.14.13.-": [
+                    "2-nonaprenyl-3-methyl-6-methoxy-1,4-benzoquinol hydroxylase",
+                    "2-octaprenyl-6-methoxyphenol hydroxylase,FAD/NAD(P)-binding",
+                    "2-nonaprenyl-3-methyl-6-methoxy-1,4-benzoquinol hydroxylase",
+                    "2-octaprenylphenol hydroxylase",
+                    "2-octaprenylphenol hydroxylase"
+                ],
+                "1.14.12.11": [],
+                "1.1.1.1": [
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase",
+                    "Putative zinc-containing alcohol dehydrogenase family"
+                ],
+                "1.1.-.-": [
+                    "Glyoxal reductase",
+                    "Inosine-5'-monophosphate dehydrogenase",
+                    "Homoserine dehydrogenase",
+                    "3-isopropylmalate dehydrogenase",
+                    "Malate dehydrogenase"
+                ],
+                "3.8.1.3": [
+                    "Fluoroacetate dehalogenase",
+                    "Haloacetate dehalogenase H-1",
+                    "Haloacetate dehalogenase H-1",
+                    "Haloacetate dehalogenase H-1",
+                    "Fluoroacetate dehalogenase"
+                ],
+                "4.5.1.3": [
+                    "Dichloromethane dehalogenase"
+                ],
+                "4.2.1.112": [],
+                "3.8.1.-": [
+                    "Fluoroacetate dehalogenase",
+                    "4-chlorobenzoyl coenzyme A dehalogenase-2",
+                    "Haloacid dehalogenase, type II",
+                    "Haloacid dehalogenase, type II",
+                    "Haloalkane dehalogenase"
+                ],
+                "3.8.1.5": [
+                    "Haloalkane dehalogenase",
+                    "Haloalkane dehalogenase",
+                    "Haloalkane dehalogenase DhmA",
+                    "Putative D-(-)-3-hydroxybutyrate oligomer hydrolase PhaY",
+                    "Haloalkane dehalogenase"
+                ],
+                "1.1.2.7": [
+                    "Methanol dehydrogenase [cytochrome c] subunit 1"
+                ],
+                "1.1.1.-": [
+                    "Glyoxal reductase",
+                    "Inosine-5'-monophosphate dehydrogenase",
+                    "Homoserine dehydrogenase",
+                    "3-isopropylmalate dehydrogenase",
+                    "Malate dehydrogenase"
+                ],
+                "1.2.1.3": [
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase (NAD+)",
+                    "EPTC-inducible aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase, aldehyde dehydrogenase (NAD+)"
+                ],
+                "4.1.1.-": [
+                    "Phosphoenolpyruvate carboxylase",
+                    "Putative Acetoacetate decarboxylase",
+                    "Phosphoenolpyruvate carboxylase (PEPC) (PEPCase)",
+                    "Biodegradative arginine decarboxylase",
+                    "3-octaprenyl-4-hydroxybenzoate carboxy-lyase"
+                ],
+                "1.14.13.69": [],
+                "1.13.12.-": [
+                    "2-nitropropane dioxygenase",
+                    "L-ornithine 5-monooxygenase (L-ornithine N5-oxygenase)",
+                    "2-nitropropane dioxygenase",
+                    "2-oxoglutarate-dependent ethylene/succinate-forming enzyme (2OG-Fe(II) oxygenase family oxidoreductase) (Iron oxidase) (Iron/ascorbate oxidoreductase)",
+                    "Nitronate monooxygenase"
+                ],
+                "1.1.2.8": [
+                    "Quinoprotein ethanol dehydrogenase",
+                    "QedA protein",
+                    "Quinoprotein alcohol dehydrogenase",
+                    "Alcohol dehydrogenase [cytochrome c]",
+                    "Alcohol dehydrogenase [cytochrome c]"
+                ],
+                "1.14.-.-": [
+                    "2-nonaprenyl-3-methyl-6-methoxy-1,4-benzoquinol hydroxylase",
+                    "2-octaprenyl-6-methoxyphenol hydroxylase,FAD/NAD(P)-binding",
+                    "Anthranilate 1,2-dioxygenase large subunit",
+                    "2-nonaprenyl-3-methyl-6-methoxy-1,4-benzoquinol hydroxylase",
+                    "2-octaprenylphenol hydroxylase"
+                ],
+                "1.2.1.46": [
+                    "Glutathione-independent formaldehyde dehydrogenase",
+                    "Glutathione-independent formaldehyde dehydrogenase"
+                ],
+                "1.97.1.8": [],
+                "3.3.2.10": [
+                    "Soluble epoxide hydrolase",
+                    "Soluble epoxide hydrolase",
+                    "Soluble epoxide hydrolase",
+                    "Putative epoxide hydrolase"
+                ]
+            },
+            "MW4_O1": {
+                "3.8.1.2": [
+                    "Haloacid dehalogenase, type II",
+                    "Haloacid dehalogenase, type II",
+                    "2-haloacid dehalogenase"
+                ],
+                "1.18.6.1": [
+                    "Nitrogenase protein alpha chain",
+                    "Nitrogenase protein alpha chain",
+                    "Fe-only nitrogenase FeFe protein subunit AnfK",
+                    "Nitrogenase molybdenum-iron protein beta chain",
+                    "Nitrogenase iron protein"
+                ],
+                "1.97.1.-": [
+                    "Ribonucleotide reductase of class III (Anaerobic), activating protein",
+                    "Ribonucleotide reductase of class III (Anaerobic), activating protein",
+                    "Pyruvate formate-lyase activating enzyme",
+                    "Pyruvate formate-lyase-activating enzyme",
+                    "Pyrogallol hydroxytransferase large subunit AthL"
+                ],
+                "1.2.98.1": [],
+                "1.14.13.-": [
+                    "2-octaprenylphenol hydroxylase",
+                    "2-octaprenylphenol hydroxylase",
+                    "4-hydroxybenzoate 3-monooxygenase",
+                    "2-octaprenylphenol hydroxylase",
+                    "Salicylate hydroxylase"
+                ],
+                "1.14.12.11": [],
+                "1.1.1.1": [
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase",
+                    "Iron-containing alcohol dehydrogenase",
+                    "Alcohol dehydrogenase"
+                ],
+                "1.1.-.-": [
+                    "UDP-glucose dehydrogenase",
+                    "UDP-glucose dehydrogenase",
+                    "D-3-phosphoglycerate dehydrogenase",
+                    "Isocitrate dehydrogenase (NADP)",
+                    "(S)-2-hydroxy-acid dehydrogenase"
+                ],
+                "3.8.1.3": [],
+                "4.5.1.3": [],
+                "4.2.1.112": [],
+                "3.8.1.-": [
+                    "Acetoin dehydrogenase E2 subunit dihydrolipoyllysine-residue acetyltransferase",
+                    "PCE reductive dehalogenase PceA",
+                    "Putative Atrazine chlorohydrolase",
+                    "Haloacid dehalogenase, type II",
+                    "Haloalkane dehalogenase"
+                ],
+                "3.8.1.5": [
+                    "Acetoin dehydrogenase E2 subunit dihydrolipoyllysine-residue acetyltransferase",
+                    "Haloalkane dehalogenase",
+                    "Haloalkane dehalogenase",
+                    "Haloalkane dehalogenase",
+                    "Haloalkane dehalogenase"
+                ],
+                "1.1.2.7": [],
+                "1.1.1.-": [
+                    "UDP-glucose dehydrogenase",
+                    "UDP-glucose dehydrogenase",
+                    "D-3-phosphoglycerate dehydrogenase",
+                    "Isocitrate dehydrogenase (NADP)",
+                    "Glycerol-1-phosphate dehydrogenase [NAD(P)+] (G1P dehydrogenase) (G1PDH)"
+                ],
+                "1.2.1.3": [
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase AldA",
+                    "Acetaldehyde dehydrogenase"
+                ],
+                "4.1.1.-": [
+                    "Putative Acetoacetate decarboxylase",
+                    "Glutamate decarboxylase",
+                    "Ribulose bisphosphate carboxylase (RuBisCO)",
+                    "Ornithine decarboxylase",
+                    "Diaminopimelate decarboxylase (DAP decarboxylase) (DAPDC)"
+                ],
+                "1.14.13.69": [],
+                "1.13.12.-": [
+                    "Dioxygenase",
+                    "Tryptophan 2-monooxygenase",
+                    "Nitronate monooxygenase",
+                    "Putative 2-nitropropane dioxygenase (Nitroalkane oxidase) (2-NPD)",
+                    "Putative nitronate monooxygenase"
+                ],
+                "1.1.2.8": [
+                    "Quinoprotein ethanol dehydrogenase",
+                    "Quino(Hemo)protein alcohol dehydrogenase",
+                    "Quinoprotein ethanol dehydrogenase",
+                    "Quinoprotein ethanol dehydrogenase"
+                ],
+                "1.14.-.-": [
+                    "2-octaprenylphenol hydroxylase",
+                    "Stearoyl-CoA 9-desaturase",
+                    "2-octaprenylphenol hydroxylase",
+                    "4-hydroxyphenylacetate 3-monooxygenase",
+                    "Putative Toluate 1,2-dioxygenase alpha subunit"
+                ],
+                "1.2.1.46": [
+                    "Alcohol dehydrogenase GroES domain protein"
+                ],
+                "1.97.1.8": [],
+                "3.3.2.10": []
+            },
+            "MW1_O1": {
+                "3.8.1.2": [
+                    "Haloacid dehalogenase, type II",
+                    "2-haloalkanoic acid dehalogenase",
+                    "Haloacid dehalogenase, type II",
+                    "Haloacid dehalogenase, type II",
+                    "2-haloalkanoic acid dehalogenase"
+                ],
+                "1.18.6.1": [
+                    "Nitrogenase molybdenum-iron protein beta chain",
+                    "Nitrogenase molybdenum-iron protein alpha chain",
+                    "Nitrogenase protein alpha chain",
+                    "Nitrogenase molybdenum-iron cofactor biosynthesis protein NifN",
+                    "Nitrogenase MoFe cofactor biosynthesis protein NifE"
+                ],
+                "1.97.1.-": [
+                    "Photosystem I P700 chlorophyll a apoprotein A2",
+                    "Pyruvate formate-lyase-activating enzyme",
+                    "Pyruvate formate-lyase-activating enzyme",
+                    "(Formate-C-acetyltransferase)-activating enzyme",
+                    "Pyruvate formate-lyase-activating enzyme"
+                ],
+                "1.2.98.1": [],
+                "1.14.13.-": [
+                    "2-nonaprenyl-3-methyl-6-methoxy-1,4-benzoquinol hydroxylase",
+                    "2-octaprenyl-6-methoxyphenol hydroxylase,FAD/NAD(P)-binding",
+                    "Putative aromatic ring monooxygenase",
+                    "4-hydroxybenzoate 3-monooxygenase",
+                    "Vanillate monooxygenase"
+                ],
+                "1.14.12.11": [],
+                "1.1.1.1": [
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase, iron-dependent",
+                    "Alcohol dehydrogenase"
+                ],
+                "1.1.-.-": [
+                    "Inosine-5'-monophosphate dehydrogenase",
+                    "Homoserine dehydrogenase",
+                    "Isocitrate dehydrogenase, NADP-dependent",
+                    "Malate dehydrogenase (Oxaloacetate-decarboxylating) (NADP(+))., Phosphate acetyltransferase",
+                    "Histidinol dehydrogenase (HDH)"
+                ],
+                "3.8.1.3": [
+                    "Fluoroacetate dehalogenase",
+                    "Haloacetate dehalogenase H-1",
+                    "Haloacetate dehalogenase",
+                    "Fluoroacetate dehalogenase",
+                    "Putative hydrolases or acyltransferases (Alpha/beta hydrolase superfamily)"
+                ],
+                "4.5.1.3": [],
+                "4.2.1.112": [],
+                "3.8.1.-": [
+                    "Fluoroacetate dehalogenase",
+                    "Haloalkane dehalogenase",
+                    "Haloacid dehalogenase, type II",
+                    "Haloalkane dehalogenase",
+                    "4-chlorobenzoyl coenzyme A dehalogenase-2"
+                ],
+                "3.8.1.5": [
+                    "Haloalkane dehalogenase",
+                    "Haloalkane dehalogenase",
+                    "Haloalkane dehalogenase",
+                    "Haloalkane dehalogenase",
+                    "Haloalkane dehalogenase"
+                ],
+                "1.1.2.7": [
+                    "Methanol dehydrogenase large subunit protein",
+                    "Methanol dehydrogenase large subunit homolog",
+                    "Putative Quinoprotein ethanol dehydrogenase",
+                    "Methanol dehydrogenase [cytochrome c] subunit 1"
+                ],
+                "1.1.1.-": [
+                    "Inosine-5'-monophosphate dehydrogenase",
+                    "Homoserine dehydrogenase",
+                    "Isocitrate dehydrogenase, NADP-dependent",
+                    "Malate dehydrogenase (Oxaloacetate-decarboxylating) (NADP(+))., Phosphate acetyltransferase",
+                    "Histidinol dehydrogenase (HDH)"
+                ],
+                "1.2.1.3": [
+                    "Aldehyde dehydrogenase (NAD+)",
+                    "Aldehyde dehydrogenase (NAD+)",
+                    "Putative membrane-anchored aldehyde dehydrogenase protein",
+                    "Aldehyde dehydrogenase (NAD+)",
+                    "Aldehyde dehydrogenase"
+                ],
+                "4.1.1.-": [
+                    "Putative Acetoacetate decarboxylase",
+                    "Phosphoenolpyruvate carboxylase (PEPC) (PEPCase)",
+                    "Biodegradative arginine decarboxylase",
+                    "Diaminopimelate decarboxylase (DAP decarboxylase) (DAPDC)",
+                    "3-octaprenyl-4-hydroxybenzoate carboxy-lyase"
+                ],
+                "1.14.13.69": [],
+                "1.13.12.-": [
+                    "2-nitropropane dioxygenase",
+                    "Putative 2-nitropropane dioxygenase",
+                    "Nitronate monooxygenase",
+                    "Putative 2-nitropropane dioxygenase",
+                    "2-nitropropane dioxygenase"
+                ],
+                "1.1.2.8": [
+                    "Quinoprotein methanol/ethanol dehydrogenase",
+                    "Quinoprotein ethanol dehydrogenase",
+                    "Quinoprotein ethanol dehydrogenase",
+                    "Quinoprotein ethanol dehydrogenase",
+                    "Quinoprotein ethanol dehydrogenase PedH"
+                ],
+                "1.14.-.-": [
+                    "2-nonaprenyl-3-methyl-6-methoxy-1,4-benzoquinol hydroxylase",
+                    "2-octaprenyl-6-methoxyphenol hydroxylase,FAD/NAD(P)-binding",
+                    "Putative aromatic ring monooxygenase",
+                    "4-hydroxybenzoate 3-monooxygenase",
+                    "Aromatic-ring-hydroxylating dioxygenase, alpha subunit"
+                ],
+                "1.2.1.46": [
+                    "Glutathione-independent formaldehyde dehydrogenase",
+                    "Glutathione-independent formaldehyde dehydrogenase"
+                ],
+                "1.97.1.8": [],
+                "3.3.2.10": [
+                    "Soluble epoxide hydrolase"
+                ]
+            },
+            "MW3_O1": {
+                "3.8.1.2": [
+                    "Putative 2-haloalkanoic acid dehalogenase",
+                    "2-haloalkanoic acid dehalogenase"
+                ],
+                "1.18.6.1": [
+                    "Nitrogenase molybdenum-iron protein beta chain",
+                    "Nitrogenase protein alpha chain",
+                    "Nitrogenase protein alpha chain",
+                    "Nitrogenase iron protein",
+                    "Nitrogenase iron protein"
+                ],
+                "1.97.1.-": [
+                    "Pyrogallol hydroxytransferase large subunit AthL",
+                    "Pyruvate formate-lyase-activating enzyme",
+                    "Pyruvate formate lyase activating enzyme",
+                    "Glycyl-radical enzyme activating protein family",
+                    "Anaerobic ribonucleoside-triphosphate reductase-activating protein"
+                ],
+                "1.2.98.1": [],
+                "1.14.13.-": [
+                    "2-octaprenylphenol hydroxylase",
+                    "Methane monooxygenase component A alpha chain",
+                    "Toluene 4-monooxygenase protein A",
+                    "2-octaprenylphenol hydroxylase",
+                    "Oxidoreductase-like protein"
+                ],
+                "1.14.12.11": [],
+                "1.1.1.1": [
+                    "Iron-containing alcohol dehydrogenase",
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase, iron-dependent"
+                ],
+                "1.1.-.-": [
+                    "Inosine-5'-monophosphate dehydrogenase",
+                    "D-3-phosphoglycerate dehydrogenase",
+                    "Histidinol dehydrogenase (HDH)",
+                    "Choline dehydrogenase",
+                    "3-hydroxy-3-methylglutaryl coenzyme A reductase (HMG-CoA reductase)"
+                ],
+                "3.8.1.3": [
+                    "Fluoroacetate dehalogenase",
+                    "Alpha/beta hydrolase fold protein",
+                    "Fluoroacetate dehalogenase"
+                ],
+                "4.5.1.3": [],
+                "4.2.1.112": [],
+                "3.8.1.-": [
+                    "Probable lactonase",
+                    "Putative 2-haloalkanoic acid dehalogenase",
+                    "Fluoroacetate dehalogenase",
+                    "PCE reductive dehalogenase PceA",
+                    "Alpha/beta hydrolase fold protein"
+                ],
+                "3.8.1.5": [
+                    "Probable lactonase",
+                    "Haloalkane dehalogenase",
+                    "Haloalkane dehalogenase",
+                    "Haloalkane dehalogenase",
+                    "Haloalkane dehalogenase"
+                ],
+                "1.1.2.7": [
+                    "Methanol dehydrogenase [cytochrome C] subunit 1",
+                    "Methanol dehydrogenase [cytochrome c] subunit 1",
+                    "Methanol dehydrogenase [cytochrome c] subunit 1"
+                ],
+                "1.1.1.-": [
+                    "Inosine-5'-monophosphate dehydrogenase",
+                    "D-3-phosphoglycerate dehydrogenase",
+                    "Histidinol dehydrogenase (HDH)",
+                    "3-hydroxy-3-methylglutaryl coenzyme A reductase (HMG-CoA reductase)",
+                    "Ketol-acid reductoisomerase"
+                ],
+                "1.2.1.3": [
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase",
+                    "Acetaldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase AldA"
+                ],
+                "4.1.1.-": [
+                    "Putative Acetoacetate decarboxylase",
+                    "Lysine decarboxylase",
+                    "Ribulose bisphosphate carboxylase (RuBisCO)",
+                    "Diaminopimelate decarboxylase (DAP decarboxylase) (DAPDC)",
+                    "Probable L-tyrosine/L-aspartate decarboxylase (TDC/ADC)"
+                ],
+                "1.14.13.69": [],
+                "1.13.12.-": [
+                    "Tryptophan 2-monooxygenase",
+                    "Tryptophan 2-monooxygenase",
+                    "Nitronate monooxygenase",
+                    "Enoyl-(Acyl-carrier-protein) reductase II (Nitronate monooxygenase)",
+                    "Nitronate monooxygenase"
+                ],
+                "1.1.2.8": [
+                    "Quinoprotein ethanol dehydrogenase",
+                    "Quinoprotein ethanol dehydrogenase",
+                    "Alcohol dehydrogenase (Acceptor)",
+                    "Alcohol dehydrogenase [cytochrome c]",
+                    "Alcohol dehydrogenase [cytochrome c]"
+                ],
+                "1.14.-.-": [
+                    "PKHD-type hydroxylase Sulku_0850",
+                    "2-octaprenylphenol hydroxylase",
+                    "Methane monooxygenase component A alpha chain",
+                    "Toluene 4-monooxygenase protein A",
+                    "Particulate methane monooxygenase alpha subunit"
+                ],
+                "1.2.1.46": [],
+                "1.97.1.8": [],
+                "3.3.2.10": [
+                    "Putative epoxide hydrolase"
+                ]
+            },
+            "MW2_J1": {
+                "3.8.1.2": [],
+                "1.18.6.1": [
+                    "Nitrogenase protein alpha chain",
+                    "Nitrogenase iron protein",
+                    "Nitrogenase MoFe cofactor biosynthesis protein NifE",
+                    "Nitrogenase molybdenum-iron protein beta chain",
+                    "Nitrogenase"
+                ],
+                "1.97.1.-": [
+                    "Anaerobic nucleotide reductase subunit",
+                    "Pyruvate formate-lyase-activating enzyme",
+                    "Pyrogallol hydroxytransferase large subunit AthL",
+                    "Pyruvate formate-lyase-activating enzyme",
+                    "Anaerobic ribonucleoside-triphosphate reductase-activating protein"
+                ],
+                "1.2.98.1": [],
+                "1.14.13.-": [
+                    "2-octaprenylphenol hydroxylase",
+                    "Toluene 4-monooxygenase protein A",
+                    "Toluene 4-monooxygenase protein D",
+                    "Toluene 4-monooxygenase protein E",
+                    "Phenol 2-monooxygenase P3 subunit"
+                ],
+                "1.14.12.11": [],
+                "1.1.1.1": [
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase zinc-binding domain protein"
+                ],
+                "1.1.-.-": [
+                    "Altronate oxidoreductase",
+                    "Glyoxal reductase",
+                    "Homoserine dehydrogenase",
+                    "Glycolate oxidase",
+                    "D-3-phosphoglycerate dehydrogenase"
+                ],
+                "3.8.1.3": [],
+                "4.5.1.3": [],
+                "4.2.1.112": [],
+                "3.8.1.-": [
+                    "Probable lactonase",
+                    "Haloalkane dehalogenase",
+                    "PCE reductive dehalogenase PceA",
+                    "Haloalkane dehalogenase",
+                    "Alpha/beta hydrolase fold"
+                ],
+                "3.8.1.5": [
+                    "Probable lactonase",
+                    "Haloalkane dehalogenase",
+                    "Haloalkane dehalogenase",
+                    "Alpha/beta hydrolase fold",
+                    "Haloalkane dehalogenase"
+                ],
+                "1.1.2.7": [
+                    "Quino protein alcohol dehydrogenase",
+                    "Methanol dehydrogenase subunit 1",
+                    "Methanol dehydrogenase, large (Alpha) subunit"
+                ],
+                "1.1.1.-": [
+                    "Altronate oxidoreductase",
+                    "Glyoxal reductase",
+                    "Homoserine dehydrogenase",
+                    "D-3-phosphoglycerate dehydrogenase",
+                    "Inosine-5'-monophosphate dehydrogenase"
+                ],
+                "1.2.1.3": [
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase (NAD(+))",
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase"
+                ],
+                "4.1.1.-": [
+                    "Phosphoenolpyruvate carboxylase",
+                    "Putative Acetoacetate decarboxylase",
+                    "Lysine decarboxylase",
+                    "Uroporphyrinogen decarboxylase (UPD) (URO-D)",
+                    "Diaminopimelate decarboxylase (DAP decarboxylase) (DAPDC)"
+                ],
+                "1.14.13.69": [],
+                "1.13.12.-": [
+                    "2-nitropropane dioxygenase",
+                    "Tryptophan 2-monooxygenase",
+                    "Non-ribosomal peptide synthetase",
+                    "Putative nitronate monooxygenase",
+                    "L-ornithine N5-oxygenase"
+                ],
+                "1.1.2.8": [
+                    "Quinoprotein ethanol dehydrogenase ExaA",
+                    "Quinoprotein ethanol dehydrogenase",
+                    "Quinoprotein ethanol dehydrogenase",
+                    "Quinoprotein ethanol dehydrogenase",
+                    "PQQ-dependent dehydrogenase, methanol/ethanol family"
+                ],
+                "1.14.-.-": [
+                    "2-octaprenylphenol hydroxylase",
+                    "PKHD-type hydroxylase Abu_0724",
+                    "Toluene 4-monooxygenase protein A",
+                    "Alkanesulfonate monooxygenase",
+                    "Toluene 4-monooxygenase protein D"
+                ],
+                "1.2.1.46": [
+                    "Putative glutathione-independent formaldehyde dehydrogenase"
+                ],
+                "1.97.1.8": [],
+                "3.3.2.10": []
+            },
+            "MW3_F1": {
+                "3.8.1.2": [
+                    "2-haloalkanoic acid dehalogenase",
+                    "Haloacid dehalogenase, type II",
+                    "HAD-superfamily hydrolase, subfamily IA, variant 3"
+                ],
+                "1.18.6.1": [
+                    "Nitrogenase molybdenum-iron protein beta chain",
+                    "Nitrogenase protein alpha chain",
+                    "Nitrogenase MoFe cofactor biosynthesis protein NifE",
+                    "Nitrogenase iron protein",
+                    "Nitrogenase protein alpha chain"
+                ],
+                "1.97.1.-": [
+                    "AmmeMemoRadiSam system radical SAM enzyme",
+                    "Pyrogallol hydroxytransferase large subunit",
+                    "Pyruvate formate-lyase-activating enzyme",
+                    "Putative Fe-S protein PflX",
+                    "Pyrogallol hydroxytransferase large subunit"
+                ],
+                "1.2.98.1": [],
+                "1.14.13.-": [
+                    "2-octaprenylphenol hydroxylase",
+                    "Salicylate hydroxylase",
+                    "Putative unusual protein kinase",
+                    "Magnesium-protoporphyrin IX monomethyl ester (Oxidative) cyclase",
+                    "4-hydroxybenzoate 3-monooxygenase"
+                ],
+                "1.14.12.11": [],
+                "1.1.1.1": [
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase",
+                    "Zinc-binding alcohol dehydrogenase family protein",
+                    "Alcohol dehydrogenase"
+                ],
+                "1.1.-.-": [
+                    "Inosine-5'-monophosphate dehydrogenase",
+                    "D-3-phosphoglycerate dehydrogenase",
+                    "Histidinol dehydrogenase (HDH)",
+                    "Choline dehydrogenase",
+                    "3-hydroxy-3-methylglutaryl coenzyme A reductase (HMG-CoA reductase)"
+                ],
+                "3.8.1.3": [],
+                "4.5.1.3": [],
+                "4.2.1.112": [],
+                "3.8.1.-": [
+                    "PCE reductive dehalogenase PceA",
+                    "2-haloalkanoic acid dehalogenase",
+                    "Haloalkane dehalogenase",
+                    "Atrazine chlorohydrolase",
+                    "Haloacid dehalogenase, type II"
+                ],
+                "3.8.1.5": [
+                    "Haloalkane dehalogenase",
+                    "Haloalkane dehalogenase",
+                    "Haloalkane dehalogenase",
+                    "Alpha/beta hydrolase fold protein"
+                ],
+                "1.1.2.7": [],
+                "1.1.1.-": [
+                    "Inosine-5'-monophosphate dehydrogenase",
+                    "D-3-phosphoglycerate dehydrogenase",
+                    "Histidinol dehydrogenase (HDH)",
+                    "3-hydroxy-3-methylglutaryl coenzyme A reductase (HMG-CoA reductase)",
+                    "Ketol-acid reductoisomerase"
+                ],
+                "1.2.1.3": [
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase",
+                    "NAD-dependent aldehyde dehydrogenase family protein"
+                ],
+                "4.1.1.-": [
+                    "Putative Acetoacetate decarboxylase",
+                    "Lysine decarboxylase",
+                    "Diaminopimelate decarboxylase (DAP decarboxylase) (DAPDC)",
+                    "Ribulose bisphosphate carboxylase (RuBisCO)",
+                    "Probable L-tyrosine/L-aspartate decarboxylase (TDC/ADC)"
+                ],
+                "1.14.13.69": [],
+                "1.13.12.-": [
+                    "Tryptophan 2-monooxygenase",
+                    "Dioxygenase",
+                    "Nitronate monooxygenase",
+                    "Nitronate monooxygenase",
+                    "2-nitropropane dioxygenase protein"
+                ],
+                "1.1.2.8": [
+                    "Quinoprotein ethanol dehydrogenase",
+                    "Quinoprotein ethanol dehydrogenase QedA",
+                    "Quinoprotein methanol/ethanol dehydrogenase",
+                    "Quinoprotein ethanol dehydrogenase PedH"
+                ],
+                "1.14.-.-": [
+                    "2-octaprenylphenol hydroxylase",
+                    "Salicylate hydroxylase",
+                    "Putative unusual protein kinase",
+                    "Benzoyl-CoA oxygenase component A",
+                    "Magnesium-protoporphyrin IX monomethyl ester (Oxidative) cyclase"
+                ],
+                "1.2.1.46": [
+                    "NAD-dependent formaldehyde dehydrogenase"
+                ],
+                "1.97.1.8": [],
+                "3.3.2.10": []
+            },
+            "MW5_O1": {
+                "3.8.1.2": [
+                    "Haloacid dehalogenase, type II",
+                    "Haloacid dehalogenase, type II",
+                    "Haloacetate dehalogenase",
+                    "Haloacid dehalogenase, type II",
+                    "Haloacid dehalogenase, type II"
+                ],
+                "1.18.6.1": [
+                    "Nitrogenase MoFe cofactor biosynthesis protein NifE",
+                    "Nitrogenase molybdenum-iron protein beta chain",
+                    "Nitrogenase molybdenum-iron cofactor biosynthesis protein NifN",
+                    "Nitrogenase protein alpha chain",
+                    "Nitrogenase molybdenum-iron protein alpha chain"
+                ],
+                "1.97.1.-": [
+                    "Pyruvate formate-lyase activating enzyme",
+                    "Pyruvate formate lyase activating enzyme",
+                    "AmmeMemoRadiSam system radical SAM enzyme",
+                    "Radical SAM protein, putative pyruvate formate lyase activating enzyme",
+                    "Putative Fe-S protein PflX"
+                ],
+                "1.2.98.1": [],
+                "1.14.13.-": [
+                    "Rieske (2Fe-2S) protein",
+                    "4-hydroxybenzoate 3-monooxygenase",
+                    "2-nonaprenyl-3-methyl-6-methoxy-1,4-benzoquinol hydroxylase",
+                    "4-hydroxybenzoate 3-monooxygenase",
+                    "2-octaprenyl-6-methoxyphenol hydroxylase,FAD/NAD(P)-binding"
+                ],
+                "1.14.12.11": [],
+                "1.1.1.1": [
+                    "Alcohol dehydrogenase",
+                    "Bifunctional protein: zinc-containing alcohol dehydrogenase quinone oxidoreductase ( NADPH:quinone reductase)",
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase"
+                ],
+                "1.1.-.-": [
+                    "3-hydroxyacyl-CoA dehydrogenase",
+                    "Isocitrate dehydrogenase",
+                    "Shikimate dehydrogenase (NADP(+)) (SDH)",
+                    "Histidinol dehydrogenase (HDH)",
+                    "Glycerol-3-phosphate dehydrogenase [NAD(P)+]"
+                ],
+                "3.8.1.3": [
+                    "Haloacetate dehalogenase H-1",
+                    "Putative hydrolase or acyltransferase",
+                    "Putative hydrolases or acyltransferases (Alpha/beta hydrolase superfamily)"
+                ],
+                "4.5.1.3": [
+                    "Dichloromethane dehalogenase"
+                ],
+                "4.2.1.112": [
+                    "Acetylene hydratase"
+                ],
+                "3.8.1.-": [
+                    "Haloacid dehalogenase, type II",
+                    "Haloacid dehalogenase, type II",
+                    "Haloacetate dehalogenase H-1",
+                    "Haloalkane dehalogenase",
+                    "Alpha/beta hydrolase fold"
+                ],
+                "3.8.1.5": [
+                    "Haloalkane dehalogenase",
+                    "Alpha/beta hydrolase fold",
+                    "Haloalkane dehalogenase",
+                    "Putative D-(-)-3-hydroxybutyrate oligomer hydrolase PhaY",
+                    "Haloalkane dehalogenase"
+                ],
+                "1.1.2.7": [
+                    "Methanol dehydrogenase subunit 1",
+                    "Putative Quinoprotein ethanol dehydrogenase",
+                    "Methanol dehydrogenase large subunit homolog"
+                ],
+                "1.1.1.-": [
+                    "3-hydroxyacyl-CoA dehydrogenase",
+                    "Isocitrate dehydrogenase",
+                    "Shikimate dehydrogenase (NADP(+)) (SDH)",
+                    "Histidinol dehydrogenase (HDH)",
+                    "Glycerol-3-phosphate dehydrogenase [NAD(P)+]"
+                ],
+                "1.2.1.3": [
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase",
+                    "Acetaldehyde dehydrogenase 2"
+                ],
+                "4.1.1.-": [
+                    "Putative Acetoacetate decarboxylase",
+                    "Phosphoenolpyruvate carboxykinase [GTP] (PEP carboxykinase) (PEPCK)",
+                    "Phosphoenolpyruvate carboxylase (PEPC) (PEPCase)",
+                    "Oxalyl-CoA decarboxylase",
+                    "Phosphoenolpyruvate carboxylase (PEPC) (PEPCase)"
+                ],
+                "1.14.13.69": [],
+                "1.13.12.-": [
+                    "Dioxygenase",
+                    "Amino acid adenylation",
+                    "Nitronate monooxygenase",
+                    "Nitronate monooxygenase",
+                    "2-nitropropane dioxygenase"
+                ],
+                "1.1.2.8": [
+                    "Quinoprotein ethanol dehydrogenase",
+                    "PQQ-dependent dehydrogenase, methanol/ethanol family",
+                    "Quino(Hemo)protein alcohol dehydrogenase, PQQ-dependent",
+                    "Quinoprotein ethanol dehydrogenase",
+                    "Alcohol dehydrogenase [cytochrome c]"
+                ],
+                "1.14.-.-": [
+                    "Rieske (2Fe-2S) protein",
+                    "Cytochrome P450 130",
+                    "Alkanesulfonate monooxygenase",
+                    "4-hydroxybenzoate 3-monooxygenase",
+                    "2-nonaprenyl-3-methyl-6-methoxy-1,4-benzoquinol hydroxylase"
+                ],
+                "1.2.1.46": [
+                    "Glutathione-independent formaldehyde dehydrogenase"
+                ],
+                "1.97.1.8": [],
+                "3.3.2.10": [
+                    "Putative hydrolase",
+                    "Hydrolase, alpha/beta domain protein",
+                    "Putative epoxide hydrolase",
+                    "Soluble epoxide hydrolase",
+                    "Soluble epoxide hydrolase"
+                ]
+            },
+            "MW3_J1": {
+                "3.8.1.2": [
+                    "Haloacid dehalogenase, type II",
+                    "Haloacid dehalogenase, type II",
+                    "Haloacid dehalogenase, type II"
+                ],
+                "1.18.6.1": [
+                    "Nitrogenase molybdenum-iron protein beta chain",
+                    "Nitrogenase protein alpha chain",
+                    "Nitrogenase MoFe cofactor biosynthesis protein NifE",
+                    "Nitrogenase iron protein",
+                    "Nitrogenase protein alpha chain"
+                ],
+                "1.97.1.-": [
+                    "Glycyl-radical enzyme activating protein family protein",
+                    "Anaerobic nucleotide reductase subunit",
+                    "Anaerobic ribonucleoside-triphosphate reductase-activating protein",
+                    "Pyruvate formate-lyase-activating enzyme",
+                    "Pyruvate formate lyase activating enzyme"
+                ],
+                "1.2.98.1": [],
+                "1.14.13.-": [
+                    "4-hydroxybenzoate 3-monooxygenase",
+                    "2-octaprenylphenol hydroxylase",
+                    "Vitamin D(3) 25-hydroxylase",
+                    "FAD binding domain-containing protein",
+                    "4-hydroxybenzoate 3-monooxygenase"
+                ],
+                "1.14.12.11": [],
+                "1.1.1.1": [
+                    "Alcohol dehydrogenase",
+                    "Adh3",
+                    "Alcohol dehydrogenase",
+                    "Aspergillus niger contig An01c0350, genomic contig",
+                    "Alcohol dehydrogenase, iron-dependent"
+                ],
+                "1.1.-.-": [
+                    "Inosine-5'-monophosphate dehydrogenase",
+                    "D-3-phosphoglycerate dehydrogenase",
+                    "Histidinol dehydrogenase (HDH)",
+                    "Choline dehydrogenase",
+                    "3-hydroxy-3-methylglutaryl coenzyme A reductase (HMG-CoA reductase)"
+                ],
+                "3.8.1.3": [],
+                "4.5.1.3": [],
+                "4.2.1.112": [],
+                "3.8.1.-": [
+                    "Putative Atrazine chlorohydrolase",
+                    "PCE reductive dehalogenase PceA",
+                    "Haloalkane dehalogenase",
+                    "Haloalkane dehalogenase",
+                    "Haloacid dehalogenase, type II"
+                ],
+                "3.8.1.5": [
+                    "Haloalkane dehalogenase",
+                    "Haloalkane dehalogenase",
+                    "Haloalkane dehalogenase",
+                    "Putative alpha/beta hydrolase"
+                ],
+                "1.1.2.7": [],
+                "1.1.1.-": [
+                    "Inosine-5'-monophosphate dehydrogenase",
+                    "D-3-phosphoglycerate dehydrogenase",
+                    "Histidinol dehydrogenase (HDH)",
+                    "3-hydroxy-3-methylglutaryl coenzyme A reductase (HMG-CoA reductase)",
+                    "Ketol-acid reductoisomerase"
+                ],
+                "1.2.1.3": [
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase",
+                    "Acetaldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase"
+                ],
+                "4.1.1.-": [
+                    "Phosphoenolpyruvate carboxylase",
+                    "Lysine decarboxylase",
+                    "Putative Acetoacetate decarboxylase",
+                    "Diaminopimelate decarboxylase (DAP decarboxylase) (DAPDC)",
+                    "Ribulose bisphosphate carboxylase (RuBisCO)"
+                ],
+                "1.14.13.69": [],
+                "1.13.12.-": [
+                    "Tryptophan 2-monooxygenase",
+                    "Dioxygenase",
+                    "Nitronate monooxygenase",
+                    "Putative 2-nitropropane dioxygenase (Nitroalkane oxidase) (2-NPD)",
+                    "Nitronate monooxygenase"
+                ],
+                "1.1.2.8": [
+                    "Alcohol dehydrogenase (Acceptor)",
+                    "Quinoprotein ethanol dehydrogenase"
+                ],
+                "1.14.-.-": [
+                    "PKHD-type hydroxylase Sulku_0850",
+                    "4-hydroxybenzoate 3-monooxygenase",
+                    "2-octaprenylphenol hydroxylase",
+                    "Vitamin D(3) 25-hydroxylase",
+                    "FAD binding domain-containing protein"
+                ],
+                "1.2.1.46": [],
+                "1.97.1.8": [],
+                "3.3.2.10": []
+            },
+            "MW5_J1": {
+                "3.8.1.2": [
+                    "Haloacid dehalogenase, type II",
+                    "2-haloalkanoic acid dehalogenase",
+                    "Haloacid dehalogenase, type II",
+                    "Haloacid dehalogenase, type II",
+                    "2-haloacid dehalogenase"
+                ],
+                "1.18.6.1": [
+                    "Nitrogenase molybdenum-iron protein beta chain",
+                    "Nitrogenase molybdenum-iron protein beta chain",
+                    "Nitrogenase molybdenum-iron protein alpha chain",
+                    "Nitrogenase protein alpha chain",
+                    "Nitrogenase iron protein"
+                ],
+                "1.97.1.-": [
+                    "Pyruvate formate-lyase activating enzyme",
+                    "AmmeMemoRadiSam system radical SAM enzyme",
+                    "Pyruvate formate lyase activating enzyme",
+                    "Choline trimethylamine-lyase activating enzyme",
+                    "Pyruvate formate lyase activating enzyme"
+                ],
+                "1.2.98.1": [],
+                "1.14.13.-": [
+                    "2-octaprenyl-6-methoxyphenol hydroxylase,FAD/NAD(P)-binding",
+                    "Toluene 4-monooxygenase protein A",
+                    "2-octaprenylphenol hydroxylase",
+                    "4-hydroxybenzoate 3-monooxygenase",
+                    "Rieske (2Fe-2S) protein"
+                ],
+                "1.14.12.11": [],
+                "1.1.1.1": [
+                    "Alcohol dehydrogenase",
+                    "Adh3",
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase"
+                ],
+                "1.1.-.-": [
+                    "Glyoxal reductase",
+                    "Inosine-5'-monophosphate dehydrogenase",
+                    "Inosine-5'-monophosphate dehydrogenase",
+                    "3-hydroxy-3-methylglutaryl coenzyme A reductase (HMG-CoA reductase)",
+                    "D-3-phosphoglycerate dehydrogenase"
+                ],
+                "3.8.1.3": [
+                    "Haloacetate dehalogenase H-1"
+                ],
+                "4.5.1.3": [],
+                "4.2.1.112": [],
+                "3.8.1.-": [
+                    "Alpha/beta hydrolase fold",
+                    "Alpha/beta hydrolase fold",
+                    "Haloacid dehalogenase, type II",
+                    "Alpha/beta hydrolase fold",
+                    "2-haloalkanoic acid dehalogenase"
+                ],
+                "3.8.1.5": [
+                    "Alpha/beta hydrolase fold",
+                    "Alpha/beta hydrolase fold",
+                    "Alpha/beta hydrolase fold",
+                    "Haloalkane dehalogenase",
+                    "Haloalkane dehalogenase"
+                ],
+                "1.1.2.7": [
+                    "Methanol dehydrogenase subunit 1"
+                ],
+                "1.1.1.-": [
+                    "Glyoxal reductase",
+                    "Inosine-5'-monophosphate dehydrogenase",
+                    "Inosine-5'-monophosphate dehydrogenase",
+                    "3-hydroxy-3-methylglutaryl coenzyme A reductase (HMG-CoA reductase)",
+                    "D-3-phosphoglycerate dehydrogenase"
+                ],
+                "1.2.1.3": [
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase, aldehyde dehydrogenase (NAD+)",
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase"
+                ],
+                "4.1.1.-": [
+                    "Phosphoenolpyruvate carboxylase",
+                    "Putative Acetoacetate decarboxylase",
+                    "Lysine decarboxylase",
+                    "Phosphoenolpyruvate carboxykinase [ATP] (PCK) (PEP carboxykinase) (PEPCK)",
+                    "Biodegradative arginine decarboxylase"
+                ],
+                "1.14.13.69": [],
+                "1.13.12.-": [
+                    "Dioxygenase",
+                    "Nitronate monooxygenase",
+                    "Nitronate monooxygenase",
+                    "Nitronate monooxygenase",
+                    "Amino acid adenylation"
+                ],
+                "1.1.2.8": [
+                    "Quinoprotein ethanol dehydrogenase",
+                    "Alcohol dehydrogenase [cytochrome c]"
+                ],
+                "1.14.-.-": [
+                    "4-hydroxyphenylacetate 3-monooxygenase",
+                    "2-octaprenyl-6-methoxyphenol hydroxylase,FAD/NAD(P)-binding",
+                    "Cytochrome P450 130",
+                    "Toluene 4-monooxygenase protein A",
+                    "2-octaprenylphenol hydroxylase"
+                ],
+                "1.2.1.46": [
+                    "Glutathione-independent formaldehyde dehydrogenase",
+                    "Glutathione-independent formaldehyde dehydrogenase"
+                ],
+                "1.97.1.8": [
+                    "Chloroethene reductive dehalogenase RdhA"
+                ],
+                "3.3.2.10": [
+                    "Carbohydrate-binding module family 50 protein",
+                    "Putative hydrolase"
+                ]
+            },
+            "MW4_F1": {
+                "3.8.1.2": [
+                    "2-haloalkanoic acid dehalogenase",
+                    "Haloacid dehalogenase, type II",
+                    "Haloacid dehalogenase, type II",
+                    "Haloacid dehalogenase, type II",
+                    "Haloacid dehalogenase, type II"
+                ],
+                "1.18.6.1": [
+                    "Nitrogenase protein alpha chain",
+                    "Nitrogenase protein alpha chain",
+                    "Fe-only nitrogenase FeFe protein subunit AnfK",
+                    "Nitrogenase molybdenum-iron protein beta chain",
+                    "Nitrogenase iron protein"
+                ],
+                "1.97.1.-": [
+                    "Pyrogallol hydroxytransferase large subunit",
+                    "Pyruvate formate-lyase-activating enzyme",
+                    "Ribonucleotide reductase of class III (Anaerobic), activating protein",
+                    "Ribonucleotide reductase of class III (Anaerobic), activating protein",
+                    "Pyrogallol hydroxytransferase large subunit AthL"
+                ],
+                "1.2.98.1": [],
+                "1.14.13.-": [
+                    "2-octaprenylphenol hydroxylase",
+                    "Toluene 4-monooxygenase protein A",
+                    "2-octaprenylphenol hydroxylase",
+                    "Aspergillus niger contig An07c0190, genomic contig",
+                    "Putative unusual protein kinase"
+                ],
+                "1.14.12.11": [],
+                "1.1.1.1": [
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase",
+                    "3-hydroxybutyryl-CoA dehydrogenase (Secondary alcohol dehydrogenase)"
+                ],
+                "1.1.-.-": [
+                    "UDP-glucose dehydrogenase",
+                    "UDP-glucose dehydrogenase",
+                    "Glycerol-1-phosphate dehydrogenase [NAD(P)+] (G1P dehydrogenase) (G1PDH)",
+                    "(S)-2-hydroxy-acid dehydrogenase",
+                    "Isocitrate dehydrogenase (NADP)"
+                ],
+                "3.8.1.3": [
+                    "Haloacetate dehalogenase"
+                ],
+                "4.5.1.3": [],
+                "4.2.1.112": [],
+                "3.8.1.-": [
+                    "2-haloalkanoic acid dehalogenase",
+                    "Haloacid dehalogenase, type II",
+                    "Acetoin dehydrogenase E2 subunit dihydrolipoyllysine-residue acetyltransferase",
+                    "Haloalkane dehalogenase",
+                    "Haloalkane dehalogenase"
+                ],
+                "3.8.1.5": [
+                    "Acetoin dehydrogenase E2 subunit dihydrolipoyllysine-residue acetyltransferase",
+                    "Haloalkane dehalogenase",
+                    "Haloalkane dehalogenase",
+                    "Probable lactonase",
+                    "Haloalkane dehalogenase 1"
+                ],
+                "1.1.2.7": [
+                    "Methanol dehydrogenase subunit 1",
+                    "Methanol dehydrogenase [cytochrome c] subunit 2",
+                    "Methanol dehydrogenase [cytochrome c] subunit 2"
+                ],
+                "1.1.1.-": [
+                    "UDP-glucose dehydrogenase",
+                    "UDP-glucose dehydrogenase",
+                    "Glycerol-1-phosphate dehydrogenase [NAD(P)+] (G1P dehydrogenase) (G1PDH)",
+                    "Isocitrate dehydrogenase (NADP)",
+                    "D-3-phosphoglycerate dehydrogenase"
+                ],
+                "1.2.1.3": [
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase"
+                ],
+                "4.1.1.-": [
+                    "Putative Acetoacetate decarboxylase",
+                    "Glutamate decarboxylase",
+                    "Ribulose bisphosphate carboxylase (RuBisCO)",
+                    "Diaminopimelate decarboxylase (DAP decarboxylase) (DAPDC)",
+                    "Arginine decarboxylase"
+                ],
+                "1.14.13.69": [],
+                "1.13.12.-": [
+                    "Tryptophan 2-monooxygenase",
+                    "Nitronate monooxygenase",
+                    "IaaM_2 protein",
+                    "Putative 2-nitropropane dioxygenase (Nitroalkane oxidase) (2-NPD)",
+                    "2-nitropropane dioxygenase"
+                ],
+                "1.1.2.8": [
+                    "Quinoprotein ethanol dehydrogenase"
+                ],
+                "1.14.-.-": [
+                    "2-octaprenylphenol hydroxylase",
+                    "Stearoyl-CoA 9-desaturase",
+                    "P450 (CYP203A)",
+                    "Toluene 4-monooxygenase protein A",
+                    "2-octaprenylphenol hydroxylase"
+                ],
+                "1.2.1.46": [
+                    "NAD-dependent formaldehyde dehydrogenase"
+                ],
+                "1.97.1.8": [],
+                "3.3.2.10": []
+            },
+            "MW4_J1": {
+                "3.8.1.2": [],
+                "1.18.6.1": [
+                    "Nitrogenase protein alpha chain",
+                    "Nitrogenase molybdenum-iron protein beta chain",
+                    "Nitrogenase protein alpha chain",
+                    "Fe-only nitrogenase FeFe protein subunit AnfK",
+                    "Nitrogenase iron protein"
+                ],
+                "1.97.1.-": [
+                    "Ribonucleotide reductase of class III (Anaerobic), activating protein",
+                    "Pyruvate formate-lyase activating enzyme",
+                    "Radical SAM domain-containing protein, pyruvate formate lyase activating enzyme",
+                    "Pyrogallol hydroxytransferase large subunit AthL",
+                    "Anaerobic ribonucleoside-triphosphate reductase-activating protein"
+                ],
+                "1.2.98.1": [],
+                "1.14.13.-": [
+                    "2-octaprenylphenol hydroxylase",
+                    "Phenol 2-monooxygenase P3 subunit",
+                    "2-nonaprenyl-3-methyl-6-methoxy-1,4-benzoquinol hydroxylase",
+                    "Toluene 4-monooxygenase protein E",
+                    "Phenol 2-monooxygenase P1 subunit"
+                ],
+                "1.14.12.11": [],
+                "1.1.1.1": [
+                    "Alcohol dehydrogenase",
+                    "3-hydroxybutyryl-CoA dehydrogenase (Secondary alcohol dehydrogenase)",
+                    "Alcohol dehydrogenase",
+                    "Aldehyde-alcohol dehydrogenase",
+                    "Iron-containing alcohol dehydrogenase"
+                ],
+                "1.1.-.-": [
+                    "UDP-glucose dehydrogenase",
+                    "3-hydroxy-3-methylglutaryl coenzyme A reductase (HMG-CoA reductase)",
+                    "UDP-glucose dehydrogenase",
+                    "(S)-2-hydroxy-acid dehydrogenase",
+                    "UDP-glucose dehydrogenase"
+                ],
+                "3.8.1.3": [],
+                "4.5.1.3": [],
+                "4.2.1.112": [],
+                "3.8.1.-": [
+                    "Putative Atrazine chlorohydrolase",
+                    "Haloalkane dehalogenase",
+                    "Alpha/beta hydrolase fold"
+                ],
+                "3.8.1.5": [
+                    "Haloalkane dehalogenase",
+                    "Alpha/beta hydrolase fold"
+                ],
+                "1.1.2.7": [
+                    "Methanol dehydrogenase subunit 1"
+                ],
+                "1.1.1.-": [
+                    "UDP-glucose dehydrogenase",
+                    "3-hydroxy-3-methylglutaryl coenzyme A reductase (HMG-CoA reductase)",
+                    "UDP-glucose dehydrogenase",
+                    "UDP-glucose dehydrogenase",
+                    "D-3-phosphoglycerate dehydrogenase"
+                ],
+                "1.2.1.3": [
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase AldA",
+                    "Acetaldehyde dehydrogenase",
+                    "Acetaldehyde dehydrogenase 2"
+                ],
+                "4.1.1.-": [
+                    "Phosphoenolpyruvate carboxylase",
+                    "Glutamate decarboxylase",
+                    "Ribulose bisphosphate carboxylase (RuBisCO)",
+                    "Ornithine decarboxylase",
+                    "Phosphopantothenoylcysteine decarboxylase"
+                ],
+                "1.14.13.69": [],
+                "1.13.12.-": [
+                    "Tryptophan 2-monooxygenase"
+                ],
+                "1.1.2.8": [],
+                "1.14.-.-": [
+                    "2-octaprenylphenol hydroxylase",
+                    "Stearoyl-CoA 9-desaturase",
+                    "Phenol 2-monooxygenase P3 subunit",
+                    "2-nonaprenyl-3-methyl-6-methoxy-1,4-benzoquinol hydroxylase",
+                    "PKHD-type hydroxylase Sulku_0850"
+                ],
+                "1.2.1.46": [],
+                "1.97.1.8": [],
+                "3.3.2.10": []
+            },
+            "MW2_O1": {
+                "3.8.1.2": [
+                    "Hydrolase",
+                    "Haloacid dehalogenase, type II",
+                    "Haloacid dehalogenase, type II",
+                    "2-haloalkanoic acid dehalogenase, type II",
+                    "Haloacid dehalogenase, type II"
+                ],
+                "1.18.6.1": [
+                    "Nitrogenase molybdenum-iron protein beta chain",
+                    "Nitrogenase protein alpha chain",
+                    "Nitrogenase MoFe cofactor biosynthesis protein NifE",
+                    "Nitrogenase iron protein",
+                    "Nitrogenase"
+                ],
+                "1.97.1.-": [
+                    "Pyrogallol hydroxytransferase large subunit AthL",
+                    "Pyruvate formate-lyase-activating enzyme",
+                    "Glycyl-radical enzyme activating protein family",
+                    "Ribonucleotide reductase of class III (Anaerobic), activating protein",
+                    "Anaerobic ribonucleoside-triphosphate reductase-activating protein"
+                ],
+                "1.2.98.1": [],
+                "1.14.13.-": [
+                    "2-octaprenylphenol hydroxylase",
+                    "2-octaprenylphenol hydroxylase",
+                    "Toluene 4-monooxygenase protein A",
+                    "Benzoyl-CoA oxygenase component B",
+                    "Methane monooxygenase"
+                ],
+                "1.14.12.11": [],
+                "1.1.1.1": [
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase"
+                ],
+                "1.1.-.-": [
+                    "D-3-phosphoglycerate dehydrogenase",
+                    "Inosine-5'-monophosphate dehydrogenase",
+                    "Ketol-acid reductoisomerase",
+                    "Histidinol dehydrogenase (HDH)",
+                    "3-hydroxy-3-methylglutaryl coenzyme A reductase (HMG-CoA reductase)"
+                ],
+                "3.8.1.3": [],
+                "4.5.1.3": [],
+                "4.2.1.112": [],
+                "3.8.1.-": [
+                    "Haloalkane dehalogenase",
+                    "Alpha/beta hydrolase fold",
+                    "Haloalkane dehalogenase",
+                    "Hydrolase",
+                    "Acetoin dehydrogenase E2 subunit dihydrolipoyllysine-residue acetyltransferase"
+                ],
+                "3.8.1.5": [
+                    "Haloalkane dehalogenase",
+                    "Alpha/beta hydrolase fold",
+                    "Haloalkane dehalogenase",
+                    "Acetoin dehydrogenase E2 subunit dihydrolipoyllysine-residue acetyltransferase",
+                    "Haloalkane dehalogenase"
+                ],
+                "1.1.2.7": [
+                    "Methanol dehydrogenase subunit 1",
+                    "Methanol dehydrogenase [cytochrome c] subunit 2",
+                    "Methanol dehydrogenase, large (Alpha) subunit",
+                    "Methanol dehydrogenase [cytochrome c] subunit 2"
+                ],
+                "1.1.1.-": [
+                    "D-3-phosphoglycerate dehydrogenase",
+                    "Inosine-5'-monophosphate dehydrogenase",
+                    "Ketol-acid reductoisomerase",
+                    "Histidinol dehydrogenase (HDH)",
+                    "3-hydroxy-3-methylglutaryl coenzyme A reductase (HMG-CoA reductase)"
+                ],
+                "1.2.1.3": [
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase AldA"
+                ],
+                "4.1.1.-": [
+                    "Putative Acetoacetate decarboxylase",
+                    "Lysine decarboxylase",
+                    "Diaminopimelate decarboxylase (DAP decarboxylase) (DAPDC)",
+                    "Phosphoenolpyruvate carboxylase",
+                    "Phosphoenolpyruvate carboxylase (PEPC) (PEPCase)"
+                ],
+                "1.14.13.69": [],
+                "1.13.12.-": [
+                    "Tryptophan 2-monooxygenase",
+                    "Tryptophan 2-monooxygenase",
+                    "Dioxygenase",
+                    "Nitronate monooxygenase",
+                    "Nitronate monooxygenase"
+                ],
+                "1.1.2.8": [
+                    "Quinoprotein ethanol dehydrogenase",
+                    "Alcohol dehydrogenase (Cytochrome c)",
+                    "Quinoprotein ethanol dehydrogenase",
+                    "Alcohol dehydrogenase"
+                ],
+                "1.14.-.-": [
+                    "2-octaprenylphenol hydroxylase",
+                    "Unspecific monooxygenase",
+                    "2-octaprenylphenol hydroxylase",
+                    "Toluene 4-monooxygenase protein A",
+                    "4-hydroxyphenylacetate 3-monooxygenase"
+                ],
+                "1.2.1.46": [],
+                "1.97.1.8": [
+                    "Tetrachloroethene reductive dehalogenase PceA"
+                ],
+                "3.3.2.10": [
+                    "Soluble epoxide hydrolase"
+                ]
+            },
+            "MW2_F1": {
+                "3.8.1.2": [
+                    "Haloacid dehalogenase, type II",
+                    "Putative 2-haloalkanoic acid dehalogenase",
+                    "2-haloalkanoic acid dehalogenase",
+                    "Haloacid dehalogenase, type II",
+                    "2-haloalkanoic acid dehalogenase"
+                ],
+                "1.18.6.1": [
+                    "Nitrogenase protein alpha chain",
+                    "Nitrogenase MoFe cofactor biosynthesis protein NifE",
+                    "Nitrogenase molybdenum-iron protein beta chain",
+                    "Nitrogenase protein alpha chain",
+                    "Nitrogenase"
+                ],
+                "1.97.1.-": [
+                    "Pyruvate formate-lyase-activating enzyme",
+                    "Anaerobic nucleotide reductase subunit",
+                    "Pyrogallol hydroxytransferase large subunit AthL",
+                    "Ribonucleotide reductase of class III (Anaerobic), activating protein",
+                    "Ribonucleotide reductase of class III (Anaerobic), activating protein"
+                ],
+                "1.2.98.1": [],
+                "1.14.13.-": [
+                    "2-octaprenylphenol hydroxylase",
+                    "Toluene 4-monooxygenase protein A",
+                    "Methane monooxygenase component A alpha chain",
+                    "2-octaprenyl-3-methyl-6-methoxy-1,4-benzoquinol hydroxylase",
+                    "Toluene 4-monooxygenase protein E"
+                ],
+                "1.14.12.11": [],
+                "1.1.1.1": [
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase",
+                    "Alcohol dehydrogenase",
+                    "Fe-containing alcohol dehydrogenase"
+                ],
+                "1.1.-.-": [
+                    "Inosine-5'-monophosphate dehydrogenase",
+                    "D-3-phosphoglycerate dehydrogenase",
+                    "D-3-phosphoglycerate dehydrogenase",
+                    "Glyoxal reductase",
+                    "Altronate oxidoreductase"
+                ],
+                "3.8.1.3": [],
+                "4.5.1.3": [],
+                "4.2.1.112": [
+                    "Acetylene hydratase"
+                ],
+                "3.8.1.-": [
+                    "Probable lactonase",
+                    "Haloacid dehalogenase, type II",
+                    "Putative 2-haloalkanoic acid dehalogenase",
+                    "2-haloalkanoic acid dehalogenase",
+                    "PCE reductive dehalogenase PceA"
+                ],
+                "3.8.1.5": [
+                    "Probable lactonase",
+                    "Alpha/beta hydrolase fold",
+                    "Haloalkane dehalogenase",
+                    "Alpha/beta hydrolase fold",
+                    "Haloalkane dehalogenase"
+                ],
+                "1.1.2.7": [
+                    "Methanol dehydrogenase, large (Alpha) subunit",
+                    "Methanol dehydrogenase [cytochrome c] subunit 2",
+                    "Putative Quinoprotein ethanol dehydrogenase",
+                    "Methanol dehydrogenase large subunit homolog",
+                    "Methanol dehydrogenase [cytochrome c] subunit 2"
+                ],
+                "1.1.1.-": [
+                    "Inosine-5'-monophosphate dehydrogenase",
+                    "D-3-phosphoglycerate dehydrogenase",
+                    "D-3-phosphoglycerate dehydrogenase",
+                    "Glyoxal reductase",
+                    "Altronate oxidoreductase"
+                ],
+                "1.2.1.3": [
+                    "Acetaldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase",
+                    "Aldehyde dehydrogenase"
+                ],
+                "4.1.1.-": [
+                    "Putative Acetoacetate decarboxylase",
+                    "Oxaloacetate decarboxylase alpha subunit",
+                    "Phosphoenolpyruvate carboxylase",
+                    "Ribulose bisphosphate carboxylase (RuBisCO)",
+                    "Diaminopimelate decarboxylase (DAP decarboxylase) (DAPDC)"
+                ],
+                "1.14.13.69": [],
+                "1.13.12.-": [
+                    "Tryptophan 2-monooxygenase",
+                    "2-nitropropane dioxygenase",
+                    "Dioxygenase",
+                    "Nitronate monooxygenase",
+                    "2-nitropropane dioxygenase protein"
+                ],
+                "1.1.2.8": [
+                    "Quinoprotein ethanol dehydrogenase",
+                    "Alcohol dehydrogenase [cytochrome c]",
+                    "Quinoprotein ethanol dehydrogenase",
+                    "Alcohol dehydrogenase",
+                    "Quinoprotein ethanol dehydrogenase"
+                ],
+                "1.14.-.-": [
+                    "2-octaprenylphenol hydroxylase",
+                    "Toluene 4-monooxygenase protein A",
+                    "Methane monooxygenase component A alpha chain",
+                    "2-octaprenyl-3-methyl-6-methoxy-1,4-benzoquinol hydroxylase",
+                    "Toluene 4-monooxygenase protein E"
+                ],
+                "1.2.1.46": [
+                    "NAD-dependent formaldehyde dehydrogenase"
+                ],
+                "1.97.1.8": [],
+                "3.3.2.10": [
+                    "Soluble epoxide hydrolase"
+                ]
+            }
+        },
+        "@org": "ec",
+        "@image": "http://www.kegg.jp/kegg/pathway/ec/ec00625.png"
+    }
+}

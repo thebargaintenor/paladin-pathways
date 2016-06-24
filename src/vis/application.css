@@ -1,0 +1,87 @@
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro);
+
+body {
+    font-family: 'Source Sans Pro', sans-serif;
+    background-color: black;
+    color: aliceblue;
+}
+
+.tight-margins {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.wrapper-main {
+    width: 1200px;
+    background-color: transparent;
+    border-color: #ccc;
+    border-width: 2px;
+    margin: 0 auto;
+}
+
+#diagram {
+    width: 900px;
+    height: 800px;
+    float: left;
+}
+
+#legend-wrapper {
+    float:right;
+    width: 250px;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+#legend-wrapper h3 {
+    margin-top: 0;
+}
+
+.enzyme {
+    fill: rgb(0,0,100);
+    stroke-width: 1px;
+    stroke: rgb(200,200,200);
+}
+
+.enzyme-label, .map-label {
+    fill: white;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 11px;
+}
+
+.compound {
+    fill: #aaa;
+    stroke: #ccc;
+    stroke-width: 1px;
+}
+
+.map {
+    stroke-width: 1px;
+    stroke: white;
+}
+
+div.tooltip {
+    position: absolute;
+    text-align: left;
+    /*width: 60px;
+    height: 28px;*/
+    padding: 2px;
+    margin: 3px;
+    font: 12px sans-serif;
+    background: #333;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.legend-indicator {
+    margin-right: 10px;
+    width:10px;
+    height:10px;
+    overflow:hidden;
+    display: inline-block;
+}
+
+.series-toggle {
+    margin-right: 15px;
+}
