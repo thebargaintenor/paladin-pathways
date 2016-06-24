@@ -16,3 +16,29 @@ sudo bash install.sh # sudo may not be necessary
 
 ## INSTRUCTIONS
 Coming soon to a repo near you!
+
+In the meantime, please have the usage instructions from `pathways.py`:
+
+```
+Usage: pathways [-k pathway] [-p paladin_tsv] [-o output] [-c counts] [-v]
+    Script runs entire pathways pipeline, filtering a read report from PALADIN
+    to calculate the mathmatical completeness of a given metabolic pathway.
+
+    -k pathway      - KEGG ID for pathway
+    --kegg
+    -p paladin_tsv  - path to PALADIN output report
+    --paladin
+    -o output       - output file name
+    --output
+    -c counts       - supplement data file name
+    -v              - verbose mode (print more info to stdout)
+    --verbose
+
+    EXAMPLE: python3 pathways.py -k 00625 -p ./data/report.tsv -o results.csv -c counts.dat 
+```
+
+Output will also provide the names of any files produced during the process.  Included is the completeness results, JSON-formatted pathway markup, and a log file that contains the output from main script.  Output redirection is fine too.
+
+```
+python3 pathways.py -k 00625 -p ./data/report.tsv -o results.csv -c counts.dat -v > foo.log 
+```
