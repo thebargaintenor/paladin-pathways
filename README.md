@@ -42,3 +42,16 @@ Output will also provide the names of any files produced during the process.  In
 ```
 python3 pathways.py -k 00625 -p ./data/report.tsv -o results.csv -c counts.dat -v > foo.log 
 ```
+
+## ACKNOWLEDGEMENTS
+
+In addition to PALADIN (without which we'd essentially have no project), the _Pathways_ dev team would also like to give a shout-out to a few other projects that made our lives easier.  (And possibly yours as well!)
+
+* [D3.js](https://d3js.org/)
+* [palette.js](https://github.com/google/palette.js)
+* [d3heatmap](https://github.com/google/palette.js)
+* [dataset](https://dataset.readthedocs.io/): databases for lazy people
+* [Requests](https://requests.readthedocs.io/): HTTP for Humans
+* And of course, [KEGG](http://www.kegg.jp/) for providing all the pathway annotations and KGML
+
+Thanks!
