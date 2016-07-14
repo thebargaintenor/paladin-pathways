@@ -48,3 +48,6 @@ Temporary Items
 
 # Directories holding only project configuration
 .idea
+
+# python runtime cache?
+src/__pycache__

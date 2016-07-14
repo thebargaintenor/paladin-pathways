@@ -113,7 +113,8 @@ function loadPathway(data) {
 
     // build hash table to hold IDs and names
     compounds.forEach(function (c) {
-        compound_hash[c['@id']] = c['graphics']['@name'];
+        // now implementing ability to have a list of ECs as dependency
+        compound_hash[c['@id']] = c['@name'].split(' ').map(function(ec) { return ec.substring(3); });
     });
 
     // add the group for paths first
@@ -279,7 +280,10 @@ function loadPathway(data) {
 
 function buildTooltip(ec) {
     return dataset
-        .map(function (set) { return pathway_data['enzymes'][set['name']][ec][0]; })
+        .map(function (set) { 
+            // TODO: think about how we may want to represent compound entries
+            return pathway_data['enzymes'][set['name']][ec[0]][0]; 
+        })
         .filter(unique)
         .reduce(function (a, b) {
             if (!a) {
@@ -316,9 +320,11 @@ function drawPathways(d) {
     // mark gaps in the pathway
     paths.selectAll('default')
         .data(pathway_data['reaction'].filter(function (r) {
-            var ec = compound_hash[r['@id']];
+            var ecs = compound_hash[r['@id']]; // it's a list now!
             return dataset.every(function (set) {
-                return !set.hasOwnProperty(ec) || set[ec] == 0;
+                return !ecs.some(function(ec) { 
+                    return !set.hasOwnProperty(ec) || set[ec] == 0; 
+                });
             });
         }))
         //.data(pathway_data['reaction'])
@@ -339,8 +345,10 @@ function drawPathways(d) {
         var name = set['name'];
         paths.selectAll('.' + name)
             .data(pathway_data['reaction'].filter(function (r) {
-                var ec = compound_hash[r['@id']];
-                return set.hasOwnProperty(ec) && set[ec] > 0;
+                var ecs = compound_hash[r['@id']];
+                return ecs.every(function(ec) {
+                    return set.hasOwnProperty(ec) && set[ec] > 0;
+                });
             }))
             .enter()
             .append('path')

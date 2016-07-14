@@ -85,11 +85,14 @@ def main():
             # initialize data structures
             for entry in pathway['entry']:
                 if entry['@type'] == 'enzyme':
-                    ec = entry['graphics']['@name']
-                    if not ec in enzyme_names:
-                        enzyme_ids.append(ec)
-                        enzyme_names[ec] = []
-                        enzyme_counts[ec] = 0
+                    #ec = entry['graphics']['@name']
+                    # because a reaction could now have several enzymes
+                    ecs = [ec[3:] for ec in entry['@name'].split(' ')]
+                    for ec in ecs:
+                        if not ec in enzyme_names:
+                            enzyme_ids.append(ec)
+                            enzyme_names[ec] = []
+                            enzyme_counts[ec] = 0
 
             # *** BY ARBITRARY CONVENTION, all output files must go in the same folder.
             #     This is for simplicity of packaging, so deal with it.

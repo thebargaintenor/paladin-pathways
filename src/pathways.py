@@ -3,6 +3,7 @@
 # pathways.py
 #
 # 2016-06-20 tdm - script created
+# 2016-07-08 tdm - added support for reactions with multiple enzyme dependencies 
 #
 # ----
 #
@@ -43,7 +44,7 @@ Usage: pathways [-k pathway] [-p paladin_tsv] [-o output] [-c counts] [-v]
     -v              - verbose mode (print more info to stdout)
     --verbose
 
-    EXAMPLE: python3 pathways.py -k 00625 -p ./data/report.tsv -o results.csv -c counts.dat 
+    EXAMPLE: python3 pathways.py -k 00625 -p ./data/report.tsv -o results.csv -c counts.dat --verbose
 
 '''
 
@@ -118,11 +119,13 @@ def main():
         # initialize data structures
         for entry in pathway['entry']:
             if entry['@type'] == 'enzyme':
-                ec = entry['graphics']['@name']
-                if not ec in enzyme_names:
-                    enzymes.append(ec)
-                    enzyme_names[ec] = ''
-                    enzyme_counts[ec] = 0
+                # assume ALL listed refs are needed when listed in @name
+                ecs = [ec[3:] for ec in entry['@name'].split(' ')]
+                for ec in ecs:
+                    if not ec in enzyme_names:
+                        enzymes.append(ec)
+                        enzyme_names[ec] = ''
+                        enzyme_counts[ec] = 0
 
         # initialize list of enzyme IDs (for simpler use with generators)
         for enzyme in enzymes:
@@ -204,7 +207,7 @@ def main():
         exit(0)
 
 def is_match(known, potential):
-    """Detects if potential EC reference matches the known one, accounting for - as wildcard"""
+    """Detects if potential EC reference matches the known one, accounting for '-' as wildcard"""
     dash = known.find('-')
     if dash > -1:
         return potential.startswith(known[:dash])
