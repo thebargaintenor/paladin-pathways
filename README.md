@@ -14,6 +14,8 @@ cd paladin-pathways
 sudo bash install.sh # sudo may not be necessary
 ```
 
+This package depends on `requests`, `xmltodict`, and `dataset`, all of which are available via pip.  Depending on where your python installation is located, you may or may not require root privileges to install those packages (if you haven't done so in the past).  It would be really nice if _Pathways_ could be self-contained and not need extra dependencies installed, but that would likely involve changing languages/environments altogether, which we really don't need to do yet.
+
 ## INSTRUCTIONS
 Coming soon to a repo near you!
 
