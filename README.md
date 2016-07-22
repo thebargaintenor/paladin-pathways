@@ -2,19 +2,39 @@
 
 The goal of this project was to create an extension of [PALADIN](https://github.com/twestbrookunh/paladin) to elaborate on the pathway output produced by PALADIN Align. In order to create an extension for the PALADIN program to output functional pathway data, we compared several pathway databases or size, accessibility, level of completeness, and inclusion of both common and uncommon bacterial pathways. The analytic scripts for the Pathways pipeline were written in both Python and bash to produce a working bioinformatics tool. Pathways was applied to a sample dataset from PCE contaminated drinking water and analyzed for the chloroalkane and chloroalkene degradation pathway. The results show the enrichment of the enzymes needed for chloroalkene degradation through two visualization tools and demonstrated the potential for the Pathways tool to search for community function within WMS data. Our PALADIN Pathways tool allows the user to investigate whole metagenomes for well-characterized protein pathways and determine the relative completeness. It is our hope that PALADIN Pathways will provide novel insights into microbial communities and streamline functional metagenomic studies.
 
+_NB: This is still technically pre-release software that we are making available for wider testing.  It's functional, but there are still bugs.  Please let us know if you find one so that we can address it.  Thanks!_
+
 ## INSTALLATION
 ### Dependencies
-PALADIN _Pathways_ has only a handful of dependencies enumerated in `install.sh` needed to support the python scripts.  These are all handled with the pip package manager, and may require root/administrator privileges for installation on your workstation.
 
-Overall, the process is as follows (for Linux or macOS):
+PALADIN _Pathways_ has only a handful of dependencies: `requests`, `xmltodict`, and `dataset`, all of which are available via pip.  Depending on where your python installation is located, you may or may not require root privileges to install those packages (if you haven't done so in the past).
+
+* requests - This library wraps python's native HTTP library and makes web requests less unpleasant.
+* xmltodict - For XML (de)serialization of python dictionaries
+* dataset - Wrapper for database communication (we use SQLite)
+
+```
+# Sample Dependency Installation
+pip3 install requests
+pip3 install xmltodict
+pip3 install dataset
+```
+### Installation Process
+The pipeline installation is currently designed for Linux-based systems (Macs are fine too), and additional configuration (file permissions) is handled in `src/install.sh`.
+
+To get started, navigate in your shell to the folder where you want to install _Pathways_ and run the following:
 
 ```
 git clone https://www.github.com/thebargaintenor/paladin-pathways.git
-cd paladin-pathways
-sudo bash install.sh # sudo may not be necessary
+cd paladin-pathways/src
+bash install.sh
 ```
 
-This package depends on `requests`, `xmltodict`, and `dataset`, all of which are available via pip.  Depending on where your python installation is located, you may or may not require root privileges to install those packages (if you haven't done so in the past).  It would be really nice if _Pathways_ could be self-contained and not need extra dependencies installed, but that would likely involve changing languages/environments altogether, which we really don't need to do yet.
+You may wish to add the `/src` folder to your PATH variable in `.bashrc` or `.bash_profile` so that you may access _Pathways_ from whichever work directory you prefer.
+
+```
+pathways.py [args - see below]
+```
 
 ## INSTRUCTIONS
 Coming soon to a repo near you!
