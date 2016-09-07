@@ -3,6 +3,7 @@
 # kegg.py
 #
 # 2016-06-05 tdm - script created
+# 2016-08-24 tdm - SQLite DB now in script directory only
 #
 # ----
 #
@@ -23,14 +24,28 @@ import dataset
 # pip install requests
 # (needed for nicer HTTP communication)
 import requests
-# for loading between python dictionaries and JSON strings
-import json
+
 # for loading between python dictionaries and XML
 import xmltodict
 
+import os
+import sys
+# for loading between python dictionaries and JSON strings
+import json
+
 def get(pathway_id, overwrite=False):
     '''Load KGML from either the local database or KEGG (caching the new KGML)'''
-    db = dataset.connect('sqlite:///kgmlcache.db')
+    
+    path = os.path.dirname(__file__)
+    # I stubbornly insist on continued windows compatibility
+    if sys.platform == 'win32':
+        path += '\\'
+    else:
+        path += '/'
+    
+    # database is stored in folder with scripts so that changing the working
+    # directory doesn't require a new cache (plus it can be shared with multiple users)
+    db = dataset.connect('sqlite:///' + path + 'kgmlcache.db')
     kgml_table = db.get_table('kgml')
 
     if not kgml_table:

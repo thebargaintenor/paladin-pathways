@@ -48,6 +48,7 @@ Temporary Items
 
 # Directories holding only project configuration
 .idea
+.vscode
 
 # python runtime cache?
 src/__pycache__
