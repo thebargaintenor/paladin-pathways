@@ -37,9 +37,7 @@ pathways.py [args - see below]
 ```
 
 ## INSTRUCTIONS
-Coming soon to a repo near you!
-
-In the meantime, please have the usage instructions from `pathways.py`:
+Full instructions are included in the `/doc` folder.  Below is a basic overview (also accessible using `pathways.py --help`):
 
 ```
 Usage: pathways [-k pathway] [-p paladin_tsv] [-o output] [-c counts] [-v]
