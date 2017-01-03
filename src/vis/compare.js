@@ -135,7 +135,7 @@ function loadPathway(data) {
         .on('mouseover', function(d) {
             var contents = d['graphics']['@name'];
             if (manifest['dataset'] && pathway_data['enzymes']) {
-                contents = buildTooltip(d['graphics']['@name'])
+                contents = buildTooltip(compound_hash[d['@id']]); // (d['graphics']['@name'])
             }
 
             if (contents) {
@@ -292,20 +292,6 @@ function buildTooltip(ec) {
                 return a + '<br/>' + b;
             }
         });
-    /*tooltip.selectAll('*').remove();
-
-    tooltip.selectAll('p')
-        .data(dataset)
-        .enter()
-        .append('p')
-        .style({
-            color: function (set, i) { return '#' + palette[i]; }
-        })
-        .html(function (set) {
-            return pathway_data['enzymes'][set['name']][ec]
-                .map().reduce(function (a, b) { return a + '<br/>' + b; })
-        });
-    */
 }
 
 function drawPathways(d) {
