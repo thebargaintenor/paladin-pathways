@@ -2,7 +2,8 @@
 """
 Perform taxonomy callback 
 """
-import numpy as np
+#import numpy as np
+import subprocess
 import csv
 def get_uniprot_id(ec, filename):
     """
@@ -60,14 +61,24 @@ def find_seq(loh, filename):
                         flag = True
     return los
 
-        
+def mkquery(los):
+    with open('blast_query', 'w') as blast_query:
+        for item in los.items():
+            header = item[0]
+            seq = item[1]
+            print('>' + header[1:], file= blast_query)
+            print(seq, file = blast_query)
+def blaster(seq):
+    command = ['blastn', '-query',  'temp_1.fa', '-subject',  'temp_2.fa',  '-outfmt', '"6 qseqid sseqid length pident evalue stitle"']
+    blasting = subprocess.run(command, stdout=subprocess.PIPE)
+
 if __name__== "__main__":
     import time
     uid = get_uniprot_id('1.4.1.13', '/home/work/Documents/pathways/paladin-pathways/Pathways_Output/B.japonicum_100_test.csv')
     loh = uniprot_coords(uid[0], '/home/work/Documents/pathways/paladin-pathways/Paladin_Output/B.japonicum_100.sam')
     st1 = time.time()
     los = find_seq(loh, "../B.japonicum_100.1.fq")
-    print(time.time()-st1)
+    #print(time.time()-st1)
     st1 = time.time()
-    los2 = find_seq2(loh, "../B.japonicum_100.1.fq")
-    print(time.time()-st1)
+    #los2 = find_seq2(loh, "../B.japonicum_100.1.fq")
+    mkquery(los)
