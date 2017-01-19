@@ -68,8 +68,8 @@ def mkquery(los):
             seq = item[1]
             print('>' + header[1:], file= blast_query)
             print(seq, file = blast_query)
-def blaster(seq):
-    command = ['blastn', '-query',  'temp_1.fa', '-subject',  'temp_2.fa',  '-outfmt', '"6 qseqid sseqid length pident evalue stitle"']
+def blaster():
+    command = ['blastx', '-query',  'blast_query', '-db', '/usr/local/share/paladin/uniref90.fasta',  '-outfmt', '6', '-out', 'blastout', '-num_threads', '32', '-num_alignments', '1', '-max_hsps', '1']
     blasting = subprocess.run(command, stdout=subprocess.PIPE)
 
 if __name__== "__main__":
@@ -82,3 +82,4 @@ if __name__== "__main__":
     st1 = time.time()
     #los2 = find_seq2(loh, "../B.japonicum_100.1.fq")
     mkquery(los)
+    blaster()
