@@ -61,7 +61,11 @@ def find_seq(loh, filename):
                         flag = True
     return los
 
+
 def mkquery(los):
+    """
+    
+    """
     with open('blast_query', 'w') as blast_query:
         for item in los.items():
             header = item[0]
@@ -69,17 +73,17 @@ def mkquery(los):
             print('>' + header[1:], file= blast_query)
             print(seq, file = blast_query)
 def blaster():
-    command = ['blastx', '-query',  'blast_query', '-db', '/usr/local/share/paladin/uniref90.fasta',  '-outfmt', '6', '-out', 'blastout', '-num_threads', '32', '-num_alignments', '1', '-max_hsps', '1']
+    command = ['blastx', '-query',  'blast_query', '-db', '/usr/local/share/paladin/uniref90.fasta',  '-outfmt', '6 qacc sacc pident length mismatch gapopen qstart qend sstart send evalue bitscore ssciname', '-out', 'blastout', '-num_threads', '32', '-num_alignments', '1', '-max_hsps', '1']
     blasting = subprocess.run(command, stdout=subprocess.PIPE)
 
 if __name__== "__main__":
-    import time
-    uid = get_uniprot_id('1.4.1.13', '/home/work/Documents/pathways/paladin-pathways/Pathways_Output/B.japonicum_100_test.csv')
-    loh = uniprot_coords(uid[0], '/home/work/Documents/pathways/paladin-pathways/Paladin_Output/B.japonicum_100.sam')
-    st1 = time.time()
+    enzyme_code = sys.argv[0]
+    pathways_out = sys.argv[1]
+    paladin_out = sys.argv[2]
+    #uid = get_uniprot_id('1.4.1.13', '/home/work/Documents/pathways/paladin-pathways/Pathways_Output/B.japonicum_100_test.csv')
+    #loh = uniprot_coords(uid[0], '/home/work/Documents/pathways/paladin-pathways/Paladin_Output/B.japonicum_100.sam')
+    uid = get_uniprot_id(enzyme_code, pathways_out)
+    loh = uniprot_coords(uid[0], paladin_out)
     los = find_seq(loh, "../B.japonicum_100.1.fq")
-    #print(time.time()-st1)
-    st1 = time.time()
-    #los2 = find_seq2(loh, "../B.japonicum_100.1.fq")
     mkquery(los)
     blaster()
