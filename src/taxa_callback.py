@@ -1,10 +1,12 @@
 #! /usr/bin/env python3
 """
-Perform taxonomy callback 
+Perform taxonomy callback
 """
-#import numpy as np
 import subprocess
 import csv
+import sys
+
+
 def get_uniprot_id(ec, filename):
     """
     Pull uniprot ID from csv output of paladin using Enzyme Comission number
@@ -18,7 +20,8 @@ def get_uniprot_id(ec, filename):
             if line[1].strip() == ec.strip():
                 acc.append(line[0])
         return acc
-    
+
+
 def uniprot_coords(uniprot_id, filename):
     """
     Pull the header for the contig file from the .sam output file of paladin
@@ -26,13 +29,13 @@ def uniprot_coords(uniprot_id, filename):
     filename: path to sam file (str)
     """
     lines = []
-    index = 0
     with open(filename) as f:
         for line in f:
-            if not line[0] == '@':  ## if not a header
+            if not line[0] == '@':  # if not a header
                 line = line.split()
-                if uniprot_id in line[2]: ## and matching the uniprot_id
-                    lines.append(line[0].split(':')[-1])  ## append the contig header
+                if uniprot_id in line[2]:  # and matching the uniprot_id
+                    lines.append(line[0].split(':')[-1])
+                    # append the contig header
     return lines
 
 
@@ -41,9 +44,9 @@ def find_seq(loh, filename):
     Return a list of seqeunces from fastq file (filename) corresponding
     to the headers in loh
     loh: list of headers (list(string))
-    filename: contig.fasta file to search for the list of headers of                              
-    Returns:                                                                                                  
-    los: dictionary with the contig headers as keys and sequences as values     
+    filename: contig.fasta file to search for the list of headers of
+    Returns:
+    los: dictionary with the contig headers as keys and sequences as values
     """
     flag = False
     header = ''
@@ -70,20 +73,51 @@ def mkquery(los):
         for item in los.items():
             header = item[0]
             seq = item[1]
-            print('>' + header[1:], file= blast_query)
-            print(seq, file = blast_query)
-def blaster():
-    command = ['blastx', '-query',  'blast_query', '-db', '/usr/local/share/paladin/uniref90.fasta',  '-outfmt', '6 qacc sacc pident length mismatch gapopen qstart qend sstart send evalue bitscore ssciname', '-out', 'blastout', '-num_threads', '32', '-num_alignments', '1', '-max_hsps', '1']
-    blasting = subprocess.run(command, stdout=subprocess.PIPE)
+            print('>' + header[1:], file=blast_query)
+            print(seq, file=blast_query)
 
-if __name__== "__main__":
+
+def blaster():
+    command = ['blastx', '-query',  'blast_query',
+               '-db', '/usr/local/share/paladin/uniref90.fasta',
+               '-outfmt', '6 qacc sacc pident length mismatch gapopen \
+               qstart qend sstart send evalue bitscore ssciname',
+               '-out', 'blastout',
+               '-num_threads', '32',
+               '-num_alignments', '1',
+               '-max_hsps', '1']
+    subprocess.run(command, stdout=subprocess.PIPE)
+
+def get_taxa(blast_results="blastout", db="/usr/local/share/paladin/uniref90.fasta"):
+    uids = []
+    with open(blast_results) as br:
+        for line in br:
+            uids.append(line.split()[1])
+    uids = set(uids)
+    taxa_dict = {}
+    with open(db) as database:
+        for line in database:
+            if line[0] == '>':
+                words = line.split()
+                uniref_id = words[0][1:]
+                if uniref_id in uids:
+                    start = line.find("Tax")
+                    stop = line[start:].find(' ')
+                    taxa_dict[uniref_id] = line[start:stop + 1]
+    return taxa_dict
+
+def output_taxa(taxa_dict, f):
+    for item in taxa_dict.items():
+        print(" ".join(item), file=f)
+if __name__ == "__main__":
     enzyme_code = sys.argv[0]
     pathways_out = sys.argv[1]
     paladin_out = sys.argv[2]
-    #uid = get_uniprot_id('1.4.1.13', '/home/work/Documents/pathways/paladin-pathways/Pathways_Output/B.japonicum_100_test.csv')
-    #loh = uniprot_coords(uid[0], '/home/work/Documents/pathways/paladin-pathways/Paladin_Output/B.japonicum_100.sam')
+    reads = sys.argv[3]
     uid = get_uniprot_id(enzyme_code, pathways_out)
     loh = uniprot_coords(uid[0], paladin_out)
-    los = find_seq(loh, "../B.japonicum_100.1.fq")
+    los = find_seq(loh, reads)
     mkquery(los)
     blaster()
+    taxa_dict = get_taxa()
+    output_taxa(taxa_dict, "taxonomy")
