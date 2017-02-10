@@ -14,7 +14,7 @@ def get_uniprot_id(ec, filename):
     filename: path to csv output of paladin (str)
     """
     acc = []
-    with open(filename) as csvfile:
+    with ope.san(filename) as csvfile:
         f = csv.reader(csvfile)
         for line in f:
             if line[1].strip() == ec.strip():
@@ -110,10 +110,12 @@ def output_taxa(taxa_dict, f):
     for item in taxa_dict.items():
         print(" ".join(item), file=f)
 if __name__ == "__main__":
-    enzyme_code = sys.argv[0]
-    pathways_out = sys.argv[1]
-    paladin_out = sys.argv[2]
-    reads = sys.argv[3]
+    enzyme_code = sys.argv[1]
+#   with open(enzyme_code) as ec_file:
+#       enzyme_code = ec_file.readline().rstrip()
+    pathways_out = sys.argv[2]
+    paladin_out = sys.argv[3]
+    reads = sys.argv[4]
     uid = get_uniprot_id(enzyme_code, pathways_out)
     loh = uniprot_coords(uid[0], paladin_out)
     los = find_seq(loh, reads)
