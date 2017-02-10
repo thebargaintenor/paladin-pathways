@@ -14,7 +14,7 @@ def get_uniprot_id(ec, filename):
     filename: path to csv output of paladin (str)
     """
     acc = []
-    with ope.san(filename) as csvfile:
+    with open(filename) as csvfile:
         f = csv.reader(csvfile)
         for line in f:
             if line[1].strip() == ec.strip():
