@@ -1,23 +1,30 @@
-l#! /usr/bin/env python3
-
-'''
-PALADIN plugin template.  
-
-All output (both stdout and stderr) must be routed through
-the "plugins.core.sendOutput" method.  Initialization and main program body should be stored
-within the initialization and main callbacks, respectively (see below).  
-
-plugins.core.PaladinEntry.getEntries can be used for getting UniProt report data
-plugins.core.SamEntry.getEntries can be used for getting SAM data
-
-See core.py for other API methods.  When calling methods from other plugins, be sure to list
-them as dependencies in the plugin definition.  Do not list core as a dependency.
-
-'''
-
+#! /usr/bin/env python3
 import argparse
 import shlex
 import plugins.core
+import json
+import sys
+import time
+import csv
+import paladin_postprocess
+import kegg
+from ec_lookup import lookup
+
+
+'''
+pathways.py
+
+DESCRIPTION:
+Script runs entire pathways pipeline, filtering a read report from PALADIN
+to calculate the mathmatical completeness of a given metabolic pathway.
+
+USAGE:
+python3 pathways.py -k 00625
+                    -p ./data/report.tsv
+                    -o results.csv
+                    -c counts.dat
+'''
+
 
 # Plugin connection definition
 def pluginConnect(passDefinition):
@@ -31,45 +38,9 @@ def pluginConnect(passDefinition):
     #passDefinition.callbackInit = templateInit # Reference plugin initialization method here (run once at startup).  Not required.
     passDefinition.callbackMain = pathwaysMain # Reference plugin main method here.  Will receive plugin arguments.  Required.
 
-# Plugin main    
-def templateMain(passArguments):
-    # Parse arguments 
-    argParser = argparse.ArgumentParser(description='PALADIN Pipeline Plugins: pathways', prog='pathways')
-    argParser.add_argument(['-k', '--kegg'], help='KEGG ID for pathway')
-    argParser.add_argument(['-p', '--paladin'], help='path to PALADIN output report')
-    argParser.add_argument(['-o', '--output'], help='output filename')
-    argParser.add_argument("-c", help='suppliment data filename')
-    argParser.add_argument(['-v', '--verbose'], help='verbose mode')
-    arguments = argParser.parse_known_args(shlex.split(passArguments))
 
-    plugins.core.sendOutput('Unimplemented', 'stderr')
-#!/usr/bin/env python3
-
-# pathways.py
-#
-# 2016-06-20 tdm - script created
-# 2016-07-08 tdm - added support for reactions with multiple enzyme dependencies 
-#
-# ----
-#
-# PATHWAYS
-#   Script runs entire pathways pipeline, filtering a read report from PALADIN
-#   to calculate the mathmatical completeness of a given metabolic pathway.
-#
-# ----
-#
-# EXAMPLE: python3 pathways.py -k 00625 -p ./data/report.tsv -o results.csv -c counts.dat
 
 # library imports
-import json
-import sys
-import time
-import csv
-
-# external script imports
-import paladin_postprocess
-import kegg
-from ec_lookup import lookup
 
 # -- GLOBAL VARIABLES --
 
@@ -90,20 +61,20 @@ Usage: pathways [-k pathway] [-p paladin_tsv] [-o output] [-c counts] [-v]
     --verbose
 
     EXAMPLE: python3 pathways.py -k 00625 -p ./data/report.tsv -o results.csv -c counts.dat --verbose
-
+ 
 '''
 
 # -- FUNCTIONS --
 
 def usage():
-    '''If we have missing arguments or argument is -h print some "usage" information and quit.'''
-    if len(sys.argv) < 1 or sys.argv[1] == "-h":  # command
-        print(usageMsg)
-        exit(0)
+    '''If we have missing arguments or argument is -h
+    print some "usage" information and quit.'''
+    if len(sys.argv) <= 1 or sys.argv[1] == "-h":
+        plugins.core.sendOutput(usageMsg, 'stderr')
 
 def log(f, line, verbose = False):
     if verbose:
-        print(line)
+        plugins.core.sendOutput(line, 'stderr')
 
     with open(f, 'at') as handle:
         handle.write(line + '\n')
@@ -245,8 +216,7 @@ def main():
         log(log_file, '\nFiles created:', True)
         for f in files_created:
             log(log_file, f, True)
-
-        print('\nDone.')
+        plugins.core.sendOutput("\nDone.", 'stderr')
     else:
         log(log_file, "ERROR: No pathway found with ID: " + kegg_id, True)
         exit(0)
@@ -259,6 +229,21 @@ def is_match(known, potential):
     else:
         return known == potential
 
-# actual script entry point
-if __name__ == "__main__":
+
+def pathwaysMain(passArguments):
+    # Parse arguments
+    argParser = argparse.ArgumentParser(
+                        description='PALADIN Pipeline Plugins: pathways',
+                        prog='pathways')
+    argParser.add_argument(['-k', '--kegg'],
+                           help='KEGG ID for pathway')
+    argParser.add_argument(['-p', '--paladin'],
+                           help='path to PALADIN output report')
+    argParser.add_argument(['-o', '--output'],
+                           help='output filename')
+    argParser.add_argument("-c",
+                           help='suppliment data filename')
+    argParser.add_argument(['-v', '--verbose'],
+                           help='verbose mode')
+    arguments = argParser.parse_known_args(shlex.split(passArguments))
     main()
