@@ -5,8 +5,6 @@ import plugins.core
 import json
 import time
 import csv
-import paladin_postprocess
-import kegg
 import requests
 import dataset
 import xmltodict
@@ -240,8 +238,108 @@ def extract_compounds(data):
 
 
 """
+POSTPROCESS
+"""
+
+
+def dump_records(records, f):
+    '''Dumps records as lines into the given file'''
+    f.writelines(records)
+
+
+def format_value(input):
+    if ',' in input:
+        return '"' + input.replace('"', '""') + '"'
+    else:
+        return input
+
+
+def run_postprocess(input_path, output_path, verbose):
+    '''Run postprocess job (now accessible from other scripts)'''
+    ec_pattern = re.compile("(?<=\\(EC )([0-9]+\\.[0-9\\-]" +
+                            "+\\.[0-9\\-]+\\.[0-9\\-]+)(?=\\))")
+
+    lines_processed = 0
+    # output buffer (to decrease disk write frequency)
+    records = []
+
+    # get start of long op
+    start = time.clock()
+
+    with open(output_path, 'wt') as outfile:
+        with open(input_path, 'rt') as infile:
+            # iterate over tsv file
+            outfile.write('uniprot,brenda,gene_name,organism,count,abundance\n')
+            lines = infile.readlines(100000)
+            while lines:
+                for line in lines:
+                    lines_processed += 1
+                    if line:
+                        # split fields in record
+                        fields = line.split('\t')
+                        if len(fields) > 5:
+                            # look for EC reference
+                            m = ec_pattern.search(fields[5])
+                            if m:
+                                # trim EC annotation from description (already in its own column)
+                                ecidx = fields[5].find('(EC')
+                                if ecidx > -1:
+                                    desc = fields[5][:ecidx].rstrip()
+                                else:
+                                    desc = fields[5]
+
+                                # add new CSV record for this item
+                                records.append('{0},{1},{2},{3},{4},{5}\n'.format(
+                                    fields[3], m.group(1), format_value(desc), format_value(fields[4]), fields[0], fields[1]))
+                                if len(records) > 1000:
+                                    # dump buffer to file
+                                    dump_records(records, outfile)
+                                    del records[:]
+
+                    if verbose and lines_processed % 10000 == 0:
+                        plugins.core.sendOutput('{0} lines processed.'.format(lines_processed), "stdout")
+
+                lines = infile.readlines(100000)
+
+            # flush output buffer
+            if len(records) > 0:
+                dump_records(records, outfile)
+                del records[:]
+                if verbose:
+                    plugins.core.sendOutput('{0} lines processed.'.format(lines_processed), "stdout")
+
+    # stop time
+    end = time.clock()
+    plugins.core.sendOutput('Post-process operation finished in {0:.2f} seconds.'.format(end - start), "stdout")
+
+"""
 MAIN
 """
+
+
+def postprocess(arguments):
+    argParser = argparse.ArgumentParser(
+                        description='PALADIN Pipeline Plugins: pathways',
+                        prog='pathways')
+    argParser.add_argument(['-v', '--verbose'],
+                           help='verbose mode',
+                           action='store_true',
+                           dest="verbose")
+    argParser.add_argument("--i-paladin-tsv",
+                           help="path to tsv output of paladin",
+                           required=True)
+    argParser.add_argument(['-o', '--output'],
+                           help='output path',
+                           required=True,
+                           dest="output")
+    arguments = vars(argParser.parse_known_args(arguments)[0])
+    input_path = arguments["i-paladin-tsv"]
+    input_filename = input_path.split("/")[-1].split(".")[0]
+    output_path = "".join([arguments["output"],
+                           input_filename,
+                           "csv"])
+    verbose = arguments["verbose"]
+    run_postprocess(input_path, output_path, verbose)
 
 
 def main_pathways(arguments):
@@ -271,7 +369,7 @@ def main_pathways(arguments):
     arguments = vars(argParser.parse_known_args(arguments)[0])
     kegg_id = arguments["kegg"]
     paladin_report = arguments["paladin"]
-    output_csv = arguments["output"]
+    output_csv = arguments["output"] + '/pathways.csv'
     count_csv = arguments["c"]
     verbose = arguments["verbose"]
     suffix = time.strftime('_%m%d%y_%H%M')
@@ -290,7 +388,7 @@ def main_pathways(arguments):
         filtered_paladin_csv = paladin_report[:-4] + suffix + '.csv'
 
         log(log_file, 'Running TSV post-process...', verbose)
-        paladin_postprocess.run(paladin_report, filtered_paladin_csv, verbose)
+        run_postprocess(paladin_report, filtered_paladin_csv, verbose)
 
         files_created.append(filtered_paladin_csv)
 
@@ -395,6 +493,7 @@ def main_pathways(arguments):
         log(log_file, "ERROR: No pathway found with ID: " + kegg_id, True)
         exit(0)
 
+
 def is_match(known, potential):
     """Detects if potential EC reference matches the known one, accounting for '-' as wildcard"""
     dash = known.find('-')
@@ -422,3 +521,5 @@ def pathwaysMain(passArguments):
     passArguments = args[1]
     if "main" in modules:
         main_pathways(passArguments)
+    if "postprocess" in modules:
+        postprocess(passArguments)
