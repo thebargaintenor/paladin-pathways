@@ -70,11 +70,11 @@ def usage():
     '''If we have missing arguments or argument is -h
     print some "usage" information and quit.'''
     if len(sys.argv) <= 1 or sys.argv[1] == "-h":
-        plugins.core.sendOutput(usageMsg, 'stderr')
+        plugins.core.sendOutput(usageMsg, 'stdout')
 
 def log(f, line, verbose = False):
     if verbose:
-        plugins.core.sendOutput(line, 'stderr')
+        plugins.core.sendOutput(line, 'stdout')
 
     with open(f, 'at') as handle:
         handle.write(line + '\n')
@@ -216,7 +216,7 @@ def main():
         log(log_file, '\nFiles created:', True)
         for f in files_created:
             log(log_file, f, True)
-        plugins.core.sendOutput("\nDone.", 'stderr')
+        plugins.core.sendOutput("\nDone.", 'stdout')
     else:
         log(log_file, "ERROR: No pathway found with ID: " + kegg_id, True)
         exit(0)
