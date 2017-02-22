@@ -17,6 +17,7 @@
 # EXAMPLE: pathway = json.loads(kegg.get(00625))
 
 # -- IMPORTS --
+import plugins
 # for working with SQLite
 import dataset
 # this is much nicer with the Requests library
@@ -24,18 +25,17 @@ import dataset
 # pip install requests
 # (needed for nicer HTTP communication)
 import requests
-
 # for loading between python dictionaries and XML
 import xmltodict
-
 import os
 import sys
 # for loading between python dictionaries and JSON strings
 import json
 
+
 def get(pathway_id, overwrite=False):
-    '''Load KGML from either the local database or KEGG (caching the new KGML)'''
-    
+    '''Load KGML from either the local database or KEGG
+    (caching the new KGML)'''
     path = os.path.dirname(__file__)
     # I stubbornly insist on continued windows compatibility
     if sys.platform == 'win32':
@@ -67,17 +67,20 @@ def get(pathway_id, overwrite=False):
             kgml = record['kgml']
 
     if kgml:
-        return json.loads(kgml) # return none if no pathway json found
+        return json.loads(kgml)  # return none if no pathway json found
+
 
 def download_kgml(pathway_id):
-    '''Download KGML for the pathway and return a record ready for DB storage'''
+    '''
+    Download KGML for the pathway and return a record ready for DB storage
+    '''
     # but really, get the KGML, build dictionary from it, add data from
     # KEGG dat file (which has different stuff in it, because reasons)
     # I need that data stuffed into my JSON for the visualization, as
     # the regular KGML has no names for the compounds in the chart
 
     url = 'http://rest.kegg.jp/get/ec' + pathway_id
-    print('Retrieving data from ', url)
+    plugins.core.sendOutput(": ".join(['Retrieving data from', url]), 'stdout')
     r = requests.get(url)
 
     # retrieve DAT version of pathway first (Because.)
@@ -85,14 +88,17 @@ def download_kgml(pathway_id):
     if r.status_code == 200:  # 200 is no error, so proceed happily
         datfile = r.text
         if not datfile:
-            print('No data for pathway', pathway_id, 'found on KEGG.')
+            plugins.core.sendOutput(" ".join(['No data for pathway',
+                                              pathway_id,
+                                              'found on KEGG.']), 'stdout')
     else:
-        print('HTTP Error', r.status_code)
-        print('Download process halting')
+        plugins.core.sendOutput(" ".join(['HTTP Error',
+                                          r.status_code]) +
+                                "\nDownload process halting", "stderr")
         return  # don't bother requesting anything else
 
     url += '/kgml'
-    print('Retrieving data from ', url)
+    plugins.core.sendOutput(" ".join(['Retrieving data from ', url]), "stdout")
     r = requests.get(url)
 
     # retrieve KGML of pathway
@@ -100,10 +106,13 @@ def download_kgml(pathway_id):
     if r.status_code == 200:  # 200 is no error, so proceed happily
         kgml = r.text
         if not kgml:
-            print('No data for pathway', pathway_id, 'found on KEGG.')
+            plugins.core.sendOutput(" ".join(['No data for pathway',
+                                              pathway_id,
+                                              'found on KEGG.']), "stdout")
     else:
-        print('HTTP Error', r.status_code)
-        print('Download process halting')
+        plugins.core.sendOutput(" " .join(['HTTP Error',
+                                           r.status_code]) +
+                                'Download process halting', "stdout")
         return  # don't bother requesting anything else
 
     # convert KGML to dictionary for JSON output,
@@ -119,8 +128,11 @@ def download_kgml(pathway_id):
     record = dict(id=pathway_id, name=kgml_dict['pathway']['@title'], kgml=kgml)
     return record
 
+
 def extract_compounds(data):
-    '''build a dictionary of compound IDs and names from KEGG pathway DAT file'''
+    '''
+    build a dictionary of compound IDs and names from KEGG pathway DAT file
+    '''
     compounds = {}
     in_compound_section = False
     for line in data.split('\n'):
