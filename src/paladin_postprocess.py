@@ -20,7 +20,7 @@ import sys
 import re
 import time
 import csv
-
+import plugins
 # -- GLOBAL VARIABLES --
 
 usageMsg = '''
@@ -48,14 +48,18 @@ Usage: paladin_postprocess -i report -o output
 # usage()
 # If we have missing arguments or the first argument is -h
 # print some "usage" information and quit.
+
+
 def usage():
-    if len( sys.argv ) < 4 or sys.argv[ 1 ] == "-h" or sys.argv[ 1 ] == "--help":
-        print( usageMsg )
-        exit( 0 )
+    if len(sys.argv) < 4 or sys.argv[1] == "-h" or sys.argv[1] == "--help":
+        plugins.core.sendOutput(usageMsg, "stdout")
+        exit(0)
+
 
 def dump_records(records, f):
     '''Dumps records as lines into the given file'''
     f.writelines(records)
+
 
 def format_value(input):
     if ',' in input:
@@ -88,9 +92,11 @@ def main():
     # run job
     run(input_path, output_path, verbose)
 
+
 def run(input_path, output_path, verbose):
     '''Run postprocess job (now accessible from other scripts)'''
-    ec_pattern = re.compile("(?<=\\(EC )([0-9]+\\.[0-9\\-]+\\.[0-9\\-]+\\.[0-9\\-]+)(?=\\))")
+    ec_pattern = re.compile("(?<=\\(EC )([0-9]+\\.[0-9\\-]" +
+                            "+\\.[0-9\\-]+\\.[0-9\\-]+)(?=\\))")
 
     lines_processed = 0
     # output buffer (to decrease disk write frequency)
@@ -130,7 +136,7 @@ def run(input_path, output_path, verbose):
                                     del records[:]
 
                     if verbose and lines_processed % 10000 == 0:
-                        print('{0} lines processed.'.format(lines_processed))
+                        plugins.core.sendOutput('{0} lines processed.'.format(lines_processed), "stdout")
 
                 lines = infile.readlines(100000)
 
@@ -139,11 +145,11 @@ def run(input_path, output_path, verbose):
                 dump_records(records, outfile)
                 del records[:]
                 if verbose:
-                    print('{0} lines processed.'.format(lines_processed))
+                    plugins.core.sendOutput('{0} lines processed.'.format(lines_processed), "stdout")
 
     # stop time
     end = time.clock()
-    print('Post-process operation finished in {0:.2f} seconds.'.format(end - start))
+    plugins.core.sendOutput('Post-process operation finished in {0:.2f} seconds.'.format(end - start), "stdout")
 
 if __name__ == "__main__":
     main()
