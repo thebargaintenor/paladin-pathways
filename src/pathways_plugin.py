@@ -7,8 +7,7 @@ import time
 import csv
 import paladin_postprocess
 import kegg
-from ec_lookup import lookup
-
+import requests
 
 '''
 pathways.py
@@ -66,12 +65,52 @@ Usage: pathways [-k pathway] [-p paladin_tsv] [-o output] [-c counts] [-v]
 # -- FUNCTIONS --
 
 
+
 def log(f, line, verbose=False):
     if verbose:
         plugins.core.sendOutput(line, 'stdout')
 
     with open(f, 'at') as handle:
         handle.write(line + '\n')
+
+
+"""
+EC_LOOKUP
+"""
+
+
+def lookup(ec_list, database):
+    enzyme_names = {}
+    if database == 'kegg':
+        groups = group(ec_list, 10)
+        for g in groups:
+            plugins.core.sendOutput(" ".join(['Fetching',
+                                              str(len(g)),
+                                              'EC references...']), 'stdout')
+            url = 'http://rest.kegg.jp/list/' +\
+                  '+'.join('ec:' + ec for ec in g if '-' not in ec)
+            plugins.core.sendOutput(url, "stdout")
+
+            r = requests.get(url)
+            if r.status_code == 200:  # 200 is no error, so proceed happily
+                lines = r.text.split('\n')
+                for line in lines:
+                    if line:
+                        record = line.split('\t')
+                        enzyme_names[record[0][3:]] = record[1].split('; ')
+            else:
+                plugins.core.sendOutput(" ".join(["HTTP error",
+                                                  r.status_code]), "stderr")
+                plugins.core.sendOutput("Download process halting", "stderr")
+                return  # don't bother requesting anything else
+    return enzyme_names
+
+
+def group(lst, n):
+    for i in range(0, len(lst), n):
+        val = lst[i:i + n]
+        if len(val) == n or len(val) == len(lst):
+            yield val
 
 
 def main_pathways(arguments):
@@ -224,6 +263,9 @@ def is_match(known, potential):
         return potential.startswith(known[:dash])
     else:
         return known == potential
+
+
+
 
 
 def pathwaysMain(passArguments):
