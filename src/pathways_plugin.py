@@ -3,7 +3,6 @@ import argparse
 import shlex
 import plugins.core
 import json
-import sys
 import time
 import csv
 import paladin_postprocess
@@ -28,12 +27,12 @@ python3 pathways.py -k 00625
 
 # Plugin connection definition
 def pluginConnect(passDefinition):
-    passDefinition.name = "pathways" # Plugin name shown in plugin list (should match filename so user knows what to type eg @@pluginName) 
-    passDefinition.description = "elaborate on the pathway output produced by PALADIN Align" # Plugin description shown in  plugin list
-    passDefinition.versionMajor = 1 # Plugin version shown in plugin list
+    passDefinition.name = "pathways"  # Plugin name shown in plugin list (should match filename so user knows what to type eg @@pluginName) 
+    passDefinition.description = "elaborate on the pathway output produced by PALADIN Align"  # Plugin description shown in  plugin list
+    passDefinition.versionMajor = 1  # Plugin version shown in plugin list
     passDefinition.versionMinor = 0
     passDefinition.versionRevision = 0
-    passDefinition.dependencies=[] # If plugin depends on other plugins, specify their plugin name here
+    passDefinition.dependencies = []  # If plugin depends on other plugins, specify their plugin name here
 
     #passDefinition.callbackInit = templateInit # Reference plugin initialization method here (run once at startup).  Not required.
     passDefinition.callbackMain = pathwaysMain # Reference plugin main method here.  Will receive plugin arguments.  Required.
@@ -66,52 +65,49 @@ Usage: pathways [-k pathway] [-p paladin_tsv] [-o output] [-c counts] [-v]
 
 # -- FUNCTIONS --
 
-def usage():
-    '''If we have missing arguments or argument is -h
-    print some "usage" information and quit.'''
-    if len(sys.argv) <= 1 or sys.argv[1] == "-h":
-        plugins.core.sendOutput(usageMsg, 'stdout')
 
-def log(f, line, verbose = False):
+def log(f, line, verbose=False):
     if verbose:
         plugins.core.sendOutput(line, 'stdout')
 
     with open(f, 'at') as handle:
         handle.write(line + '\n')
 
-def main():
-    '''Main'''
-    usage()
 
-    kegg_id = None
-    paladin_report = None
-    output_csv = None
-    count_csv = None
-    verbose = False
-
-    # check args
-    for i in range(1, len(sys.argv)):
-        if sys.argv[i] == '--kegg' or sys.argv[i] == '-k':
-            kegg_id = sys.argv[i + 1]
-        elif sys.argv[i] == '--paladin' or sys.argv[i] == '-p':
-            paladin_report = sys.argv[i + 1]
-            if not paladin_report.endswith('.tsv'):
-                paladin_report += '.tsv'
-        elif sys.argv[i] == '--output' or sys.argv[i] == '-o':
-            output_csv = sys.argv[i + 1]
-            if not output_csv.endswith('.csv'):
-                output_csv += '.csv'
-        elif sys.argv[i] == '--counts' or sys.argv[i] == '-c':
-            count_csv = sys.argv[i + 1]
-            if not count_csv.endswith('.csv'):
-                count_csv += '.csv'
-        if sys.argv[i] == '--verbose' or sys.argv[i] == '-v':
-            verbose = True
-
+def main_pathways(arguments):
+    # Parse arguments
+    argParser = argparse.ArgumentParser(
+                        description='PALADIN Pipeline Plugins: pathways',
+                        prog='pathways')
+    argParser.add_argument(['-k', '--kegg'],
+                           help='KEGG ID for pathway',
+                           required=True,
+                           dest="kegg")
+    argParser.add_argument(['-p', '--paladin'],
+                           help='path to PALADIN output report',
+                           required=True,
+                           dest="paladin")
+    argParser.add_argument(['-o', '--output'],
+                           help='output filename',
+                           required=True,
+                           dest="output")
+    argParser.add_argument("-c",
+                           help='suppliment data filename',
+                           required=True)
+    argParser.add_argument(['-v', '--verbose'],
+                           help='verbose mode',
+                           action='store_true',
+                           dest="verbose")
+    arguments = vars(argParser.parse_args(arguments))
+    kegg_id = arguments["kegg"]
+    paladin_report = arguments["paladin"]
+    output_csv = arguments["output"]
+    count_csv = arguments["c"]
+    verbose = arguments["verbose"]
     suffix = time.strftime('_%m%d%y_%H%M')
     log_file = 'pathways_{0}{1}.log'.format(kegg_id, suffix)
-
-    log(log_file, 'Fetching pathway information for KEGG ID ' + kegg_id, verbose)
+    log(log_file, 'Fetching pathway information for KEGG ID ' +
+        kegg_id, verbose)
 
     # retrieve dictionary of pathway information
     pathway = kegg.get(kegg_id)
@@ -231,19 +227,17 @@ def is_match(known, potential):
 
 
 def pathwaysMain(passArguments):
-    # Parse arguments
     argParser = argparse.ArgumentParser(
                         description='PALADIN Pipeline Plugins: pathways',
                         prog='pathways')
-    argParser.add_argument(['-k', '--kegg'],
-                           help='KEGG ID for pathway')
-    argParser.add_argument(['-p', '--paladin'],
-                           help='path to PALADIN output report')
-    argParser.add_argument(['-o', '--output'],
-                           help='output filename')
-    argParser.add_argument("-c",
-                           help='suppliment data filename')
-    argParser.add_argument(['-v', '--verbose'],
-                           help='verbose mode')
-    arguments = argParser.parse_known_args(shlex.split(passArguments))
-    main()
+    argParser.add_argument('--version',
+                           action='version',
+                           version='Paladin Pathways 1.0.0')
+    argParser.add_argument("modules",
+                           nargs="*",
+                           help="Paladin pathways step to run")
+    args = argParser.parse_known_args(shlex.split(passArguments))
+    modules = set(args[0].modules)
+    passArguments = args[1]
+    if "main" in modules:
+        main_pathways(passArguments)
