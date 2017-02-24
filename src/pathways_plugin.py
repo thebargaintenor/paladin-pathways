@@ -723,9 +723,14 @@ def pathwaysMain(passArguments):
     argParser.add_argument("modules",
                            nargs="*",
                            help="Paladin pathways step to run")
+    argParser.add_argument("-l",
+                           action="store_true")
     args = argParser.parse_known_args(shlex.split(passArguments))
     modules = set(args[0].modules)
     passArguments = args[1]
+    if args[0].l:
+        mods = ["main", "postprocess", "heatmap", "taxa_callback"]
+        plugins.core.sendOutput("\n".join(mods), "stdout")
     if "main" in modules:
         main_pathways(passArguments)
     if "postprocess" in modules:
