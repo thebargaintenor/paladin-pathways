@@ -14,7 +14,7 @@ import glob
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-
+import subprocess
 '''
 pathways.py
 
@@ -564,6 +564,145 @@ def is_match(known, potential):
         return known == potential
 
 
+def get_uniprot_id(ec, filename):
+    """
+    Pull uniprot ID from csv output of paladin using Enzyme Comission number
+    ec: enzyme comission number (str)
+    filename: path to csv output of paladin (str)
+    """
+    acc = []
+    with open(filename) as csvfile:
+        f = csv.reader(csvfile)
+        for line in f:
+            if line[1].strip() == ec.strip():
+                acc.append(line[0])
+        return acc
+
+
+def uniprot_coords(uniprot_id, filename):
+    """
+    Pull the header for the contig file from the .sam output file of paladin
+    uniprot_id: a uniprot_id (str)
+    filename: path to sam file (str)
+    """
+    lines = []
+    with open(filename) as f:
+        for line in f:
+            if not line[0] == '@':  # if not a header
+                line = line.split()
+                if uniprot_id in line[2]:  # and matching the uniprot_id
+                    lines.append(line[0].split(':')[-1])
+                    # append the contig header
+    return lines
+
+
+def find_seq(loh, filename):
+    """                                                                                                            
+    Return a list of seqeunces from fastq file (filename) corresponding
+    to the headers in loh
+    loh: list of headers (list(string))
+    filename: contig.fasta file to search for the list of headers of
+    Returns:
+    los: dictionary with the contig headers as keys and sequences as values
+    """
+    flag = False
+    header = ''
+    los = {}
+    with open(filename) as f:
+        for line in f:
+            if flag:
+                los[header] = line.rstrip()
+                flag = False
+                header = ''
+            else:
+                if line[0] == '@':
+                    if line[1:-3] in loh:
+                        header = line.rstrip()
+                        flag = True
+    return los
+
+
+def mkquery(los):
+    """
+    
+    """
+    with open('blast_query', 'w') as blast_query:
+        for item in los.items():
+            header = item[0]
+            seq = item[1]
+            print('>' + header[1:], file=blast_query)
+            print(seq, file=blast_query)
+
+
+def blaster():
+    command = ['blastx', '-query',  'blast_query',
+               '-db', '/usr/local/share/paladin/uniref90.fasta',
+               '-outfmt', '6 qacc sacc pident length mismatch gapopen \
+               qstart qend sstart send evalue bitscore ssciname',
+               '-out', 'blastout',
+               '-num_threads', '32',
+               '-num_alignments', '1',
+               '-max_hsps', '1']
+    subprocess.run(command, stdout=subprocess.PIPE)
+
+
+def get_taxa(blast_results="blastout",
+             db="/usr/local/share/paladin/uniref90.fasta"):
+    uids = []
+    with open(blast_results) as br:
+        for line in br:
+            uids.append(line.split()[1])
+    uids = set(uids)
+    taxa_dict = {}
+    with open(db) as database:
+        for line in database:
+            if line[0] == '>':
+                words = line.split()
+                uniref_id = words[0][1:]
+                if uniref_id in uids:
+                    start = line.find("Tax")
+                    stop = line[start:].find(' ')
+                    taxa_dict[uniref_id] = line[start:stop + 1]
+    return taxa_dict
+
+
+def output_taxa(taxa_dict, f):
+    for item in taxa_dict.items():
+        print(" ".join(item), file=f)
+
+
+def taxa_callback(passArguments):
+    argParser = argparse.ArgumentParser(
+                        description='PALADIN Pipeline Plugins: pathways',
+                        prog='pathways')
+    argParser.add_argument(['-p', '--paladin'],
+                           help='path to PALADIN output report',
+                           required=True,
+                           dest="paladin")
+    argParser.add_argument(['-o', '--output'],
+                           help='output directory',
+                           required=True,
+                           dest="output")
+    argParser.add_argument("--i-enzyme_code",
+                           help='enzyme code',
+                           required=True)
+    argParser.add_argument("--i-reads",
+                           help='raw reads',
+                           required=True)
+    arguments = vars(argParser.parse_known_args(passArguments)[0])
+    enzyme_code = arguments["i-enzyme_code"]
+    pathways_out = arguments["output"]
+    paladin_out = arguments["paladin"]
+    reads = arguments["i-reads"]
+    uid = get_uniprot_id(enzyme_code, pathways_out)
+    loh = uniprot_coords(uid[0], paladin_out)
+    los = find_seq(loh, reads)
+    mkquery(los)
+    blaster()
+    taxa_dict = get_taxa()
+    output_taxa(taxa_dict, "taxonomy")
+
+
 def heatmap(passArguments):
     argParser = argparse.ArgumentParser(
                         description='PALADIN Pipeline Plugins: pathways',
@@ -602,3 +741,5 @@ def pathwaysMain(passArguments):
         postprocess(passArguments)
     if "heatmap" in modules:
         heatmap(passArguments)
+    if "taxa_callback" in modules:
+        taxa_callback(passArguments)
