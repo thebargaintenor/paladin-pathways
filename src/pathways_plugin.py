@@ -382,13 +382,13 @@ def postprocess(arguments):
     argParser = argparse.ArgumentParser(
                         description='PALADIN Pipeline Plugins: pathways',
                         prog='pathways')
-    argParser.add_argument(['--verbose', "-v"],
+    argParser.add_argument('--verbose', "-v",
                            help='verbose mode',
                            action='store_true')
     argParser.add_argument("--i-paladin-tsv",
                            help="path to tsv output of paladin",
                            required=True)
-    argParser.add_argument(['--output', "-o"],
+    argParser.add_argument('--output', "-o",
                            help='output path',
                            required=True)
     arguments = vars(argParser.parse_known_args(arguments)[0])
@@ -406,19 +406,19 @@ def main_pathways(arguments):
     argParser = argparse.ArgumentParser(
                         description='PALADIN Pipeline Plugins: pathways',
                         prog='pathways')
-    argParser.add_argument(['--kegg', "-k"],
+    argParser.add_argument('--kegg', "-k",
                            help='KEGG ID for pathway',
                            required=True)
-    argParser.add_argument(['--paladin', "-p"],
+    argParser.add_argument('--paladin', "-p",
                            help='path to PALADIN output report',
                            required=True)
-    argParser.add_argument(['--output', "-o"],
+    argParser.add_argument('--output', "-o",
                            help='output filename',
                            required=True)
     argParser.add_argument("-c",
                            help='suppliment data filename',
                            required=True)
-    argParser.add_argument(['--verbose', "-v"],
+    argParser.add_argument('--verbose', "-v",
                            help='verbose mode',
                            action='store_true')
     arguments = vars(argParser.parse_known_args(arguments)[0])
@@ -669,10 +669,10 @@ def taxa_callback(passArguments):
     argParser = argparse.ArgumentParser(
                         description='PALADIN Pipeline Plugins: pathways',
                         prog='pathways')
-    argParser.add_argument(['--paladin', "-p"],
+    argParser.add_argument('--paladin', "-p",
                            help='path to PALADIN output report',
                            required=True)
-    argParser.add_argument(['--output', '-o'],
+    argParser.add_argument('--output', '-o',
                            help='output directory',
                            required=True)
     argParser.add_argument("--i-enzyme_code",
@@ -702,7 +702,7 @@ def heatmap(passArguments):
     argParser.add_argument("--i-heatmap-folder",
                            help="path to folder containing files to heatmap",
                            required=True)
-    argParser.add_argument(['--output', "-o"],
+    argParser.add_argument('--output', "-o",
                            help='output path',
                            required=True)
     arguments = vars(argParser.parse_known_args(passArguments)[0])
