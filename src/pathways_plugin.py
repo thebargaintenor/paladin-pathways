@@ -10,6 +10,11 @@ import dataset
 import xmltodict
 import os
 import sys
+import glob
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+
 '''
 pathways.py
 
@@ -154,6 +159,8 @@ def kegg_get(pathway_id, overwrite=False):
         return json.loads(kgml)  # return none if no pathway json found
 
 
+
+
 def download_kgml(pathway_id):
     '''
     Download KGML for the pathway and return a record ready for DB storage
@@ -235,6 +242,60 @@ def extract_compounds(data):
             compounds[cid] = cname
 
     return compounds
+
+
+"""
+HEATMAP
+"""
+
+
+def parse_files(list_of_files, binary=False):
+    genomes = []
+    genome_names = []
+    en = []
+    for file_path in list_of_files:  # open each of the files
+        with open(file_path) as f:
+            f = f.readlines()
+        enzymes = {}
+        genome_names.append(f[0].rstrip().split(',')[2])
+        # pull out the naming info for labeling
+        for line in f[1:]:
+            words = line.rstrip().split(',')
+            enzyme_name = "".join(words[1:-1])
+            enzymes.update({enzyme_name: int(float(words[-1]))})
+            en.append(enzyme_name)
+        genomes.append(enzymes)
+    en = list(set(en))
+    en_disp = []
+
+    for name in en:
+        en_disp.append(name.replace('"', ""))
+    copymat = []
+    for enz in en:
+        copyn = []
+        for genome in genomes:
+            try:
+                copyn.append(genome[enz])
+            except:
+                copyn.append(0)
+        copymat.append(copyn)
+    copymat = np.asarray(copymat, dtype=int)
+    if binary:
+        copymat = copymat / copymat
+    return copymat, genome_names, en_disp
+
+
+def render(copymat, genome_names, en_disp,
+           outname='hist.png', colormap=cm.Reds,
+           figsize=(19.2, 10.8)):
+    plt.figure(figsize=figsize)
+    plt.imshow(1*(copymat), interpolation='none', cmap=colormap, aspect='auto')
+    plt.xticks(np.arange(len(genome_names)), genome_names, rotation=20)
+    plt.yticks(range(len(en_disp)), en_disp)
+    cb = plt.colorbar()
+    cb.set_label('copy number')
+    plt.tight_layout()
+    plt.savefig(outname)
 
 
 """
@@ -503,7 +564,23 @@ def is_match(known, potential):
         return known == potential
 
 
-
+def heatmap(passArguments):
+    argParser = argparse.ArgumentParser(
+                        description='PALADIN Pipeline Plugins: pathways',
+                        prog='pathways')
+    argParser.add_argument("--i-heatmap-folder",
+                           help="path to folder containing files to heatmap",
+                           required=True)
+    argParser.add_argument(['-o', '--output'],
+                           help='output path',
+                           required=True,
+                           dest="output")
+    arguments = vars(argParser.parse_known_args(passArguments)[0])
+    infiles = glob.glob(arguments["--i-heatmap-folder"] +
+                        "/*.csv")
+    copymat, genome_names, en_disp = parse_files(infiles)
+    render(copymat, genome_names, en_disp,
+           outname=arguments["output"] + "/heatmap.png")
 
 
 def pathwaysMain(passArguments):
@@ -523,3 +600,5 @@ def pathwaysMain(passArguments):
         main_pathways(passArguments)
     if "postprocess" in modules:
         postprocess(passArguments)
+    if "heatmap" in modules:
+        heatmap(passArguments)
