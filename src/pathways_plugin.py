@@ -32,7 +32,7 @@ python3 pathways.py -k 00625
 
 # Plugin connection definition
 def pluginConnect(passDefinition):
-    passDefinition.name = "pathways"  # Plugin name shown in plugin list (should match filename so user knows what to type eg @@pluginName) 
+    passDefinition.name = "pathways_plugin"  # Plugin name shown in plugin list (should match filename so user knows what to type eg @@pluginName) 
     passDefinition.description = "elaborate on the pathway output produced by PALADIN Align"  # Plugin description shown in  plugin list
     passDefinition.versionMajor = 1  # Plugin version shown in plugin list
     passDefinition.versionMinor = 0
