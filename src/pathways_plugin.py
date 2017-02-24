@@ -706,7 +706,7 @@ def heatmap(passArguments):
                            help='output path',
                            required=True)
     arguments = vars(argParser.parse_known_args(passArguments)[0])
-    infiles = glob.glob(arguments["--i-heatmap-folder"] +
+    infiles = glob.glob(arguments["i-heatmap-folder"] +
                         "/*.csv")
     copymat, genome_names, en_disp = parse_files(infiles)
     render(copymat, genome_names, en_disp,
