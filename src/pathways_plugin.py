@@ -392,7 +392,7 @@ def postprocess(arguments):
                            help='output path',
                            required=True)
     arguments = vars(argParser.parse_known_args(arguments)[0])
-    input_path = arguments["i-paladin-tsv"]
+    input_path = arguments["i_paladin_tsv"]
     input_filename = input_path.split("/")[-1].split(".")[0]
     output_path = "".join([arguments["output"],
                            input_filename,
@@ -682,10 +682,10 @@ def taxa_callback(passArguments):
                            help='raw reads',
                            required=True)
     arguments = vars(argParser.parse_known_args(passArguments)[0])
-    enzyme_code = arguments["i-enzyme_code"]
+    enzyme_code = arguments["i_enzyme_code"]
     pathways_out = arguments["output"]
     paladin_out = arguments["paladin"]
-    reads = arguments["i-reads"]
+    reads = arguments["i_reads"]
     uid = get_uniprot_id(enzyme_code, pathways_out)
     loh = uniprot_coords(uid[0], paladin_out)
     los = find_seq(loh, reads)
@@ -706,8 +706,7 @@ def heatmap(passArguments):
                            help='output path',
                            required=True)
     arguments = vars(argParser.parse_known_args(passArguments)[0])
-    print(arguments)
-    infiles = glob.glob(arguments["i-heatmap-folder"] +
+    infiles = glob.glob(arguments["i_heatmap_folder"] +
                         "/*.csv")
     copymat, genome_names, en_disp = parse_files(infiles)
     render(copymat, genome_names, en_disp,
