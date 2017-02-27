@@ -122,11 +122,15 @@ def group(lst, n):
 KEGG
 """
 
-def kegg_get(pathway_id, overwrite=False):
+
+def kegg_get(pathway_id, overwrite=False, kegg_db=None):
     '''Load KGML from either the local database or KEGG
     (caching the new KGML)'''
     #path = os.path.dirname(__file__)
-    path = tempfile.mktemp()
+    if kegg_db:
+        path = kegg_db
+    else:
+        path = tempfile.mktemp() + 'kgmlcache.db'
     # I stubbornly insist on continued windows compatibility
     #if sys.platform == 'win32':
     #    path += '\\'
@@ -135,7 +139,7 @@ def kegg_get(pathway_id, overwrite=False):
     # database is stored in folder with scripts so that changing the working
     # directory doesn't require a new cache
     # (plus it can be shared with multiple users)
-    db = dataset.connect('sqlite:///' + path + 'kgmlcache.db')
+    db = dataset.connect('sqlite:///' + path)
     kgml_table = db.get_table('kgml')
 
     if not kgml_table:
@@ -422,6 +426,10 @@ def main_pathways(arguments):
     argParser.add_argument('--verbose', "-v",
                            help='verbose mode',
                            action='store_true')
+    argParser.add_argument('--kegg_db',
+                           help='kegg_database',
+                           required=False)
+    
     arguments = vars(argParser.parse_known_args(arguments)[0])
     kegg_id = arguments["kegg"]
     paladin_report = arguments["paladin"]
@@ -429,12 +437,16 @@ def main_pathways(arguments):
     count_csv = arguments["c"]
     verbose = arguments["verbose"]
     suffix = time.strftime('_%m%d%y_%H%M')
+    if "kegg_db" in arguments:
+        kegg_db = arguments[kegg_db]
+    else:
+        kegg_db = None
     log_file = 'pathways_{0}{1}.log'.format(kegg_id, suffix)
     log(log_file, 'Fetching pathway information for KEGG ID ' +
         kegg_id, verbose)
 
     # retrieve dictionary of pathway information
-    pathway = kegg_get(kegg_id)
+    pathway = kegg_get(kegg_id, kegg_db=kegg_db)
 
     if pathway:
         pathway = pathway['pathway']
@@ -714,6 +726,139 @@ def heatmap(passArguments):
            outname=arguments["output"] + "/heatmap.png")
 
 
+def visbuilder(passArguments):
+# load build configuration manifest
+    argParser = argparse.ArgumentParser(
+                        description='PALADIN Pipeline Plugins: pathways',
+                        prog='pathways')
+    argParser.add_argument("--kegg_db",
+                           help="kegg_db file",
+                           required=True)
+    arguments = vars(argParser.parse_known_args(passArguments)[0])
+    config_path = arguments["kegg_db"]
+    with open(config_path, 'rt') as config_file:
+        config = json.load(config_file)  # this will remain in scope... WORRY NOT.
+        config_file.close()
+
+        # load pathway data into dictionary using path in config
+        with open(config['pathway'], 'rt') as path_file:
+            dictionary = json.load(path_file)
+            pathway = dictionary['pathway']
+            if 'name' in config:
+                pathway['@description'] = config['name']
+            path_file.close()
+
+            print('Detected output directory:', config['output']['path'])
+
+            # this is the master list of EC references for iteration purposes
+            enzyme_ids = []
+
+            enzyme_names = {}
+            enzyme_counts = {}
+
+            sets = []
+            enzymes_by_set = {}
+
+            print('Building manifest...')
+
+            # initialize data structures
+            for entry in pathway['entry']:
+                if entry['@type'] == 'enzyme':
+                    #ec = entry['graphics']['@name']
+                    # because a reaction could now have several enzymes
+                    ecs = [ec[3:] for ec in entry['@name'].split(' ')]
+                    for ec in ecs:
+                        if not ec in enzyme_names:
+                            enzyme_ids.append(ec)
+                            enzyme_names[ec] = []
+                            enzyme_counts[ec] = 0
+
+            # *** BY ARBITRARY CONVENTION, all output files must go in the same folder.
+            #     This is for simplicity of packaging, so deal with it.
+
+            # As of python 3, makedirs can just handle itself if the target path
+            # already exists.  If this is a problem, uncomment the check here:
+            # eh... I'll do it anyway just for being verbose
+            print('Checking output path...')
+
+            path = config['output']['path']
+            if not os.path.exists(path):
+                print('Creating output directory...')
+                os.makedirs(path, exist_ok=True)
+
+            # commence actual aggregation
+            print('Starting data aggregation...')
+            for entry in config['data']:
+                with open(entry['path'], 'rt') as datasource_file:
+                    print('Aggregating ' + entry['path'] + '...')
+                    reader = csv.reader(datasource_file)
+                    lines_processed = 0
+                    for record in reader:
+                        lines_processed += 1
+                        if lines_processed % 1000 == 0:
+                            print(lines_processed, 'lines processed')
+
+                        if record[0] != 'name':
+                            ec = record[1]
+                            # check all enzymes for match (line may match multiple)
+                            for enzyme in enzyme_ids:
+                                if is_match(enzyme, ec):
+                                    if record[2]:
+                                        if len(enzyme_names[enzyme]) < 5:
+                                            # prune EC from description (since it's already stored)
+                                            desc_end = record[2].find('(EC')
+                                            enzyme_names[enzyme].append(record[2][:desc_end].rstrip())
+                                            # enzyme_names[enzyme].append(record[2])
+                                    #print(record)
+                                    enzyme_counts[enzyme] += int(record[4])
+
+                    print(lines_processed, 'lines processed')
+
+                    # compute mathematical (euclidean) completeness of pathway
+                    completeness = sum(1 for e in enzyme_ids if enzyme_counts[e] > 0) / len(enzyme_ids)
+
+                    # add names to master dictionary
+                    enzymes_by_set[entry['name']] = enzyme_names.copy()
+
+                    # done with set, add output row
+                    csv_set = [entry['name'], completeness]
+                    for enzyme in enzyme_ids:
+                        csv_set.append(enzyme_counts[enzyme])
+                        enzyme_counts[enzyme] = 0
+                        enzyme_names[enzyme] = [] # clear list for next pass
+                    sets.append(csv_set)
+
+            # dump aggregated sets to file
+            print('Writing aggregated data ')
+            with open(path + config['output']['dataset'], 'wt') as dataset_file:
+                writer = csv.writer(dataset_file, quoting=csv.QUOTE_MINIMAL, lineterminator='\n')
+                # header row
+                headers = []
+                headers.append('name')
+                headers.append('completeness')
+                headers.extend(enzyme_ids)
+                writer.writerow(headers)
+                for row in sets:
+                    writer.writerow(row)
+
+            # build manifest
+            print('Building manifest...')
+            manifest = {}
+            manifest['pathway'] = pathway['@number']
+            manifest['src'] = config['output']['pathway']
+            manifest['dataset'] = config['output']['dataset']
+
+            # dump manifest to JSON file
+            with open(path + config['output']['manifest'], 'wt') as manifest_file:
+                manifest_file.write(json.dumps(manifest, indent=4))
+
+            # finally, update pathway data and dump to file in output dir
+            print('Writing pathway definition...')
+            pathway['enzymes'] = enzymes_by_set # break down by series
+            with open(path + manifest['src'], 'wt') as src_file:
+                json.dump(dictionary, src_file, indent=4)
+    print('Done.')
+
 def pathwaysMain(passArguments):
     argParser = argparse.ArgumentParser(
                         description='PALADIN Pipeline Plugins: pathways',
@@ -730,7 +875,11 @@ def pathwaysMain(passArguments):
     modules = set(args[0].modules)
     passArguments = args[1]
     if args[0].l:
-        mods = ["main", "postprocess", "heatmap", "taxa_callback"]
+        mods = ["main",
+                "postprocess",
+                "heatmap",
+                "taxa_callback",
+                "visbuilder"]
         plugins.core.sendOutput("\n".join(mods), "stdout")
     if "main" in modules:
         main_pathways(passArguments)
@@ -740,3 +889,5 @@ def pathwaysMain(passArguments):
         heatmap(passArguments)
     if "taxa_callback" in modules:
         taxa_callback(passArguments)
+    if "visbuilder" in modules:
+        visbuilder(passArguments)
