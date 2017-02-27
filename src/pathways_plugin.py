@@ -8,7 +8,7 @@ import csv
 import requests
 import dataset
 import xmltodict
-import os
+import re
 import sys
 import glob
 import numpy as np
