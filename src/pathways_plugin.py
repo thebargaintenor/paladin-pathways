@@ -125,7 +125,8 @@ KEGG
 def kegg_get(pathway_id, overwrite=False):
     '''Load KGML from either the local database or KEGG
     (caching the new KGML)'''
-    path = os.path.dirname(__file__)
+    #path = os.path.dirname(__file__)
+    path = "/tmp/"
     # I stubbornly insist on continued windows compatibility
     if sys.platform == 'win32':
         path += '\\'
