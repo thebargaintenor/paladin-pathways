@@ -174,7 +174,7 @@ def download_kgml(pathway_id):
 
     url = 'http://rest.kegg.jp/get/ec' + pathway_id
     plugins.core.sendOutput(": ".join(['Retrieving data from', url]), 'stdout')
-    r = requests.kegg_get(url)
+    r = requests.get(url)
 
     # retrieve DAT version of pathway first (Because.)
     datfile = None
@@ -192,7 +192,7 @@ def download_kgml(pathway_id):
 
     url += '/kgml'
     plugins.core.sendOutput(" ".join(['Retrieving data from ', url]), "stdout")
-    r = requests.kegg_get(url)
+    r = requests.get(url)
 
     # retrieve KGML of pathway
     kgml = None
