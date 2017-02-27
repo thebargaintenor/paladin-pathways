@@ -9,7 +9,7 @@ import requests
 import dataset
 import xmltodict
 import re
-import sys
+import tempfile
 import glob
 import numpy as np
 import matplotlib.pyplot as plt
@@ -126,16 +126,15 @@ def kegg_get(pathway_id, overwrite=False):
     '''Load KGML from either the local database or KEGG
     (caching the new KGML)'''
     #path = os.path.dirname(__file__)
-    path = "/tmp/"
+    path = tempfile.mktemp()
     # I stubbornly insist on continued windows compatibility
-    if sys.platform == 'win32':
-        path += '\\'
-    else:
-        path += '/'
+    #if sys.platform == 'win32':
+    #    path += '\\'
+    #else:
+    #    path += '/'
     # database is stored in folder with scripts so that changing the working
     # directory doesn't require a new cache
     # (plus it can be shared with multiple users)
-    print(path)
     db = dataset.connect('sqlite:///' + path + 'kgmlcache.db')
     kgml_table = db.get_table('kgml')
 
