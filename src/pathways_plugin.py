@@ -134,6 +134,7 @@ def kegg_get(pathway_id, overwrite=False):
     # database is stored in folder with scripts so that changing the working
     # directory doesn't require a new cache
     # (plus it can be shared with multiple users)
+    print(path)
     db = dataset.connect('sqlite:///' + path + 'kgmlcache.db')
     kgml_table = db.get_table('kgml')
 
