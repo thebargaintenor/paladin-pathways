@@ -700,8 +700,11 @@ def taxa_callback(passArguments):
     paladin_out = arguments["paladin"]
     reads = arguments["i_reads"]
     uid = get_uniprot_id(enzyme_code, pathways_out)
+    print(uid)
     loh = uniprot_coords(uid[0], paladin_out)
+    print(loh)
     los = find_seq(loh, reads)
+    print(los)
     mkquery(los)
     blaster()
     taxa_dict = get_taxa()
