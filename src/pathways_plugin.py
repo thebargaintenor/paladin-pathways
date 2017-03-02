@@ -617,7 +617,6 @@ def find_seq(loh, filename):
     los = {}
     with open(filename) as f:
         for line in f:
-            print(line)
             if flag:
                 los[header] = line.rstrip()
                 flag = False
