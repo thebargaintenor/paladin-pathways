@@ -707,7 +707,7 @@ def taxa_callback(passArguments):
         key = entry[0]
         if key.split("_")[0] in uids:
             filtered_entries[key.split("_")[0]] = entry[1]
-    taxa = plugins.taxonomy.getSpeciesLoookup(filtered_entries)
+    taxa = plugins.taxonomy.getSpeciesLookup(filtered_entries)
     print(taxa)   
     """
     loh = uniprot_coords(uid[0], paladin_out)
