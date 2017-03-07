@@ -439,7 +439,7 @@ def main_pathways(arguments):
     verbose = arguments["verbose"]
     suffix = time.strftime('_%m%d%y_%H%M')
     if "kegg_db" in arguments:
-        kegg_db = arguments[kegg_db]
+        kegg_db = arguments["kegg_db"]
     else:
         kegg_db = None
     log_file = 'pathways_{0}{1}.log'.format(kegg_id, suffix)
