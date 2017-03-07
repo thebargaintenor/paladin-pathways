@@ -701,13 +701,13 @@ def taxa_callback(passArguments):
     paladin_out = arguments["paladin"]
     reads = arguments["i_reads"]
     uids = set(get_uniprot_id(enzyme_code, pathways_out))
-    paladin_entries = core.PaladinEntry.getEntries(paladin_out, 0)
+    paladin_entries = plugins.core.PaladinEntry.getEntries(paladin_out, 0)
     filtered_entries = {}
     for entry in paladin_entries.items():
         key = entry[0]
         if key.split("_")[0] in uids:
             filtered_entries[key.split("_")[0]] = entry[1]
-    taxa = taxonomy.getSpeciesLoookup(filtered_entries)
+    taxa = plugins.taxonomy.getSpeciesLoookup(filtered_entries)
     print(taxa)   
     """
     loh = uniprot_coords(uid[0], paladin_out)
