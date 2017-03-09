@@ -16,6 +16,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import subprocess
+from Bio.KEGG.KGML import KGML_parser
+from Bio.Graphics.KGML_vis import KGMLCanvas
 '''
 pathways.py
 
@@ -717,6 +719,7 @@ def taxa_callback(passArguments):
     output_taxa(taxa_dict, "taxonomy")
     """
 
+    
 def heatmap(passArguments):
     argParser = argparse.ArgumentParser(
                         description='PALADIN Pipeline Plugins: pathways',
@@ -733,6 +736,53 @@ def heatmap(passArguments):
     copymat, genome_names, en_disp = parse_files(infiles)
     render(copymat, genome_names, en_disp,
            outname=arguments["output"] + "/heatmap.png")
+
+
+def visualize_counts(passArguments):
+    argParser = argparse.ArgumentParser(
+                        description='PALADIN Pipeline Plugins: pathways',
+                        prog='pathways')
+    argParser.add_argument('--output', "-o",
+                           help='output path',
+                           required=True)
+    argParser.add_argument('--kegg', "-k",
+                           help='kegg id',
+                           required=True)
+    arguments = vars(argParser.parse_known_args(passArguments)[0])
+    count_file = glob.glob(arguments["output" + "/*count*"])
+    pathways_counts = {}
+    counts = []
+    with open(count_file) as cf:
+        for line in cf:
+            words = line.split()
+            pathways_counts[words[0]] = float(words[1])
+            counts.append(float(words[1]))
+    max_count = np.log10(np.max(counts))
+    kgml = download_kgml(arguments["kegg"], True)
+    pathway = KGML_parser.read(kgml)
+    cmap = cm.bone
+    for element in pathway.entries.items():
+        key = element[0]
+        e_object = element[1]
+        if e_object.name[3:] in pathways_counts:
+            element_count = pathways_counts[e_object.name[3:]]
+            if element_count == 0:
+                normalized_count = 10
+            else:
+                normalized_count = 245*np.log10(element_count)/max_count + 10
+        else:
+            normalized_count = 0
+        acc = 0
+        for graphic in element.graphics:
+            new_rgba_color = cmap(normalized_count)
+            rgb_color = tuple([int(255*val) for val in new_rgba_color[0:3]])
+            rgb_string = '#' +\
+                         ''.join([hex(val)[2:] for val in rgb_color]).upper()
+            element.grapics[acc].bgcolor = rgb_string
+            acc += 1
+        pathway.entries[key] = element
+    canvas = KGMLCanvas(pathway, import_imagemap=True)
+    canvas.draw("fab_map_new_colours.pdf")
 
 
 def visbuilder(passArguments):
