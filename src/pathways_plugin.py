@@ -165,9 +165,7 @@ def kegg_get(pathway_id, overwrite=False, kegg_db=None):
         return json.loads(kgml)  # return none if no pathway json found
 
 
-
-
-def download_kgml(pathway_id):
+def download_kgml(pathway_id, return_kgml=False):
     '''
     Download KGML for the pathway and return a record ready for DB storage
     '''
@@ -211,7 +209,8 @@ def download_kgml(pathway_id):
                                            r.status_code]) +
                                 'Download process halting', "stdout")
         return  # don't bother requesting anything else
-
+    if return_kgml:
+        return kgml
     # convert KGML to dictionary for JSON output,
     # but add a dictionary mapping KEGG IDs to compound names
     kgml_dict = xmltodict.parse(kgml)

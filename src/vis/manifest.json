@@ -1,5 +1,5 @@
 {
     "pathway": "00625",
-    "dataset": "presentation_demo.csv",
-    "src": "demo00625.json"
+    "src": "demo00625.json",
+    "dataset": "presentation_demo.csv"
 }
