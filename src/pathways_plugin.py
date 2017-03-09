@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+\#! /usr/bin/env python3
 import argparse
 import shlex
 import plugins.core
@@ -938,7 +938,8 @@ def pathwaysMain(passArguments):
                 "postprocess",
                 "heatmap",
                 "taxa_callback",
-                "visbuilder"]
+                "visbuilder",
+                "visualize_counts"]
         plugins.core.sendOutput("\n".join(mods), "stdout")
     if "main" in modules:
         main_pathways(passArguments)
@@ -950,3 +951,6 @@ def pathwaysMain(passArguments):
         taxa_callback(passArguments)
     if "visbuilder" in modules:
         visbuilder(passArguments)
+    if "visualize_counts" in modules:
+        visualize_counts(passArguments)          
+
