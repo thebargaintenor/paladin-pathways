@@ -749,7 +749,7 @@ def visualize_counts(passArguments):
                            help='kegg id',
                            required=True)
     arguments = vars(argParser.parse_known_args(passArguments)[0])
-    count_file = glob.glob(arguments["output" + "/*count*"])
+    count_file = glob.glob(arguments["output"] + "/*count*")[0]
     pathways_counts = {}
     counts = []
     with open(count_file) as cf:
