@@ -13,11 +13,14 @@ import re
 import tempfile
 import glob
 import numpy as np
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
+import matplotlib.patches as mpatches
 import subprocess
 from Bio.KEGG.KGML import KGML_parser
 from Bio.Graphics.KGML_vis import KGMLCanvas
+from PyPDF2 import PdfFileWriter, PdfFileReader, PdfFileMerger
 '''
 pathways.py
 
@@ -753,36 +756,135 @@ def visualize_counts(passArguments):
     pathways_counts = {}
     counts = []
     with open(count_file) as cf:
-        for line in cf:
-            words = line.split()
-            pathways_counts[words[0]] = float(words[1])
-            counts.append(float(words[1]))
-    max_count = np.log10(np.max(counts))
+        cf = cf.readlines()
+    for line in cf[1:]:
+        words = line.split(",")
+        pathways_counts[words[0]] = float(words[2])
+        counts.append(float(words[2]))
+    max_count = np.max(counts)
     kgml = download_kgml(arguments["kegg"], True)
     pathway = KGML_parser.read(kgml)
-    cmap = cm.bone
+    cmap = cm.inferno
     for element in pathway.entries.items():
         key = element[0]
         e_object = element[1]
         if e_object.name[3:] in pathways_counts:
             element_count = pathways_counts[e_object.name[3:]]
             if element_count == 0:
-                normalized_count = 10
+                normalized_count = 1
             else:
-                normalized_count = 245*np.log10(element_count)/max_count + 10
+                normalized_count = np.log10(element_count)/np.log10(max_count) 
+        
+            acc = 0
+            for graphic in e_object.graphics:
+                new_rgba_color = cmap(normalized_count)
+                rgb_color = tuple([int(255*val) for val in new_rgba_color[0:3]])
+                rgb_string = '#' +\
+                             ''.join([hex(val)[2:] for val in rgb_color]).upper()
+                e_object.graphics[acc].bgcolor = rgb_string
+                acc += 1
         else:
-            normalized_count = 0
-        acc = 0
-        for graphic in element.graphics:
-            new_rgba_color = cmap(normalized_count)
-            rgb_color = tuple([int(255*val) for val in new_rgba_color[0:3]])
-            rgb_string = '#' +\
-                         ''.join([hex(val)[2:] for val in rgb_color]).upper()
-            element.grapics[acc].bgcolor = rgb_string
-            acc += 1
-        pathway.entries[key] = element
-    canvas = KGMLCanvas(pathway, import_imagemap=True)
+            acc = 0
+            for graphic in e_object.graphics:
+                e_object.graphics[acc].bgcolor = "#b2aba7".upper()
+                acc += 1
+        pathway.entries[key] = e_object
+    canvas = KGMLCanvas(pathway,fontsize = 12, import_imagemap=True,  margins=(0.1, 0.02), label_orthologs=False, label_maps=False, label_compounds=False, label_reaction_entries=True)
     canvas.draw("fab_map_new_colours.pdf")
+    fig = plt.figure(figsize=(1, 5))
+    ax1 = fig.gca()
+    cb1 = mpl.colorbar.ColorbarBase(ax1, cmap=cmap,
+                                orientation='vertical')
+    cb1.set_label("log(count)/max(log(count))")
+    plt.tight_layout()
+    plt.savefig("colorbar.pdf")
+    watermark = PdfFileReader(open("colorbar.pdf", "rb"))
+    output_file = PdfFileWriter()
+    input_file = PdfFileReader(open("fab_map_new_colours.pdf", "rb"))
+    page_count = input_file.getNumPages()
+    for page_number in range(page_count):
+        input_page = input_file.getPage(page_number)
+        input_page.mergePage(watermark.getPage(0))
+        output_file.addPage(input_page)
+    with open("document-output.pdf", "wb") as outputStream:
+        output_file.write(outputStream)
+
+
+
+def visualize_taxa(passArguments):
+    argParser = argparse.ArgumentParser(
+                        description='PALADIN Pipeline Plugins: pathways',
+                        prog='pathways')
+    argParser.add_argument('--output', "-o",
+                           help='output path',
+                           required=True)
+    argParser.add_argument('--kegg', "-k",
+                           help='kegg id',
+                           required=True)
+    arguments = vars(argParser.parse_known_args(passArguments)[0])
+    count_file = glob.glob(arguments["output"] + "/pathways.csv")[0]
+    pathways_counts = {}
+    counts = []
+    with open(count_file) as cf:
+        cf = cf.readlines()
+    for line in cf:
+        words = line.split(",")
+        pathways_counts[words[1]] = words[-3]
+    
+    kgml = download_kgml(arguments["kegg"], True)
+    pathway = KGML_parser.read(kgml)
+    cmap = cm.inferno
+    locs = []
+    tax_list = []
+    for element in pathway.entries.items():
+        key = element[0]
+        e_object = element[1]
+        if e_object.name[3:] in pathways_counts:
+            tax_list.append(pathways_counts[e_object.name[3:]])
+    tax_list = list(set(tax_list))
+    taxa = {}.fromkeys(pathways_counts.values())
+    inds = np.linspace(0, 1, len(tax_list))
+    acc = 0
+    for key in tax_list:
+        taxa[key] = inds[acc]
+        acc += 1    
+    for element in pathway.entries.items():
+        key = element[0]
+        e_object = element[1]
+        if e_object.name[3:] in pathways_counts:
+            locs.append(taxa[pathways_counts[e_object.name[3:]]])
+            normalized_count = taxa[pathways_counts[e_object.name[3:]]]
+            acc = 0
+            for graphic in e_object.graphics:
+                new_rgba_color = cmap(normalized_count)
+                rgb_color = tuple([int(255*val) for val in new_rgba_color[0:3]])
+                rgb_string = '#' +\
+                             ''.join([hex(val)[2:] for val in rgb_color]).upper()
+                e_object.graphics[acc].bgcolor = rgb_string
+                acc += 1
+        else:
+            acc = 0
+            for graphic in e_object.graphics:
+                e_object.graphics[acc].bgcolor = "#b2aba7".upper()
+                acc += 1
+        pathway.entries[key] = e_object
+    canvas = KGMLCanvas(pathway,fontsize = 12, import_imagemap=True,  margins=(0.1, 0.02), label_orthologs=False, label_maps=False, label_compounds=False, label_reaction_entries=True)
+    canvas.draw("taxa_map.pdf")
+    fig = plt.figure()
+    ax = fig.gca()
+    for value in tax_list:
+        item = (value, taxa[value])
+        plt.plot(0, 0,"s", label = item[0], color = cmap(item[1]))
+    plt.xlim((-100, -99))
+    ax.set_axis_off()  #turn off the axis
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig("legend.pdf", bbox_inches='tight')
+    merger = PdfFileMerger()
+    for pdf in ["taxa_map.pdf","legend.pdf"]:
+        merger.append(open(pdf, 'rb'))
+    with open('final_taxa_map.pdf', 'wb') as fout:
+        merger.write(fout)
 
 
 def visbuilder(passArguments):
@@ -939,7 +1041,8 @@ def pathwaysMain(passArguments):
                 "heatmap",
                 "taxa_callback",
                 "visbuilder",
-                "visualize_counts"]
+                "visualize_counts",
+                "visualize_taxa"]
         plugins.core.sendOutput("\n".join(mods), "stdout")
     if "main" in modules:
         main_pathways(passArguments)
@@ -953,3 +1056,5 @@ def pathwaysMain(passArguments):
         visbuilder(passArguments)
     if "visualize_counts" in modules:
         visualize_counts(passArguments)
+    if "visualize_taxa" in modules:
+        visualize_taxa(passArguments)
