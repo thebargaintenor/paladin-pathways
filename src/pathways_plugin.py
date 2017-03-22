@@ -952,5 +952,4 @@ def pathwaysMain(passArguments):
     if "visbuilder" in modules:
         visbuilder(passArguments)
     if "visualize_counts" in modules:
-        visualize_counts(passArguments)          
-
+        visualize_counts(passArguments)
