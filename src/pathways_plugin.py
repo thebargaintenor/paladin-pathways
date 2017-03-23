@@ -16,7 +16,6 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-import matplotlib.patches as mpatches
 import subprocess
 from Bio.KEGG.KGML import KGML_parser
 from Bio.Graphics.KGML_vis import KGMLCanvas
@@ -810,7 +809,6 @@ def visualize_counts(passArguments):
         output_file.write(outputStream)
 
 
-
 def visualize_taxa(passArguments):
     argParser = argparse.ArgumentParser(
                         description='PALADIN Pipeline Plugins: pathways',
@@ -847,7 +845,7 @@ def visualize_taxa(passArguments):
     acc = 0
     for key in tax_list:
         taxa[key] = inds[acc]
-        acc += 1    
+        acc += 1
     for element in pathway.entries.items():
         key = element[0]
         e_object = element[1]
@@ -868,24 +866,116 @@ def visualize_taxa(passArguments):
                 e_object.graphics[acc].bgcolor = "#b2aba7".upper()
                 acc += 1
         pathway.entries[key] = e_object
-    canvas = KGMLCanvas(pathway,fontsize = 12, import_imagemap=True,  margins=(0.1, 0.02), label_orthologs=False, label_maps=False, label_compounds=False, label_reaction_entries=True)
+    canvas = KGMLCanvas(pathway, fontsize=12, import_imagemap=True,
+                        margins=(0.1, 0.02), label_orthologs=False,
+                        label_maps=False, label_compounds=False,
+                        label_reaction_entries=True)
     canvas.draw("taxa_map.pdf")
     fig = plt.figure()
     ax = fig.gca()
     for value in tax_list:
         item = (value, taxa[value])
-        plt.plot(0, 0,"s", label = item[0], color = cmap(item[1]))
+        plt.plot(0, 0, "s", label=item[0], color=cmap(item[1]))
     plt.xlim((-100, -99))
-    ax.set_axis_off()  #turn off the axis
+    ax.set_axis_off()
     plt.legend()
     plt.tight_layout()
     plt.savefig("legend.pdf", bbox_inches='tight')
     merger = PdfFileMerger()
-    for pdf in ["taxa_map.pdf","legend.pdf"]:
+    for pdf in ["taxa_map.pdf", "legend.pdf"]:
         merger.append(open(pdf, 'rb'))
     with open('final_taxa_map.pdf', 'wb') as fout:
         merger.write(fout)
 
+
+def barplot_vis(passArguments):
+    argParser = argparse.ArgumentParser(
+                        description='PALADIN Pipeline Plugins: pathways',
+                        prog='pathways')
+    argParser.add_argument('--output', "-o",
+                           help='output path',
+                           required=True)
+    arguments = vars(argParser.parse_known_args(passArguments)[0])
+    pathways_outfile = arguments["output"] + "/pathways.csv"
+    with open(pathways_outfile) as pout:
+        pout = pout.readlines()
+    brendas = []
+    gene_names = []
+    organisms = []
+    counts = []
+    for line in pout[1:]:
+        uniprot, brenda, gene_name, organism, count, abundance = line.rstrip().split(",")
+        brendas.append(brenda)
+        gene_names.append(gene_name)
+        organisms.append(organism)
+        counts.append(count)
+    brenda_bins = {}
+    organism_bins = {}
+    for i in range(len(brendas)):
+        brenda = brendas[i]
+        organism = organisms[i]
+        if brenda not in brenda_bins:
+            brenda_bins[brenda] = [i]
+        else:
+            brenda_bins[brenda].append(i)
+        if organism not in organism_bins:
+            organism_bins[organism] = [i]
+        else:
+            organism_bins[organism].append(i)
+    # Bin by brenda
+    cmap = cm.bone
+    xloc = np.linspace(0, 1, len(organism_bins))
+    org_colors = {}
+    acc = 0
+    for key in organism_bins.keys():
+        org_colors[key] = cmap(xloc[acc])
+        acc += 1
+    xloc = np.linspace(0, 1, len(brenda_bins))
+    brenda_colors = {}
+    acc = 0
+    for key in brenda_bins.keys():
+        brenda_colors[key] = cmap(xloc[acc])
+        acc += 1
+    acc = 0
+    plt.figure()
+    labels = []
+    for item in brenda_bins.items():
+        brenda = item[0]
+        indicies = item[1]
+        bcount = []
+        borg = []
+        for index in indicies:
+            borg.append(org_colors[organisms[index]])
+            bcount.append(int(counts[index]))
+        total_count = np.sum(bcount)
+        bcount = np.asarray(bcount)
+        ratio = bcount / total_count
+        left = np.cumsum(ratio - ratio[0])
+        labels.append(brenda)
+        plt.barh(acc, ratio, left=left, align="center", color=borg)
+        acc += 1
+    plt.ylabel(np.arange(len(labels)), labels)
+    plt.savefig("brenda_bar.png")
+    plt.figure()
+    labels = []
+    for item in organism_bins.items():
+        organism = item[0]
+        indicies = item[1]
+        ocount = []
+        oorg = []
+        for index in indicies:
+            oorg.append(brenda_colors[organisms[index]])
+            ocount.append(int(counts[index]))
+        total_count = np.sum(ocount)
+        ocount = np.asarray(ocount)
+        ratio = ocount / total_count
+        left = np.cumsum(ratio - ratio[0])
+        labels.append(organism)
+        plt.barh(acc, ratio, left=left, align="center", color=oorg)
+        acc += 1
+    plt.ylabel(np.arange(len(labels)), labels)
+    plt.savefig("organism_bar.png")
+    
 
 def visbuilder(passArguments):
 # load build configuration manifest
@@ -1042,7 +1132,8 @@ def pathwaysMain(passArguments):
                 "taxa_callback",
                 "visbuilder",
                 "visualize_counts",
-                "visualize_taxa"]
+                "visualize_taxa",
+                "barplot_vis"]
         plugins.core.sendOutput("\n".join(mods), "stdout")
     if "main" in modules:
         main_pathways(passArguments)
@@ -1058,3 +1149,5 @@ def pathwaysMain(passArguments):
         visualize_counts(passArguments)
     if "visualize_taxa" in modules:
         visualize_taxa(passArguments)
+    if "barplot_vis" in modules:
+        barplot_vis(passArguments)
