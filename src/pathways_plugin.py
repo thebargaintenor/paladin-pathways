@@ -904,11 +904,14 @@ def barplot_vis(passArguments):
     organisms = []
     counts = []
     for line in pout[1:]:
-        uniprot, brenda, gene_name, organism, count, abundance = line.rstrip().split(",")
-        brendas.append(brenda)
-        gene_names.append(gene_name)
-        organisms.append(organism)
-        counts.append(count)
+        try:
+            uniprot, brenda, gene_name, organism, count, abundance = line.rstrip().split(",")
+            brendas.append(brenda)
+            gene_names.append(gene_name)
+            organisms.append(organism)
+            counts.append(count)
+        except:
+            pass
     brenda_bins = {}
     organism_bins = {}
     for i in range(len(brendas)):
@@ -923,7 +926,7 @@ def barplot_vis(passArguments):
         else:
             organism_bins[organism].append(i)
     # Bin by brenda
-    cmap = cm.bone
+    cmap = cm.autumn
     xloc = np.linspace(0, 1, len(organism_bins))
     org_colors = {}
     acc = 0
@@ -937,44 +940,89 @@ def barplot_vis(passArguments):
         brenda_colors[key] = cmap(xloc[acc])
         acc += 1
     acc = 0
-    plt.figure()
+    plt.figure(figsize=(30, len(brenda_bins)/2), dpi=300)
     labels = []
     for item in brenda_bins.items():
         brenda = item[0]
         indicies = item[1]
         bcount = []
         borg = []
+        borg_org = []
         for index in indicies:
             borg.append(org_colors[organisms[index]])
+            borg_org.append(organisms[index])
             bcount.append(int(counts[index]))
         total_count = np.sum(bcount)
         bcount = np.asarray(bcount)
         ratio = bcount / total_count
-        left = np.cumsum(ratio - ratio[0])
+        acci = 1
+        for i in range(len(ratio)):
+            val = ratio[i]
+            ratio[i] = acci
+            acci = acci - val
         labels.append(brenda)
-        plt.barh(acc, ratio, left=left, align="center", color=borg)
+        pos = ratio * 0 + acc
+        plt.barh(pos, ratio, align="center",height = .94, color=borg)
+        if len(ratio) > 1:
+            for i in range(len(ratio) - 1):
+                if ratio[i] - ratio[i + 1] > len(borg_org[i])/300:
+                    plt.text(ratio[i + 1], acc, " " + borg_org[i],
+                             fontsize = 10, color = "k", fontweight='bold',
+                             verticalalignment="center")
+        if ratio[-1] > len(borg_org[-1])/300:
+            plt.text(0, acc, " " + borg_org[-1], fontsize = 10,
+                     color = "k", fontweight='bold', 
+                     verticalalignment = "center")
         acc += 1
-    plt.ylabel(np.arange(len(labels)), labels)
-    plt.savefig("brenda_bar.png")
-    plt.figure()
+    plt.xlabel("ratio of counts: max counts per EC code")
+    plt.yticks(np.arange(len(labels)), labels)
+    for item in org_colors.items():
+        plt.plot(-1, -1, "s", color = item[1], label = item[0])
+    plt.xlim((0, 1))
+    plt.ylim((-.5, len(brenda_bins) - .5))
+    #plt.legend(bbox_to_anchor=(1, 0))
+    plt.savefig("brenda_bar.png", bbox_inches="tight")
+    plt.figure(figsize=(15, len(organism_bins)/5), dpi=300)
+    acc = 0
     labels = []
     for item in organism_bins.items():
         organism = item[0]
         indicies = item[1]
         ocount = []
         oorg = []
+        oorg_org = []
         for index in indicies:
-            oorg.append(brenda_colors[organisms[index]])
+            oorg.append(brenda_colors[brendas[index]])
+            oorg_org.append(brendas[index])
             ocount.append(int(counts[index]))
         total_count = np.sum(ocount)
         ocount = np.asarray(ocount)
         ratio = ocount / total_count
-        left = np.cumsum(ratio - ratio[0])
+        acci = 1
+        for i in range(len(ratio)):
+            val = ratio[i]
+            ratio[i] = acci
+            acci = acci - val
         labels.append(organism)
-        plt.barh(acc, ratio, left=left, align="center", color=oorg)
+        pos = 0 * ratio + acc
+        plt.barh(pos, ratio, align="center", color=oorg)
+        if len(ratio) > 1:
+            for i in range(len(ratio) - 1):
+                if ratio[i] - ratio[i + 1] > len(oorg_org[i])/300*2:
+                    plt.text(ratio[i + 1], acc, " " + oorg_org[i],
+                             fontsize = 10, color = "k", fontweight='bold',
+                             verticalalignment="center")
+        if ratio[-1] > len(oorg_org[-1])/300*2:
+            plt.text(0, acc, " " + oorg_org[-1], fontsize = 10,
+                     color = "k", fontweight='bold', 
+                     verticalalignment = "center")
         acc += 1
-    plt.ylabel(np.arange(len(labels)), labels)
-    plt.savefig("organism_bar.png")
+    plt.yticks(np.arange(len(labels)), labels)
+    for item in brenda_colors.items():
+        plt.plot(-1, -1, "s", color = item[1], label = item[0])
+    plt.xlim((0, 1))
+    plt.ylim((-.5, len(organism_bins) - .5))
+    plt.savefig("organism_bar.png", bbox_inches='tight')
     
 
 def visbuilder(passArguments):
