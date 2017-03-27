@@ -1025,6 +1025,96 @@ def barplot_vis(passArguments):
     plt.savefig("organism_bar.png", bbox_inches='tight')
     
 
+def piechart_vis(passArguments):
+    argParser = argparse.ArgumentParser(
+                        description='PALADIN Pipeline Plugins: pathways',
+                        prog='pathways')
+    argParser.add_argument('--output', "-o",
+                           help='output path',
+                           required=True)
+    argParser.add_argument("--piechart_brenda",
+                           help="brenda id's to plot piecharts for list seperated by commas (no spaces!)",
+                           required=False,
+                           default = "")
+    argParser.add_argument("--piechart_organism",
+                           help="organisms to plot piecharts for, list seperated by commas, (no spaces!)",
+                           required=False,
+                           default="")
+    arguments = vars(argParser.parse_known_args(passArguments)[0])
+    pathways_outfile = arguments["output"] + "/pathways.csv"
+    with open(pathways_outfile) as pout:
+        pout = pout.readlines()
+    brendas = []
+    gene_names = []
+    organisms = []
+    counts = []
+    for line in pout[1:]:
+        try:
+            uniprot, brenda, gene_name, organism, count, abundance = line.rstrip().split(",")
+            brendas.append(brenda)
+            gene_names.append(gene_name)
+            organisms.append(organism)
+            counts.append(count)
+        except:
+            pass
+    brenda_bins = {}
+    organism_bins = {}
+    for i in range(len(brendas)):
+        brenda = brendas[i]
+        organism = organisms[i]
+        if brenda not in brenda_bins:
+            brenda_bins[brenda] = [i]
+        else:
+            brenda_bins[brenda].append(i)
+        if organism not in organism_bins:
+            organism_bins[organism] = [i]
+        else:
+            organism_bins[organism].append(i)
+    # Bin by brenda
+    cmap = cm.autumn
+    xloc = np.linspace(0, 1, len(organism_bins))
+    org_colors = {}
+    acc = 0
+    for key in organism_bins.keys():
+        org_colors[key] = cmap(xloc[acc])
+        acc += 1
+    xloc = np.linspace(0, 1, len(brenda_bins))
+    brenda_colors = {}
+    acc = 0
+    for key in brenda_bins.keys():
+        brenda_colors[key] = cmap(xloc[acc])
+        acc += 1
+    brendas = arguments["piechart_brenda"].split(",")
+    for brenda in brendas:
+        indicies = brenda_bins[brenda]
+        bcount = []
+        borg = []
+        borg_org = []
+        for index in indicies:
+            borg.append(org_colors[organisms[index]])
+            borg_org.append(organisms[index])
+            bcount.append(int(counts[index]))
+        bcount = np.asarray(bcount)
+        plt.pie(bcount,  labels=borg_org, autopct='%1.1f%%',
+                shadow=True, startangle=90, colors=borg)
+        plt.gca().axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+        plt.savefig("pie_" + brenda + ".png")
+    for organism in arguments["piechart_organism"].split(","):
+        indicies = organism_bins[organism]
+        ocount = []
+        oorg = []
+        oorg_org = []
+        for index in indicies:
+            oorg.append(brenda_colors[brendas[index]])
+            oorg_org.append(brendas[index])
+            ocount.append(int(counts[index]))
+        ocount = np.asarray(ocount)
+        plt.pie(ocount, labels=oorg_org, autopct='%1.1f%%',
+                shadow=True, startangle=90, colors=oorg)
+        plt.gca().axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+        plt.savefig("pie_" + brenda + ".png")
+
+
 def visbuilder(passArguments):
 # load build configuration manifest
     argParser = argparse.ArgumentParser(
@@ -1158,6 +1248,7 @@ def visbuilder(passArguments):
                 json.dump(dictionary, src_file, indent=4)
     print('Done.')
 
+    
 def pathwaysMain(passArguments):
     argParser = argparse.ArgumentParser(
                         description='PALADIN Pipeline Plugins: pathways',
@@ -1199,3 +1290,5 @@ def pathwaysMain(passArguments):
         visualize_taxa(passArguments)
     if "barplot_vis" in modules:
         barplot_vis(passArguments)
+    if "piechart_vis" in modules:
+        piechart_vis(passArguments)
