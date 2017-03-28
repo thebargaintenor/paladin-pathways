@@ -43,7 +43,6 @@ def pluginConnect(passDefinition):
     passDefinition.versionMinor = 0
     passDefinition.versionRevision = 0
     passDefinition.dependencies = []  # If plugin depends on other plugins, specify their plugin name here
-
     #passDefinition.callbackInit = templateInit # Reference plugin initialization method here (run once at startup).  Not required.
     passDefinition.callbackMain = pathwaysMain # Reference plugin main method here.  Will receive plugin arguments.  Required.
 
@@ -76,11 +75,9 @@ Usage: pathways [-k pathway] [-p paladin_tsv] [-o output] [-c counts] [-v]
 # -- FUNCTIONS --
 
 
-
 def log(f, line, verbose=False):
     if verbose:
         plugins.core.sendOutput(line, 'stdout')
-
     with open(f, 'at') as handle:
         handle.write(line + '\n')
 
@@ -101,7 +98,6 @@ def lookup(ec_list, database):
             url = 'http://rest.kegg.jp/list/' +\
                   '+'.join('ec:' + ec for ec in g if '-' not in ec)
             plugins.core.sendOutput(url, "stdout")
-
             r = requests.get(url)
             if r.status_code == 200:  # 200 is no error, so proceed happily
                 lines = r.text.split('\n')
@@ -123,6 +119,7 @@ def group(lst, n):
         if len(val) == n or len(val) == len(lst):
             yield val
 
+
 """
 KEGG
 """
@@ -131,22 +128,12 @@ KEGG
 def kegg_get(pathway_id, overwrite=False, kegg_db=None):
     '''Load KGML from either the local database or KEGG
     (caching the new KGML)'''
-    #path = os.path.dirname(__file__)
     if kegg_db:
         path = kegg_db
     else:
         path = tempfile.mktemp() + 'kgmlcache.db'
-    # I stubbornly insist on continued windows compatibility
-    #if sys.platform == 'win32':
-    #    path += '\\'
-    #else:
-    #    path += '/'
-    # database is stored in folder with scripts so that changing the working
-    # directory doesn't require a new cache
-    # (plus it can be shared with multiple users)
     db = dataset.connect('sqlite:///' + path)
     kgml_table = db.get_table('kgml')
-
     if not kgml_table:
         record = download_kgml(pathway_id)
         kgml_table.insert(record, ['id'])
@@ -164,7 +151,6 @@ def kegg_get(pathway_id, overwrite=False, kegg_db=None):
             record = download_kgml(pathway_id)
             kgml_table.insert(record)
             kgml = record['kgml']
-
     if kgml:
         return json.loads(kgml)  # return none if no pathway json found
 
@@ -398,7 +384,7 @@ def postprocess(arguments):
                            help="path to tsv output of paladin",
                            required=True)
     argParser.add_argument('--output', "-o",
-                           help='output path',
+                           help='Pathways output folder',
                            required=True)
     arguments = vars(argParser.parse_known_args(arguments)[0])
     input_path = arguments["i_paladin_tsv"]
@@ -413,7 +399,7 @@ def postprocess(arguments):
 def main_pathways(arguments):
     # Parse arguments
     argParser = argparse.ArgumentParser(
-                        description='PALADIN Pipeline Plugins: pathways',
+                        description='PALADIN Pipeline Plugins: pathways main',
                         prog='pathways')
     argParser.add_argument('--kegg', "-k",
                            help='KEGG ID for pathway',
@@ -422,10 +408,7 @@ def main_pathways(arguments):
                            help='path to PALADIN output report',
                            required=True)
     argParser.add_argument('--output', "-o",
-                           help='output filename',
-                           required=True)
-    argParser.add_argument("-c",
-                           help='suppliment data filename',
+                           help='Pathways output folder',
                            required=True)
     argParser.add_argument('--verbose', "-v",
                            help='verbose mode',
@@ -433,12 +416,11 @@ def main_pathways(arguments):
     argParser.add_argument('--kegg_db',
                            help='kegg_database',
                            required=False)
-    
     arguments = vars(argParser.parse_known_args(arguments)[0])
     kegg_id = arguments["kegg"]
     paladin_report = arguments["paladin"]
-    output_csv = arguments["output"] + '/pathways.csv'
-    count_csv = arguments["c"]
+    output_csv = arguments["output"] + '/pathways.tsv'
+    count_csv = arguments["output"] + '/pathways_counts.tsv'
     verbose = arguments["verbose"]
     suffix = time.strftime('_%m%d%y_%H%M')
     if "kegg_db" in arguments:
@@ -495,7 +477,8 @@ def main_pathways(arguments):
             with open(output_csv, 'w') as csvfile:
                 writer = csv.writer(csvfile,
                                     quoting=csv.QUOTE_MINIMAL,
-                                    lineterminator='\n')
+                                    lineterminator='\n',
+                                    delimiter='\t')
                 writer.writerow(['uniprot',
                                  'brenda',
                                  'gene_name',
@@ -541,7 +524,7 @@ def main_pathways(arguments):
         # example for counts
         if count_csv:
             with open(count_csv, 'wt') as count_file:
-                writer = csv.writer(count_file, lineterminator='\n')
+                writer = csv.writer(count_file, lineterminator='\n', delimiter="\t")
                 writer.writerow(['ec', 'gene_name', 'count'])
                 for e in enzymes:
                     writer.writerow([e, enzyme_names[e], enzyme_counts[e]])
@@ -590,101 +573,9 @@ def get_uniprot_id(ec, filename):
         return acc
 
 
-def uniprot_coords(uniprot_id, filename):
-    """
-    Pull the header for the contig file from the .sam output file of paladin
-    uniprot_id: a uniprot_id (str)
-    filename: path to sam file (str)
-    """
-    lines = []
-    with open(filename) as f:
-        for line in f:
-            if not line[0] == '@':  # if not a header
-                line = line.split()
-                if uniprot_id in line[2]:  # and matching the uniprot_id
-                    lines.append(line[0].split(':')[-1])
-                    # append the contig header
-    return lines
-
-
-def find_seq(loh, filename):
-    """                                                                                                            
-    Return a list of seqeunces from fastq file (filename) corresponding
-    to the headers in loh
-    loh: list of headers (list(string))
-    filename: contig.fasta file to search for the list of headers of
-    Returns:
-    los: dictionary with the contig headers as keys and sequences as values
-    """
-    flag = False
-    header = ''
-    los = {}
-    with open(filename) as f:
-        for line in f:
-            if flag:
-                los[header] = line.rstrip()
-                flag = False
-                header = ''
-            else:
-                if line[0] == '@':
-                    if line[1:-3] in loh:
-                        header = line.rstrip()
-                        flag = True
-    return los
-
-
-def mkquery(los):
-    """
-    
-    """
-    with open('blast_query', 'w') as blast_query:
-        for item in los.items():
-            header = item[0]
-            seq = item[1]
-            print('>' + header[1:], file=blast_query)
-            print(seq, file=blast_query)
-
-
-def blaster():
-    command = ['blastx', '-query',  'blast_query',
-               '-db', '/usr/local/share/paladin/uniref90.fasta',
-               '-outfmt', '6 qacc sacc pident length mismatch gapopen \
-               qstart qend sstart send evalue bitscore ssciname',
-               '-out', 'blastout',
-               '-num_threads', '32',
-               '-num_alignments', '1',
-               '-max_hsps', '1']
-    subprocess.run(command, stdout=subprocess.PIPE)
-
-
-def get_taxa(blast_results="blastout",
-             db="/usr/local/share/paladin/uniref90.fasta"):
-    uids = []
-    with open(blast_results) as br:
-        for line in br:
-            uids.append(line.split()[1])
-    uids = set(uids)
-    taxa_dict = {}
-    with open(db) as database:
-        for line in database:
-            if line[0] == '>':
-                words = line.split()
-                uniref_id = words[0][1:]
-                if uniref_id in uids:
-                    start = line.find("Tax")
-                    stop = line[start:].find(' ')
-                    taxa_dict[uniref_id] = line[start:stop + 1]
-    return taxa_dict
-
-
-def output_taxa(taxa_dict, f):
-    for item in taxa_dict.items():
-        print(" ".join(item), file=f)
-
-
 def taxa_callback(passArguments):
     argParser = argparse.ArgumentParser(
-                        description='PALADIN Pipeline Plugins: pathways',
+                        description='PALADIN Pipeline Plugins: pathways taxa_callback',
                         prog='pathways')
     argParser.add_argument('--paladin', "-p",
                            help='path to PALADIN output report',
@@ -695,14 +586,10 @@ def taxa_callback(passArguments):
     argParser.add_argument("--i-enzyme_code",
                            help='enzyme code',
                            required=True)
-    argParser.add_argument("--i-reads",
-                           help='raw reads',
-                           required=True)
     arguments = vars(argParser.parse_known_args(passArguments)[0])
     enzyme_code = arguments["i_enzyme_code"]
     pathways_out = arguments["output"]
     paladin_out = arguments["paladin"]
-    reads = arguments["i_reads"]
     uids = set(get_uniprot_id(enzyme_code, pathways_out))
     paladin_entries = plugins.core.PaladinEntry.getEntries(paladin_out, 0)
     filtered_entries = {}
@@ -711,20 +598,11 @@ def taxa_callback(passArguments):
         if key in uids:
             filtered_entries[entry[0]] = entry[1]
     taxa = plugins.taxonomy.getSpeciesLookup(filtered_entries)
-
-    """
-    loh = uniprot_coords(uid[0], paladin_out)
-    los = find_seq(loh, reads)
-    mkquery(los)
-    blaster()
-    taxa_dict = get_taxa()
-    output_taxa(taxa_dict, "taxonomy")
-    """
-
+    
     
 def heatmap(passArguments):
     argParser = argparse.ArgumentParser(
-                        description='PALADIN Pipeline Plugins: pathways',
+                        description='PALADIN Pipeline Plugins: pathways heatmap',
                         prog='pathways')
     argParser.add_argument("--i-heatmap-folder",
                            help="path to folder containing files to heatmap",
@@ -742,7 +620,7 @@ def heatmap(passArguments):
 
 def visualize_counts(passArguments):
     argParser = argparse.ArgumentParser(
-                        description='PALADIN Pipeline Plugins: pathways',
+                        description='PALADIN Pipeline Plugins: pathways visualize counts',
                         prog='pathways')
     argParser.add_argument('--output', "-o",
                            help='output path',
@@ -772,8 +650,7 @@ def visualize_counts(passArguments):
             if element_count == 0:
                 normalized_count = 1
             else:
-                normalized_count = np.log10(element_count)/np.log10(max_count) 
-        
+                normalized_count = np.log10(element_count)/np.log10(max_count)
             acc = 0
             for graphic in e_object.graphics:
                 new_rgba_color = cmap(normalized_count)
@@ -788,24 +665,27 @@ def visualize_counts(passArguments):
                 e_object.graphics[acc].bgcolor = "#b2aba7".upper()
                 acc += 1
         pathway.entries[key] = e_object
-    canvas = KGMLCanvas(pathway,fontsize = 12, import_imagemap=True,  margins=(0.1, 0.02), label_orthologs=False, label_maps=False, label_compounds=False, label_reaction_entries=True)
+    canvas = KGMLCanvas(pathway, fontsize=12, import_imagemap=True,
+                        margins=(0.1, 0.02), label_orthologs=False,
+                        label_maps=False, label_compounds=False,
+                        label_reaction_entries=True)
     canvas.draw("fab_map_new_colours.pdf")
     fig = plt.figure(figsize=(1, 5))
     ax1 = fig.gca()
     cb1 = mpl.colorbar.ColorbarBase(ax1, cmap=cmap,
-                                orientation='vertical')
+                                    orientation='vertical')
     cb1.set_label("log(count)/max(log(count))")
     plt.tight_layout()
-    plt.savefig("colorbar.pdf")
-    watermark = PdfFileReader(open("colorbar.pdf", "rb"))
+    plt.savefig(arguments["output"] + "/colorbar.pdf")
+    watermark = PdfFileReader(open(arguments["output"] + "/colorbar.pdf", "rb"))
     output_file = PdfFileWriter()
-    input_file = PdfFileReader(open("fab_map_new_colours.pdf", "rb"))
+    input_file = PdfFileReader(open(arguments["output"] + "/fab_map_new_colours.pdf", "rb"))
     page_count = input_file.getNumPages()
     for page_number in range(page_count):
         input_page = input_file.getPage(page_number)
         input_page.mergePage(watermark.getPage(0))
         output_file.addPage(input_page)
-    with open("document-output.pdf", "wb") as outputStream:
+    with open(arguments["output"] + "/document-output.pdf", "wb") as outputStream:
         output_file.write(outputStream)
 
 
@@ -820,15 +700,13 @@ def visualize_taxa(passArguments):
                            help='kegg id',
                            required=True)
     arguments = vars(argParser.parse_known_args(passArguments)[0])
-    count_file = glob.glob(arguments["output"] + "/pathways.csv")[0]
+    count_file = glob.glob(arguments["output"] + "/pathways.tsv")[0]
     pathways_counts = {}
-    counts = []
     with open(count_file) as cf:
         cf = cf.readlines()
     for line in cf:
         words = line.split(",")
         pathways_counts[words[1]] = words[-3]
-    
     kgml = download_kgml(arguments["kegg"], True)
     pathway = KGML_parser.read(kgml)
     cmap = cm.inferno
@@ -870,7 +748,7 @@ def visualize_taxa(passArguments):
                         margins=(0.1, 0.02), label_orthologs=False,
                         label_maps=False, label_compounds=False,
                         label_reaction_entries=True)
-    canvas.draw("taxa_map.pdf")
+    canvas.draw(arguments["output"] + "/taxa_map.pdf")
     fig = plt.figure()
     ax = fig.gca()
     for value in tax_list:
@@ -880,11 +758,11 @@ def visualize_taxa(passArguments):
     ax.set_axis_off()
     plt.legend()
     plt.tight_layout()
-    plt.savefig("legend.pdf", bbox_inches='tight')
+    plt.savefig(arguments["output"] + "legend.pdf", bbox_inches='tight')
     merger = PdfFileMerger()
-    for pdf in ["taxa_map.pdf", "legend.pdf"]:
+    for pdf in [arguments["output"] + "/taxa_map.pdf", arguments["output"] + "/legend.pdf"]:
         merger.append(open(pdf, 'rb'))
-    with open('final_taxa_map.pdf', 'wb') as fout:
+    with open(arguments["output"] + '/final_taxa_map.pdf', 'wb') as fout:
         merger.write(fout)
 
 
@@ -896,7 +774,7 @@ def barplot_vis(passArguments):
                            help='output path',
                            required=True)
     arguments = vars(argParser.parse_known_args(passArguments)[0])
-    pathways_outfile = arguments["output"] + "/pathways.csv"
+    pathways_outfile = arguments["output"] + "/pathways.tsv"
     with open(pathways_outfile) as pout:
         pout = pout.readlines()
     brendas = []
@@ -962,26 +840,25 @@ def barplot_vis(passArguments):
             acci = acci - val
         labels.append(brenda)
         pos = ratio * 0 + acc
-        plt.barh(pos, ratio, align="center",height = .94, color=borg)
+        plt.barh(pos, ratio, align="center", height=.94, color=borg)
         if len(ratio) > 1:
             for i in range(len(ratio) - 1):
                 if ratio[i] - ratio[i + 1] > len(borg_org[i])/300:
                     plt.text(ratio[i + 1], acc, " " + borg_org[i],
-                             fontsize = 10, color = "k", fontweight='bold',
+                             fontsize=10, color="k", fontweight='bold',
                              verticalalignment="center")
         if ratio[-1] > len(borg_org[-1])/300:
-            plt.text(0, acc, " " + borg_org[-1], fontsize = 10,
-                     color = "k", fontweight='bold', 
-                     verticalalignment = "center")
+            plt.text(0, acc, " " + borg_org[-1], fontsize=10,
+                     color="k", fontweight='bold',
+                     verticalalignment="center")
         acc += 1
     plt.xlabel("ratio of counts: max counts per EC code")
     plt.yticks(np.arange(len(labels)), labels)
     for item in org_colors.items():
-        plt.plot(-1, -1, "s", color = item[1], label = item[0])
+        plt.plot(-1, -1, "s", color=item[1], label=item[0])
     plt.xlim((0, 1))
     plt.ylim((-.5, len(brenda_bins) - .5))
-    #plt.legend(bbox_to_anchor=(1, 0))
-    plt.savefig("brenda_bar.png", bbox_inches="tight", transparent=True)
+    plt.savefig(arguments["output"] + "/brenda_bar.png", bbox_inches="tight", transparent=True)
     plt.figure(figsize=(15, len(organism_bins)/5), dpi=300)
     acc = 0
     labels = []
@@ -1010,19 +887,19 @@ def barplot_vis(passArguments):
             for i in range(len(ratio) - 1):
                 if ratio[i] - ratio[i + 1] > len(oorg_org[i])/300*2:
                     plt.text(ratio[i + 1], acc, " " + oorg_org[i],
-                             fontsize = 10, color = "k", fontweight='bold',
+                             fontsize=10, color="k", fontweight='bold',
                              verticalalignment="center")
         if ratio[-1] > len(oorg_org[-1])/300*2:
-            plt.text(0, acc, " " + oorg_org[-1], fontsize = 10,
-                     color = "k", fontweight='bold', 
-                     verticalalignment = "center")
+            plt.text(0, acc, " " + oorg_org[-1], fontsize=10,
+                     color="k", fontweight='bold',
+                     verticalalignment="center")
         acc += 1
     plt.yticks(np.arange(len(labels)), labels)
     for item in brenda_colors.items():
-        plt.plot(-1, -1, "s", color = item[1], label = item[0])
+        plt.plot(-1, -1, "s", color=item[1], label=item[0])
     plt.xlim((0, 1))
     plt.ylim((-.5, len(organism_bins) - .5))
-    plt.savefig("organism_bar.png", bbox_inches='tight', transparent=True)
+    plt.savefig(arguments["output"] + "/organism_bar.png", bbox_inches='tight', transparent=True)
     
 
 def piechart_vis(passArguments):
@@ -1035,13 +912,13 @@ def piechart_vis(passArguments):
     argParser.add_argument("--piechart_brenda",
                            help="brenda id's to plot piecharts for list seperated by commas (no spaces!)",
                            required=False,
-                           default = "")
+                           default="")
     argParser.add_argument("--piechart_organism",
                            help="organisms to plot piecharts for, list seperated by commas, (no spaces!)",
                            required=False,
                            default="")
     arguments = vars(argParser.parse_known_args(passArguments)[0])
-    pathways_outfile = arguments["output"] + "/pathways.csv"
+    pathways_outfile = arguments["output"] + "/pathways.tsv"
     with open(pathways_outfile) as pout:
         pout = pout.readlines()
     brendas = []
@@ -1098,11 +975,12 @@ def piechart_vis(passArguments):
             bcount = np.asarray(bcount)
             ratio = bcount / np.sum(bcount)
             explode = np.fmin(np.ones_like(ratio) * .2, -np.log10(ratio)/10)
-            explode = np.logspace(-3, -.7, len(ratio), base = 2)
-            plt.pie(bcount,  labels=borg_org, autopct='%1.1f%%', explode = explode,
+            explode = np.logspace(-3, -.7, len(ratio), base=2)
+            plt.pie(bcount,  labels=borg_org, autopct='%1.1f%%', explode=explode,
                     shadow=True, startangle=90, colors=borg)
-            plt.gca().axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-            plt.savefig("pie_" + brenda + ".png", bbox_inches="tight", transparent=True)
+            plt.gca().axis('equal')
+            plt.savefig(arguments["output"] + "/pie_" + brenda + ".png",
+                        bbox_inches="tight", transparent=True)
     for organism in arguments["piechart_organism"].split(","):
         if organism != "":
             plt.figure()
@@ -1117,154 +995,22 @@ def piechart_vis(passArguments):
             ocount = np.asarray(ocount)
             ratio = ocount / np.sum(ocount)
             explode = np.fmin(np.ones_like(ratio) * .2, -np.log10(ratio)/10)
-            explode = np.logspace(-3, -.7, len(ratio), base = 2)
+            explode = np.logspace(-3, -.7, len(ratio), base=2)
             plt.pie(ocount, labels=oorg_org, autopct='%1.1f%%', explode=explode,
                     shadow=True, startangle=90, colors=oorg)
-            plt.gca().axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-            plt.savefig("pie_" + ''.join(e for e in organism if e.isalnum()) + ".png", bbox_inches="tight", transparent=True)
+            plt.gca().axis('equal')
+            plt.savefig(arguments["output"] + "/pie_" +
+                        ''.join(e for e in organism if e.isalnum())+".png",
+                        bbox_inches="tight", transparent=True)
 
 
-def visbuilder(passArguments):
-# load build configuration manifest
-    argParser = argparse.ArgumentParser(
-                        description='PALADIN Pipeline Plugins: pathways',
-                        prog='pathways')
-    argParser.add_argument("--kegg_db",
-                           help="kegg_db file",
-                           required=True)
-    arguments = vars(argParser.parse_known_args(passArguments)[0])
-    config_path = arguments["kegg_db"]
-    with open(config_path, 'rt') as config_file:
-        config = json.load(config_file)  # this will remain in scope... WORRY NOT.
-        config_file.close()
-
-        # load pathway data into dictionary using path in config
-        with open(config['pathway'], 'rt') as path_file:
-            dictionary = json.load(path_file)
-            pathway = dictionary['pathway']
-            if 'name' in config:
-                pathway['@description'] = config['name']
-            path_file.close()
-
-            print('Detected output directory:', config['output']['path'])
-
-            # this is the master list of EC references for iteration purposes
-            enzyme_ids = []
-
-            enzyme_names = {}
-            enzyme_counts = {}
-
-            sets = []
-            enzymes_by_set = {}
-
-            print('Building manifest...')
-
-            # initialize data structures
-            for entry in pathway['entry']:
-                if entry['@type'] == 'enzyme':
-                    #ec = entry['graphics']['@name']
-                    # because a reaction could now have several enzymes
-                    ecs = [ec[3:] for ec in entry['@name'].split(' ')]
-                    for ec in ecs:
-                        if not ec in enzyme_names:
-                            enzyme_ids.append(ec)
-                            enzyme_names[ec] = []
-                            enzyme_counts[ec] = 0
-
-            # *** BY ARBITRARY CONVENTION, all output files must go in the same folder.
-            #     This is for simplicity of packaging, so deal with it.
-
-            # As of python 3, makedirs can just handle itself if the target path
-            # already exists.  If this is a problem, uncomment the check here:
-            # eh... I'll do it anyway just for being verbose
-            print('Checking output path...')
-
-            path = config['output']['path']
-            if not os.path.exists(path):
-                print('Creating output directory...')
-                os.makedirs(path, exist_ok=True)
-
-            # commence actual aggregation
-            print('Starting data aggregation...')
-            for entry in config['data']:
-                with open(entry['path'], 'rt') as datasource_file:
-                    print('Aggregating ' + entry['path'] + '...')
-                    reader = csv.reader(datasource_file)
-                    lines_processed = 0
-                    for record in reader:
-                        lines_processed += 1
-                        if lines_processed % 1000 == 0:
-                            print(lines_processed, 'lines processed')
-
-                        if record[0] != 'name':
-                            ec = record[1]
-                            # check all enzymes for match (line may match multiple)
-                            for enzyme in enzyme_ids:
-                                if is_match(enzyme, ec):
-                                    if record[2]:
-                                        if len(enzyme_names[enzyme]) < 5:
-                                            # prune EC from description (since it's already stored)
-                                            desc_end = record[2].find('(EC')
-                                            enzyme_names[enzyme].append(record[2][:desc_end].rstrip())
-                                            # enzyme_names[enzyme].append(record[2])
-                                    #print(record)
-                                    enzyme_counts[enzyme] += int(record[4])
-
-                    print(lines_processed, 'lines processed')
-
-                    # compute mathematical (euclidean) completeness of pathway
-                    completeness = sum(1 for e in enzyme_ids if enzyme_counts[e] > 0) / len(enzyme_ids)
-
-                    # add names to master dictionary
-                    enzymes_by_set[entry['name']] = enzyme_names.copy()
-
-                    # done with set, add output row
-                    csv_set = [entry['name'], completeness]
-                    for enzyme in enzyme_ids:
-                        csv_set.append(enzyme_counts[enzyme])
-                        enzyme_counts[enzyme] = 0
-                        enzyme_names[enzyme] = [] # clear list for next pass
-                    sets.append(csv_set)
-
-            # dump aggregated sets to file
-            print('Writing aggregated data ')
-            with open(path + config['output']['dataset'], 'wt') as dataset_file:
-                writer = csv.writer(dataset_file, quoting=csv.QUOTE_MINIMAL, lineterminator='\n')
-                # header row
-                headers = []
-                headers.append('name')
-                headers.append('completeness')
-                headers.extend(enzyme_ids)
-                writer.writerow(headers)
-                for row in sets:
-                    writer.writerow(row)
-
-            # build manifest
-            print('Building manifest...')
-            manifest = {}
-            manifest['pathway'] = pathway['@number']
-            manifest['src'] = config['output']['pathway']
-            manifest['dataset'] = config['output']['dataset']
-
-            # dump manifest to JSON file
-            with open(path + config['output']['manifest'], 'wt') as manifest_file:
-                manifest_file.write(json.dumps(manifest, indent=4))
-
-            # finally, update pathway data and dump to file in output dir
-            print('Writing pathway definition...')
-            pathway['enzymes'] = enzymes_by_set # break down by series
-            with open(path + manifest['src'], 'wt') as src_file:
-                json.dump(dictionary, src_file, indent=4)
-    print('Done.')
-
-    
 def pathwaysMain(passArguments):
     argParser = argparse.ArgumentParser(
                         description='PALADIN Pipeline Plugins: pathways',
                         prog='pathways')
     argParser.add_argument('--version',
                            action='version',
-                           version='Paladin Pathways 1.0.0')
+                           version='Paladin Pathways 1.1.0')
     argParser.add_argument("modules",
                            nargs="*",
                            help="Paladin pathways step to run")
@@ -1278,7 +1024,6 @@ def pathwaysMain(passArguments):
                 "postprocess",
                 "heatmap",
                 "taxa_callback",
-                "visbuilder",
                 "visualize_counts",
                 "visualize_taxa",
                 "barplot_vis",
@@ -1292,8 +1037,6 @@ def pathwaysMain(passArguments):
         heatmap(passArguments)
     if "taxa_callback" in modules:
         taxa_callback(passArguments)
-    if "visbuilder" in modules:
-        visbuilder(passArguments)
     if "visualize_counts" in modules:
         visualize_counts(passArguments)
     if "visualize_taxa" in modules:
