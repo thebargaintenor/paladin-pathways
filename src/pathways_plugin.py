@@ -711,7 +711,7 @@ def taxa_callback(passArguments):
         if key in uids:
             filtered_entries[entry[0]] = entry[1]
     taxa = plugins.taxonomy.getSpeciesLookup(filtered_entries)
-    print(taxa)   
+
     """
     loh = uniprot_coords(uid[0], paladin_out)
     los = find_seq(loh, reads)
@@ -981,7 +981,7 @@ def barplot_vis(passArguments):
     plt.xlim((0, 1))
     plt.ylim((-.5, len(brenda_bins) - .5))
     #plt.legend(bbox_to_anchor=(1, 0))
-    plt.savefig("brenda_bar.png", bbox_inches="tight")
+    plt.savefig("brenda_bar.png", bbox_inches="tight", transparent=True)
     plt.figure(figsize=(15, len(organism_bins)/5), dpi=300)
     acc = 0
     labels = []
@@ -1022,7 +1022,7 @@ def barplot_vis(passArguments):
         plt.plot(-1, -1, "s", color = item[1], label = item[0])
     plt.xlim((0, 1))
     plt.ylim((-.5, len(organism_bins) - .5))
-    plt.savefig("organism_bar.png", bbox_inches='tight')
+    plt.savefig("organism_bar.png", bbox_inches='tight', transparent=True)
     
 
 def piechart_vis(passArguments):
@@ -1084,35 +1084,44 @@ def piechart_vis(passArguments):
     for key in brenda_bins.keys():
         brenda_colors[key] = cmap(xloc[acc])
         acc += 1
-    brendas = arguments["piechart_brenda"].split(",")
-    for brenda in brendas:
-        indicies = brenda_bins[brenda]
-        bcount = []
-        borg = []
-        borg_org = []
-        for index in indicies:
-            borg.append(org_colors[organisms[index]])
-            borg_org.append(organisms[index])
-            bcount.append(int(counts[index]))
-        bcount = np.asarray(bcount)
-        plt.pie(bcount,  labels=borg_org, autopct='%1.1f%%',
-                shadow=True, startangle=90, colors=borg)
-        plt.gca().axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-        plt.savefig("pie_" + brenda + ".png")
+    for brenda in arguments["piechart_brenda"].split(","):
+        if brenda != "":
+            plt.figure()
+            indicies = brenda_bins[brenda]
+            bcount = []
+            borg = []
+            borg_org = []
+            for index in indicies:
+                borg.append(org_colors[organisms[index]])
+                borg_org.append(organisms[index])
+                bcount.append(int(counts[index]))
+            bcount = np.asarray(bcount)
+            ratio = bcount / np.sum(bcount)
+            explode = np.fmin(np.ones_like(ratio) * .2, -np.log10(ratio)/10)
+            explode = np.logspace(-3, -.7, len(ratio), base = 2)
+            plt.pie(bcount,  labels=borg_org, autopct='%1.1f%%', explode = explode,
+                    shadow=True, startangle=90, colors=borg)
+            plt.gca().axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+            plt.savefig("pie_" + brenda + ".png", bbox_inches="tight", transparent=True)
     for organism in arguments["piechart_organism"].split(","):
-        indicies = organism_bins[organism]
-        ocount = []
-        oorg = []
-        oorg_org = []
-        for index in indicies:
-            oorg.append(brenda_colors[brendas[index]])
-            oorg_org.append(brendas[index])
-            ocount.append(int(counts[index]))
-        ocount = np.asarray(ocount)
-        plt.pie(ocount, labels=oorg_org, autopct='%1.1f%%',
-                shadow=True, startangle=90, colors=oorg)
-        plt.gca().axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-        plt.savefig("pie_" + brenda + ".png")
+        if organism != "":
+            plt.figure()
+            indicies = organism_bins[organism]
+            ocount = []
+            oorg = []
+            oorg_org = []
+            for index in indicies:
+                oorg.append(brenda_colors[brendas[index]])
+                oorg_org.append(brendas[index])
+                ocount.append(int(counts[index]))
+            ocount = np.asarray(ocount)
+            ratio = ocount / np.sum(ocount)
+            explode = np.fmin(np.ones_like(ratio) * .2, -np.log10(ratio)/10)
+            explode = np.logspace(-3, -.7, len(ratio), base = 2)
+            plt.pie(ocount, labels=oorg_org, autopct='%1.1f%%', explode=explode,
+                    shadow=True, startangle=90, colors=oorg)
+            plt.gca().axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+            plt.savefig("pie_" + ''.join(e for e in organism if e.isalnum()) + ".png", bbox_inches="tight", transparent=True)
 
 
 def visbuilder(passArguments):
@@ -1272,7 +1281,8 @@ def pathwaysMain(passArguments):
                 "visbuilder",
                 "visualize_counts",
                 "visualize_taxa",
-                "barplot_vis"]
+                "barplot_vis",
+                "piechart_vis"]
         plugins.core.sendOutput("\n".join(mods), "stdout")
     if "main" in modules:
         main_pathways(passArguments)
