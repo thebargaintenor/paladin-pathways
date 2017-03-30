@@ -2,7 +2,6 @@
 import argparse
 import shlex
 import plugins.core
-import plugins.taxonomy
 import json
 import time
 import csv
@@ -19,6 +18,7 @@ import matplotlib.cm as cm
 from Bio.KEGG.KGML import KGML_parser
 from Bio.Graphics.KGML_vis import KGMLCanvas
 from PyPDF2 import PdfFileWriter, PdfFileReader, PdfFileMerger
+from multiprocessing import Pool
 
 
 def pluginConnect(passDefinition):
@@ -202,7 +202,7 @@ HEATMAP
 
 def parse_files(list_of_files, binary=False):
     """
-    Load the csv files into python objects for the heatmap to plot.
+    Load the tsv files into python objects for the heatmap to plot.
     """
     genomes = []
     genome_names = []
@@ -211,10 +211,10 @@ def parse_files(list_of_files, binary=False):
         with open(file_path) as f:
             f = f.readlines()
         enzymes = {}
-        genome_names.append(f[0].rstrip().split(',')[2])
+        genome_names.append(f[0].rstrip().split('\t')[2])
         # pull out the naming info for labeling
         for line in f[1:]:
-            words = line.rstrip().split(',')
+            words = line.rstrip().split('\t')
             enzyme_name = "".join(words[1:-1])
             enzymes.update({enzyme_name: int(float(words[-1]))})
             en.append(enzyme_name)
@@ -310,7 +310,7 @@ def run_postprocess(input_path, output_path, verbose):
                                 records.append('{0},{1},{2},{3},{4},{5}\n'.format(
                                     fields[3], m.group(1), format_value(desc),
                                     format_value(fields[4]), fields[0], fields[1]))
-                                if len(records) > 1000: # conditionals
+                                if len(records) > 1000:  # conditionals
                                     # dump buffer to file
                                     dump_records(records, outfile)
                                     del records[:]
@@ -327,7 +327,8 @@ def run_postprocess(input_path, output_path, verbose):
                                             "stdout")
     # stop time
     end = time.clock()
-    plugins.core.sendOutput('Post-process operation finished in {0:.2f} seconds.'.format(end - start),
+    plugins.core.sendOutput('Post-process operation finished in ' +
+                            '{0:.2f} seconds.'.format(end - start),
                             "stdout")
 
    
@@ -363,6 +364,10 @@ def postprocess(arguments):
 
 
 def main_pathways(arguments):
+    """
+    The main pathways pipeline
+    Produces the output for the other processes.
+    """
     # Parse arguments
     argParser = argparse.ArgumentParser(
                         description='PALADIN Pipeline Plugins: pathways main',
@@ -396,26 +401,19 @@ def main_pathways(arguments):
     log_file = 'pathways_{0}{1}.log'.format(kegg_id, suffix)
     log(log_file, 'Fetching pathway information for KEGG ID ' +
         kegg_id, verbose)
-
     # retrieve dictionary of pathway information
     pathway = kegg_get(kegg_id, kegg_db=kegg_db)
-
     if pathway:
         pathway = pathway['pathway']
         files_created = []
-
         # make name for filtered output
         filtered_paladin_csv = paladin_report[:-4] + suffix + '.csv'
-
         log(log_file, 'Running TSV post-process...', verbose)
         run_postprocess(paladin_report, filtered_paladin_csv, verbose)
-
         files_created.append(filtered_paladin_csv)
-
         enzymes = []
         enzyme_counts = {}
         enzyme_names = {}
-
         # initialize data structures
         for entry in pathway['entry']:
             if entry['@type'] == 'enzyme':
@@ -426,18 +424,14 @@ def main_pathways(arguments):
                         enzymes.append(ec)
                         enzyme_names[ec] = ''
                         enzyme_counts[ec] = 0
-
         # initialize list of enzyme IDs (for simpler use with generators)
         for enzyme in enzymes:
             enzyme_counts[enzyme] = 0
             enzyme_names[enzyme] = ''
-
         log(log_file, 'Calculating pathway completeness...', verbose)
-
         # get file handle for filtered PALADIN report
         with open(filtered_paladin_csv, 'r') as paladin_file:
             paladin_records = csv.reader(paladin_file, delimiter=',')
-
             # open output file for immediate writing
             # in same pass as reading paladin report
             with open(output_csv, 'w') as csvfile:
@@ -451,7 +445,6 @@ def main_pathways(arguments):
                                  'organism',
                                  'count',
                                  'abundance'])
-
                 # iterate over incoming report
                 for row in paladin_records:
                     matches = tuple(e for e in enzymes if is_match(e, row[1]))
@@ -463,10 +456,8 @@ def main_pathways(arguments):
                             enzyme_counts[match] += int(row[4])  # use count from file
                             if row[2] and not enzyme_names[match]:
                                 enzyme_names[match] = row[2]
-
         files_created.append(output_csv)
-
-        # attempt to look up representative names of enzymes absent in pathway
+        # attempt to look up representative names of enzyme absent in pathway
         # (as we don't have names when no annotation exists)
         missing = [e for e in enzymes if enzyme_counts[e] == 0]
         log(log_file, 'Looking up representative names of missing enzymes...', verbose)
@@ -474,19 +465,15 @@ def main_pathways(arguments):
         for e in extra_names.keys():
             if len(extra_names[e]) > 0:
                 enzyme_names[e] = extra_names[e][0]
-
         # generators are quick - use more generators
         log_entries = []
         log_entries.append('Present in pathway: [{0}]'.format(', '.join(e for e in enzymes if enzyme_counts[e] > 0)))
         log_entries.append('Missing from pathway: [{0}]'.format(', '.join(missing)))
-
         completeness = sum(1 for e in enzymes if enzyme_counts[e] > 0) / len(enzymes) * 100
         log_entries.append('Path completion: {0:.1f}%'.format(completeness))
-
         for item in log_entries:
             if item:
                 log(log_file, item, True)
-
         # example for counts
         if count_csv:
             with open(count_csv, 'wt') as count_file:
@@ -494,18 +481,14 @@ def main_pathways(arguments):
                 writer.writerow(['ec', 'gene_name', 'count'])
                 for e in enzymes:
                     writer.writerow([e, enzyme_names[e], enzyme_counts[e]])
-
             with open(count_csv[:-4] + '.log', 'wt') as count_log_file:
                 count_log_file.writelines([item + '\n' for item in log_entries])
-
             files_created.append(count_csv)
             files_created.append(count_csv[:-4] + '.log')
-
         pathway_json = 'pathway_{0}{1}.json'.format(kegg_id, suffix)
         with open(pathway_json, 'wt') as pjfile:
             json.dump(pathway, pjfile, indent=4)
             files_created.append(pathway_json)
-
         log(log_file, '\nFiles created:', True)
         for f in files_created:
             log(log_file, f, True)
@@ -516,7 +499,9 @@ def main_pathways(arguments):
 
 
 def is_match(known, potential):
-    """Detects if potential EC reference matches the known one, accounting for '-' as wildcard"""
+    """
+    Detects if potential EC reference matches the known one, accounting for '-' as wildcard
+    """
     dash = known.find('-')
     if dash > -1:
         return potential.startswith(known[:dash])
@@ -540,6 +525,9 @@ def get_uniprot_id(ec, filename):
 
 
 def taxa_callback(passArguments):
+    """
+    Is basically redundant at this point, should it be switched to using qiime?
+    """
     argParser = argparse.ArgumentParser(
                         description='PALADIN Pipeline Plugins: pathways taxa_callback',
                         prog='pathways')
@@ -567,6 +555,9 @@ def taxa_callback(passArguments):
     
     
 def heatmap(passArguments):
+    """
+    For a set of output counts go through and make a heatmap  from them.
+    """
     argParser = argparse.ArgumentParser(
                         description='PALADIN Pipeline Plugins: pathways heatmap',
                         prog='pathways')
@@ -578,13 +569,16 @@ def heatmap(passArguments):
                            required=True)
     arguments = vars(argParser.parse_known_args(passArguments)[0])
     infiles = glob.glob(arguments["i_heatmap_folder"] +
-                        "/*.csv")
+                        "/*.tsv")
     copymat, genome_names, en_disp = parse_files(infiles)
     render(copymat, genome_names, en_disp,
            outname=arguments["output"] + "/heatmap.png")
 
 
 def visualize_counts(passArguments):
+    """
+    Produce the kegg pathways map, but with colors corresponding to the frequency.
+    """
     argParser = argparse.ArgumentParser(
                         description='PALADIN Pipeline Plugins: pathways visualize counts',
                         prog='pathways')
@@ -656,6 +650,9 @@ def visualize_counts(passArguments):
 
 
 def visualize_taxa(passArguments):
+    """
+    Produce the kegg visualization but with colors determined by taxa
+    """
     argParser = argparse.ArgumentParser(
                         description='PALADIN Pipeline Plugins: pathways',
                         prog='pathways')
@@ -733,6 +730,9 @@ def visualize_taxa(passArguments):
 
 
 def barplot_vis(passArguments):
+    """
+    Plots barplots, showing taxonomy present for each enzyme code, and enzyme codes present for each taxonomy.
+    """
     argParser = argparse.ArgumentParser(
                         description='PALADIN Pipeline Plugins: pathways',
                         prog='pathways')
@@ -869,6 +869,9 @@ def barplot_vis(passArguments):
     
 
 def piechart_vis(passArguments):
+    """
+    For each taxa or enzyme code it will plot the present enzyme codes or taxonomies.
+    """
     argParser = argparse.ArgumentParser(
                         description='PALADIN Pipeline Plugins: pathways',
                         prog='pathways')
@@ -971,6 +974,9 @@ def piechart_vis(passArguments):
 
 
 def pathwaysMain(passArguments):
+    """
+    PArses the arguments and calls the subprocesses.
+    """
     argParser = argparse.ArgumentParser(
                         description='PALADIN Pipeline Plugins: pathways',
                         prog='pathways')
@@ -982,12 +988,19 @@ def pathwaysMain(passArguments):
                            help="Paladin pathways step to run")
     argParser.add_argument("-l",
                            action="store_true")
+    argParser.add_argument("--cpus",
+                           help="Maximum number of processes to use.  Will use only" +
+                           "one per module, so do not bother assigning more than the" +
+                           "number of modules that you plan on using.",
+                           required=False,
+                           default=1)
     try:
         args = argParser.parse_known_args(shlex.split(passArguments))
     except SystemExit as seer:
         inargs = shlex.split(passArguments)
         if "-h" in inargs or "--help" in inargs:
-            args = argParser.parse_known_args([arg for arg in inargs if arg not in ["-h", "--help"]])
+            args = argParser.parse_known_args([arg for arg in inargs if arg not in ["-h",
+                                                                                    "--help"]])
             modules = set(args[0].modules)
             passArguments = args[1]
             passArguments.append("-h")
@@ -1005,19 +1018,26 @@ def pathwaysMain(passArguments):
                 "barplot_vis",
                 "piechart_vis"]
         plugins.core.sendOutput("\n".join(mods), "stdout")
+    # Main and Postrpocess need to be run in series, before anything else.
     if "main" in modules:
         main_pathways(passArguments)
     if "postprocess" in modules:
         postprocess(passArguments)
-    if "heatmap" in modules:
-        heatmap(passArguments)
-    if "taxa_callback" in modules:
-        taxa_callback(passArguments)
-    if "visualize_counts" in modules:
-        visualize_counts(passArguments)
-    if "visualize_taxa" in modules:
-        visualize_taxa(passArguments)
-    if "barplot_vis" in modules:
-        barplot_vis(passArguments)
-    if "piechart_vis" in modules:
-        piechart_vis(passArguments)
+    # But the rest of these do not depend on each other so we can run them in parallel.
+    with Pool(int(args.cpus)) as pool:
+        results = []
+        passArguments = [passArguments]
+        if "heatmap" in modules:
+            results.append(pool.apply_async(heatmap, passArguments))
+        if "taxa_callback" in modules:
+            results.append(pool.apply_async(taxa_callback, passArguments))
+        if "visualize_counts" in modules:
+            results.append(pool.apply_async(visualize_counts, passArguments))
+        if "visualize_taxa" in modules:
+            results.append(pool.apply_async(visualize_taxa, passArguments))
+        if "barplot_vis" in modules:
+            results.append(pool.apply_async(barplot_vis, passArguments))
+        if "piechart_vis" in modules:
+            results.append(pool.apply_async(piechart_vis, passArguments))
+        for result in results:
+            result.get()
