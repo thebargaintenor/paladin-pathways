@@ -19,62 +19,26 @@ import matplotlib.cm as cm
 from Bio.KEGG.KGML import KGML_parser
 from Bio.Graphics.KGML_vis import KGMLCanvas
 from PyPDF2 import PdfFileWriter, PdfFileReader, PdfFileMerger
-'''
-pathways.py
-
-DESCRIPTION:
-Script runs entire pathways pipeline, filtering a read report from PALADIN
-to calculate the mathmatical completeness of a given metabolic pathway.
-
-USAGE:
-python3 pathways.py -k 00625
-                    -p ./data/report.tsv
-                    -o results.csv
-                    -c counts.dat
-'''
 
 
-# Plugin connection definition
 def pluginConnect(passDefinition):
-    passDefinition.name = "pathways"  # Plugin name shown in plugin list (should match filename so user knows what to type eg @@pluginName) 
-    passDefinition.description = "elaborate on the pathway output produced by PALADIN Align"  # Plugin description shown in  plugin list
-    passDefinition.versionMajor = 1  # Plugin version shown in plugin list
-    passDefinition.versionMinor = 0
+    """
+    Define the required plugin attributes.
+    """
+    passDefinition.name = "pathways"
+    passDefinition.description = "elaborate on the pathway output produced by PALADIN Align"
+    passDefinition.versionMajor = 1
+    passDefinition.versionMinor = 1
     passDefinition.versionRevision = 0
-    passDefinition.dependencies = []  # If plugin depends on other plugins, specify their plugin name here
-    #passDefinition.callbackInit = templateInit # Reference plugin initialization method here (run once at startup).  Not required.
-    passDefinition.callbackMain = pathwaysMain # Reference plugin main method here.  Will receive plugin arguments.  Required.
+    passDefinition.dependencies = ["taxonomy"]
+    # passDefinition.callbackInit = templateInit
+    passDefinition.callbackMain = pathwaysMain
 
-
-
-# library imports
-
-# -- GLOBAL VARIABLES --
-
-usageMsg = '''
-
-Usage: pathways [-k pathway] [-p paladin_tsv] [-o output] [-c counts] [-v]
-    Script runs entire pathways pipeline, filtering a read report from PALADIN
-    to calculate the mathmatical completeness of a given metabolic pathway.
-
-    -k pathway      - KEGG ID for pathway
-    --kegg
-    -p paladin_tsv  - path to PALADIN output report
-    --paladin
-    -o output       - output file name
-    --output
-    -c counts       - supplement data file name
-    -v              - verbose mode (print more info to stdout)
-    --verbose
-
-    EXAMPLE: python3 pathways.py -k 00625 -p ./data/report.tsv -o results.csv -c counts.dat --verbose
- 
-'''
-
-# -- FUNCTIONS --
-
-
+    
 def log(f, line, verbose=False):
+    """
+    Handle verbosity and logging with a print like functionality.
+    """
     if verbose:
         plugins.core.sendOutput(line, 'stdout')
     with open(f, 'at') as handle:
@@ -87,6 +51,9 @@ EC_LOOKUP
 
 
 def lookup(ec_list, database):
+    """
+    Look up the enzyme names which correspond to the provided list of enzyme codes
+    """
     enzyme_names = {}
     if database == 'kegg':
         groups = group(ec_list, 10)
@@ -125,8 +92,10 @@ KEGG
 
 
 def kegg_get(pathway_id, overwrite=False, kegg_db=None):
-    '''Load KGML from either the local database or KEGG
-    (caching the new KGML)'''
+    '''
+    Load KGML from either the local database or KEGG
+    (caching the new KGML)
+    '''
     if kegg_db:
         path = kegg_db
     else:
@@ -155,19 +124,16 @@ def kegg_get(pathway_id, overwrite=False, kegg_db=None):
 
 
 def download_kgml(pathway_id, return_kgml=False):
-    '''
+    """
     Download KGML for the pathway and return a record ready for DB storage
-    '''
-    # but really, get the KGML, build dictionary from it, add data from
-    # KEGG dat file (which has different stuff in it, because reasons)
-    # I need that data stuffed into my JSON for the visualization, as
-    # the regular KGML has no names for the compounds in the chart
-
+    but really, get the KGML, build dictionary from it, add data from
+    KEGG dat file (which has different stuff in it, because reasons)
+    I need that data stuffed into my JSON for the visualization, as
+    the regular KGML has no names for the compounds in the chart
+    """
     url = 'http://rest.kegg.jp/get/ec' + pathway_id
     plugins.core.sendOutput(": ".join(['Retrieving data from', url]), 'stdout')
     r = requests.get(url)
-
-    # retrieve DAT version of pathway first (Because.)
     datfile = None
     if r.status_code == 200:  # 200 is no error, so proceed happily
         datfile = r.text
@@ -180,12 +146,9 @@ def download_kgml(pathway_id, return_kgml=False):
                                           r.status_code]) +
                                 "\nDownload process halting", "stderr")
         return  # don't bother requesting anything else
-
     url += '/kgml'
     plugins.core.sendOutput(" ".join(['Retrieving data from ', url]), "stdout")
     r = requests.get(url)
-
-    # retrieve KGML of pathway
     kgml = None
     if r.status_code == 200:  # 200 is no error, so proceed happily
         kgml = r.text
@@ -200,14 +163,10 @@ def download_kgml(pathway_id, return_kgml=False):
         return  # don't bother requesting anything else
     if return_kgml:
         return kgml
-    # convert KGML to dictionary for JSON output,
-    # but add a dictionary mapping KEGG IDs to compound names
     kgml_dict = xmltodict.parse(kgml)
-
     # extract compounds and add them to dictionary
     if kgml_dict['pathway']:
         kgml_dict['pathway']['compounds'] = extract_compounds(datfile)
-
     # create database record from amended dictionary
     kgml = json.dumps(kgml_dict, indent=4)
     record = dict(id=pathway_id,
@@ -228,13 +187,11 @@ def extract_compounds(data):
             in_compound_section = True
         elif section and section != "COMPOUND":
             in_compound_section = False
-
         # extract compound information from record
         if in_compound_section and line:
             cid = line[12:20].rstrip()
             cname = line[20:].rstrip()
             compounds[cid] = cname
-
     return compounds
 
 
@@ -244,6 +201,9 @@ HEATMAP
 
 
 def parse_files(list_of_files, binary=False):
+    """
+    Load the csv files into python objects for the heatmap to plot.
+    """
     genomes = []
     genome_names = []
     en = []
@@ -261,7 +221,6 @@ def parse_files(list_of_files, binary=False):
         genomes.append(enzymes)
     en = list(set(en))
     en_disp = []
-
     for name in en:
         en_disp.append(name.replace('"', ""))
     copymat = []
@@ -280,8 +239,12 @@ def parse_files(list_of_files, binary=False):
 
 
 def render(copymat, genome_names, en_disp,
-           outname='hist.png', colormap=cm.Reds,
+           outname='heatmap.png', colormap=cm.Reds,
            figsize=(19.2, 10.8)):
+    """
+    Plot the heatmap and save as a file.  If you get weird errors about unavailable displays
+    make sure matplotlib is using an appropriate backend (your probably want Agg)
+    """
     plt.figure(figsize=figsize)
     plt.imshow(1*(copymat), interpolation='none', cmap=colormap, aspect='auto')
     plt.xticks(np.arange(len(genome_names)), genome_names, rotation=20)
@@ -299,10 +262,14 @@ POSTPROCESS
 
 def dump_records(records, f):
     '''Dumps records as lines into the given file'''
+    # I'm not sure this warrants it's own function
     f.writelines(records)
 
 
 def format_value(input):
+    """
+    Adds quotes to csv?
+    """
     if ',' in input:
         return '"' + input.replace('"', '""') + '"'
     else:
@@ -313,14 +280,11 @@ def run_postprocess(input_path, output_path, verbose):
     '''Run postprocess job (now accessible from other scripts)'''
     ec_pattern = re.compile("(?<=\\(EC )([0-9]+\\.[0-9\\-]" +
                             "+\\.[0-9\\-]+\\.[0-9\\-]+)(?=\\))")
-
     lines_processed = 0
     # output buffer (to decrease disk write frequency)
     records = []
-
     # get start of long op
     start = time.clock()
-
     with open(output_path, 'wt') as outfile:
         with open(input_path, 'rt') as infile:
             # iterate over tsv file
@@ -329,50 +293,53 @@ def run_postprocess(input_path, output_path, verbose):
             while lines:
                 for line in lines:
                     lines_processed += 1
-                    if line:
+                    if line:  # oh
                         # split fields in record
                         fields = line.split('\t')
-                        if len(fields) > 5:
+                        if len(fields) > 5:  # my
                             # look for EC reference
                             m = ec_pattern.search(fields[5])
-                            if m:
+                            if m:            # so
                                 # trim EC annotation from description (already in its own column)
                                 ecidx = fields[5].find('(EC')
-                                if ecidx > -1:
+                                if ecidx > -1:   # many
                                     desc = fields[5][:ecidx].rstrip()
                                 else:
                                     desc = fields[5]
-
                                 # add new CSV record for this item
                                 records.append('{0},{1},{2},{3},{4},{5}\n'.format(
-                                    fields[3], m.group(1), format_value(desc), format_value(fields[4]), fields[0], fields[1]))
-                                if len(records) > 1000:
+                                    fields[3], m.group(1), format_value(desc),
+                                    format_value(fields[4]), fields[0], fields[1]))
+                                if len(records) > 1000: # conditionals
                                     # dump buffer to file
                                     dump_records(records, outfile)
                                     del records[:]
-
                     if verbose and lines_processed % 10000 == 0:
-                        plugins.core.sendOutput('{0} lines processed.'.format(lines_processed), "stdout")
-
+                        plugins.core.sendOutput('{0} lines processed.'.format(lines_processed),
+                                                "stdout")
                 lines = infile.readlines(100000)
-
             # flush output buffer
             if len(records) > 0:
                 dump_records(records, outfile)
                 del records[:]
                 if verbose:
-                    plugins.core.sendOutput('{0} lines processed.'.format(lines_processed), "stdout")
-
+                    plugins.core.sendOutput('{0} lines processed.'.format(lines_processed),
+                                            "stdout")
     # stop time
     end = time.clock()
-    plugins.core.sendOutput('Post-process operation finished in {0:.2f} seconds.'.format(end - start), "stdout")
+    plugins.core.sendOutput('Post-process operation finished in {0:.2f} seconds.'.format(end - start),
+                            "stdout")
 
+   
 """
 MAIN
 """
 
 
 def postprocess(arguments):
+    """
+    Call the Postprocessing routine with arguments
+    """
     argParser = argparse.ArgumentParser(
                         description='PALADIN Pipeline Plugins: pathways',
                         prog='pathways')
@@ -1015,7 +982,17 @@ def pathwaysMain(passArguments):
                            help="Paladin pathways step to run")
     argParser.add_argument("-l",
                            action="store_true")
-    args = argParser.parse_known_args(shlex.split(passArguments))
+    try:
+        args = argParser.parse_known_args(shlex.split(passArguments))
+    except SystemExit as seer:
+        inargs = shlex.split(passArguments)
+        if "-h" in inargs or "--help" in inargs:
+            args = argParser.parse_known_args([arg for arg in inargs if arg not in ["-h", "--help"]])
+            modules = set(args[0].modules)
+            passArguments = args[1]
+            passArguments.append("-h")
+        else:
+            raise seer
     modules = set(args[0].modules)
     passArguments = args[1]
     if args[0].l:
