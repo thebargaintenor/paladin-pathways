@@ -1024,7 +1024,7 @@ def pathwaysMain(passArguments):
     if "postprocess" in modules:
         postprocess(passArguments)
     # But the rest of these do not depend on each other so we can run them in parallel.
-    with Pool(int(args.cpus)) as pool:
+    with Pool(int(1)) as pool:
         results = []
         passArguments = [passArguments]
         if "heatmap" in modules:
