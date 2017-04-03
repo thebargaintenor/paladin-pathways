@@ -1,6 +1,7 @@
 #! /usr/bin/env python3
 import argparse
 import shlex
+import os
 import plugins.core
 import json
 import time
@@ -296,20 +297,21 @@ def run_postprocess(input_path, output_path, verbose):
                     if line:  # oh
                         # split fields in record
                         fields = line.split('\t')
-                        if len(fields) > 5:  # my
+                        if len(fields) > 7:  # my
                             # look for EC reference
-                            m = ec_pattern.search(fields[5])
-                            if m:            # so
+                            if "EC" in fields[7]:            # so
                                 # trim EC annotation from description (already in its own column)
-                                ecidx = fields[5].find('(EC')
+                                ecidx = fields[7].find('(EC')
                                 if ecidx > -1:   # many
-                                    desc = fields[5][:ecidx].rstrip()
+                                    desc = fields[7][:ecidx].rstrip()
                                 else:
-                                    desc = fields[5]
+                                    desc = fields[7]
                                 # add new CSV record for this item
+                                e = fields[7][ecidx:].find(")")
                                 records.append('{0},{1},{2},{3},{4},{5}\n'.format(
-                                    fields[3], m.group(1), format_value(desc),
-                                    format_value(fields[4]), fields[0], fields[1]))
+                                    fields[5], fields[7][ecidx+4:ecidx+e], format_value(desc),
+                                    format_value(fields[6]), fields[0], fields[1]))
+                                print(fields[7][ecidx:])
                                 if len(records) > 1000:  # conditionals
                                     # dump buffer to file
                                     dump_records(records, outfile)
@@ -389,7 +391,8 @@ def main_pathways(arguments):
                            required=False)
     arguments = vars(argParser.parse_known_args(arguments)[0])
     kegg_id = arguments["kegg"]
-    paladin_report = arguments["paladin"]
+    paladin_report = glob.glob(arguments["paladin"] + "*.tsv")[0] 
+    os.mkdir(arguments["output"])
     output_csv = arguments["output"] + '/pathways.tsv'
     count_csv = arguments["output"] + '/pathways_counts.tsv'
     verbose = arguments["verbose"]
@@ -453,6 +456,7 @@ def main_pathways(arguments):
                     if len(matches) > 0:
                         writer.writerow(row)  # gib whole row plox.
                         for match in matches:  # there could be more than one given wildcards
+                            print(row)
                             enzyme_counts[match] += int(row[4])  # use count from file
                             if row[2] and not enzyme_names[match]:
                                 enzyme_names[match] = row[2]
@@ -540,7 +544,10 @@ def taxa_callback(passArguments):
     argParser.add_argument("--i-enzyme_code",
                            help='enzyme code',
                            required=True)
-    arguments = vars(argParser.parse_known_args(passArguments)[0])
+    try:
+        arguments = vars(argParser.parse_known_args(passArguments)[0])
+    except SystemExit as seer:
+        return None
     enzyme_code = arguments["i_enzyme_code"]
     pathways_out = arguments["output"]
     paladin_out = arguments["paladin"]
@@ -551,7 +558,10 @@ def taxa_callback(passArguments):
         key = entry[1].id
         if key in uids:
             filtered_entries[entry[0]] = entry[1]
-    print(filtered_entries)
+    ent, cou = plugins.taxonomy.aggregateTaxa(filtered_entries, [])
+    tree = plugins.taxonomy.treeifyLineage(ent, cou)
+    for i in range(8):
+        print(plugins.taxonomy.flattenTree(tree, i))
     #taxa = plugins.taxonomy.getSpeciesLookup(filtered_entries)
     
     
@@ -568,7 +578,10 @@ def heatmap(passArguments):
     argParser.add_argument('--output', "-o",
                            help='output path',
                            required=True)
-    arguments = vars(argParser.parse_known_args(passArguments)[0])
+    try:
+        arguments = vars(argParser.parse_known_args(passArguments)[0])
+    except SystemExit as seer:
+        return None
     infiles = glob.glob(arguments["i_heatmap_folder"] +
                         "/*.tsv")
     copymat, genome_names, en_disp = parse_files(infiles)
@@ -589,14 +602,17 @@ def visualize_counts(passArguments):
     argParser.add_argument('--kegg', "-k",
                            help='kegg id',
                            required=True)
-    arguments = vars(argParser.parse_known_args(passArguments)[0])
+    try:
+        arguments = vars(argParser.parse_known_args(passArguments)[0])
+    except SystemExit as seer:
+        return None
     count_file = glob.glob(arguments["output"] + "/*count*")[0]
     pathways_counts = {}
     counts = []
     with open(count_file) as cf:
         cf = cf.readlines()
     for line in cf[1:]:
-        words = line.split(",")
+        words = line.split("\t")
         pathways_counts[words[0]] = float(words[2])
         counts.append(float(words[2]))
     max_count = np.max(counts)
@@ -630,7 +646,7 @@ def visualize_counts(passArguments):
                         margins=(0.1, 0.02), label_orthologs=False,
                         label_maps=False, label_compounds=False,
                         label_reaction_entries=True)
-    canvas.draw("fab_map_new_colours.pdf")
+    canvas.draw(arguments["output"] + "/fab_map_new_colours.pdf")
     fig = plt.figure(figsize=(1, 5))
     ax1 = fig.gca()
     cb1 = mpl.colorbar.ColorbarBase(ax1, cmap=cmap,
@@ -649,7 +665,6 @@ def visualize_counts(passArguments):
     with open(arguments["output"] + "/document-output.pdf", "wb") as outputStream:
         output_file.write(outputStream)
 
-
 def visualize_taxa(passArguments):
     """
     Produce the kegg visualization but with colors determined by taxa
@@ -663,13 +678,16 @@ def visualize_taxa(passArguments):
     argParser.add_argument('--kegg', "-k",
                            help='kegg id',
                            required=True)
-    arguments = vars(argParser.parse_known_args(passArguments)[0])
+    try:
+        arguments = vars(argParser.parse_known_args(passArguments)[0])
+    except SystemExit as seer:
+        return None
     count_file = glob.glob(arguments["output"] + "/pathways.tsv")[0]
     pathways_counts = {}
     with open(count_file) as cf:
         cf = cf.readlines()
     for line in cf:
-        words = line.split(",")
+        words = line.split("\t")
         pathways_counts[words[1]] = words[-3]
     kgml = download_kgml(arguments["kegg"], True)
     pathway = KGML_parser.read(kgml)
@@ -722,7 +740,7 @@ def visualize_taxa(passArguments):
     ax.set_axis_off()
     plt.legend()
     plt.tight_layout()
-    plt.savefig(arguments["output"] + "legend.pdf", bbox_inches='tight')
+    plt.savefig(arguments["output"] + "/legend.pdf", bbox_inches='tight')
     merger = PdfFileMerger()
     for pdf in [arguments["output"] + "/taxa_map.pdf", arguments["output"] + "/legend.pdf"]:
         merger.append(open(pdf, 'rb'))
@@ -735,12 +753,15 @@ def barplot_vis(passArguments):
     Plots barplots, showing taxonomy present for each enzyme code, and enzyme codes present for each taxonomy.
     """
     argParser = argparse.ArgumentParser(
-                        description='PALADIN Pipeline Plugins: pathways',
+                        description='PALADIN Pipeline Plugins: pathways barplot visualization',
                         prog='pathways')
     argParser.add_argument('--output', "-o",
                            help='output path',
                            required=True)
-    arguments = vars(argParser.parse_known_args(passArguments)[0])
+    try:
+        arguments = vars(argParser.parse_known_args(passArguments)[0])
+    except SystemExit as seer:
+        return None
     pathways_outfile = arguments["output"] + "/pathways.tsv"
     with open(pathways_outfile) as pout:
         pout = pout.readlines()
@@ -750,7 +771,7 @@ def barplot_vis(passArguments):
     counts = []
     for line in pout[1:]:
         try:
-            uniprot, brenda, gene_name, organism, count, abundance = line.rstrip().split(",")
+            uniprot, brenda, gene_name, organism, count, abundance = line.rstrip().split("\t")
             brendas.append(brenda)
             gene_names.append(gene_name)
             organisms.append(organism)
@@ -826,7 +847,7 @@ def barplot_vis(passArguments):
     plt.xlim((0, 1))
     plt.ylim((-.5, len(brenda_bins) - .5))
     plt.savefig(arguments["output"] + "/brenda_bar.png", bbox_inches="tight", transparent=True)
-    plt.figure(figsize=(15, len(organism_bins)/5), dpi=300)
+    plt.figure(figsize=(15, .5 + len(organism_bins)/5), dpi=300)
     acc = 0
     labels = []
     for item in organism_bins.items():
@@ -887,7 +908,10 @@ def piechart_vis(passArguments):
                            help="organisms to plot piecharts for, list seperated by commas, (no spaces!)",
                            required=False,
                            default="")
-    arguments = vars(argParser.parse_known_args(passArguments)[0])
+    try:
+        arguments = vars(argParser.parse_known_args(passArguments)[0])
+    except SystemExit as seer:
+        return None
     pathways_outfile = arguments["output"] + "/pathways.tsv"
     with open(pathways_outfile) as pout:
         pout = pout.readlines()
@@ -897,7 +921,7 @@ def piechart_vis(passArguments):
     counts = []
     for line in pout[1:]:
         try:
-            uniprot, brenda, gene_name, organism, count, abundance = line.rstrip().split(",")
+            uniprot, brenda, gene_name, organism, count, abundance = line.rstrip().split("\t")
             brendas.append(brenda)
             gene_names.append(gene_name)
             organisms.append(organism)
