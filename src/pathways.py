@@ -551,7 +551,8 @@ def taxa_callback(passArguments):
         key = entry[1].id
         if key in uids:
             filtered_entries[entry[0]] = entry[1]
-    taxa = plugins.taxonomy.getSpeciesLookup(filtered_entries)
+    print(filtered_entries)
+    #taxa = plugins.taxonomy.getSpeciesLookup(filtered_entries)
     
     
 def heatmap(passArguments):
