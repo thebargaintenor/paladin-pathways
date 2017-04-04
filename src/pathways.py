@@ -521,11 +521,10 @@ def get_uniprot_id(ec, filename):
     """
     acc = []
     with open(filename) as csvfile:
-        f = csv.reader(csvfile)
-        for line in f:
-            if line[1].strip() == ec.strip():
-                acc.append(line[0])
-        return acc
+        for line in csvfile:
+            if line.split("\t")[1].strip() == ec.strip():
+                acc.append(line.split("\t")[0])
+    return acc
 
 
 def taxa_callback(passArguments):
@@ -549,17 +548,21 @@ def taxa_callback(passArguments):
     except SystemExit as seer:
         return None
     enzyme_code = arguments["i_enzyme_code"]
-    pathways_out = arguments["output"]
-    paladin_out = arguments["paladin"]
+    pathways_out = arguments["output"] + "/pathways.tsv"
+    paladin_out = glob.glob(arguments["paladin"] + "/*.tsv")[0]
     uids = set(get_uniprot_id(enzyme_code, pathways_out))
     paladin_entries = plugins.core.PaladinEntry.getEntries(paladin_out, 0)
+    print(paladin_entries.keys())
+    print(uids)
     filtered_entries = {}
     for entry in paladin_entries.items():
         key = entry[1].id
         if key in uids:
             filtered_entries[entry[0]] = entry[1]
+    print(filtered_entries)
     ent, cou = plugins.taxonomy.aggregateTaxa(filtered_entries, [])
     tree = plugins.taxonomy.treeifyLineage(ent, cou)
+    print(tree)
     for i in range(8):
         print(plugins.taxonomy.flattenTree(tree, i))
     #taxa = plugins.taxonomy.getSpeciesLookup(filtered_entries)
