@@ -10,7 +10,6 @@ import requests
 import dataset
 import xmltodict
 import re
-import tempfile
 import glob
 import numpy as np
 import matplotlib as mpl
@@ -100,7 +99,7 @@ def kegg_get(pathway_id, overwrite=False, kegg_db=None):
     if kegg_db:
         path = kegg_db
     else:
-        path = tempfile.mktemp() + 'kgmlcache.db'
+        path = plugins.core.getCacheDir(plugins.pathways.moduleDefinition) + '/kgmlcache.db'
     db = dataset.connect('sqlite:///' + path)
     kgml_table = db.get_table('kgml')
     if not kgml_table:
@@ -144,7 +143,7 @@ def download_kgml(pathway_id, return_kgml=False):
                                               'found on KEGG.']), 'stdout')
     else:
         plugins.core.sendOutput(" ".join(['HTTP Error',
-                                          r.status_code]) +
+                                          str(r.status_code)]) +
                                 "\nDownload process halting", "stderr")
         return  # don't bother requesting anything else
     url += '/kgml'
@@ -391,8 +390,11 @@ def main_pathways(arguments):
                            required=False)
     arguments = vars(argParser.parse_known_args(arguments)[0])
     kegg_id = arguments["kegg"]
-    paladin_report = glob.glob(arguments["paladin"] + "*.tsv")[0] 
-    os.mkdir(arguments["output"])
+    paladin_report = glob.glob(arguments["paladin"] + "*.tsv")[0]
+    try: 
+        os.mkdir(arguments["output"])
+    except:
+        pass
     output_csv = arguments["output"] + '/pathways.tsv'
     count_csv = arguments["output"] + '/pathways_counts.tsv'
     verbose = arguments["verbose"]
@@ -527,9 +529,22 @@ def get_uniprot_id(ec, filename):
     return acc
 
 
+def get_taxa_tree(enzyme_code, pathways_out, paladin_out):
+    uids = set(get_uniprot_id(enzyme_code, pathways_out))
+    paladin_entries = plugins.core.PaladinEntry.getEntries(paladin_out, 0)
+    filtered_entries = {}
+    for entry in paladin_entries.items():
+        key = entry[1].id
+        if key in uids:
+            filtered_entries[entry[0]] = entry[1]
+    ent, cou = plugins.taxonomy.aggregateTaxa(filtered_entries, [])
+    tree = plugins.taxonomy.treeifyLineage(ent, cou)
+    return tree
+    
+
 def taxa_callback(passArguments):
     """
-    Is basically redundant at this point, should it be switched to using qiime?
+    gather taxinomic information for pathways
     """
     argParser = argparse.ArgumentParser(
                         description='PALADIN Pipeline Plugins: pathways taxa_callback',
@@ -543,6 +558,10 @@ def taxa_callback(passArguments):
     argParser.add_argument("--i-enzyme_code",
                            help='enzyme code',
                            required=True)
+    argParser.add_argument("--taxa_level",
+                           help="taxonomy level to look at, 0 is kingdom, 1 is phyla... 5 is genus, pass all to do all of them",
+                           required=False,
+                           default="all")
     try:
         arguments = vars(argParser.parse_known_args(passArguments)[0])
     except SystemExit as seer:
@@ -550,22 +569,18 @@ def taxa_callback(passArguments):
     enzyme_code = arguments["i_enzyme_code"]
     pathways_out = arguments["output"] + "/pathways.tsv"
     paladin_out = glob.glob(arguments["paladin"] + "/*.tsv")[0]
-    uids = set(get_uniprot_id(enzyme_code, pathways_out))
-    paladin_entries = plugins.core.PaladinEntry.getEntries(paladin_out, 0)
-    print(paladin_entries.keys())
-    print(uids)
-    filtered_entries = {}
-    for entry in paladin_entries.items():
-        key = entry[1].id
-        if key in uids:
-            filtered_entries[entry[0]] = entry[1]
-    print(filtered_entries)
-    ent, cou = plugins.taxonomy.aggregateTaxa(filtered_entries, [])
-    tree = plugins.taxonomy.treeifyLineage(ent, cou)
-    print(tree)
-    for i in range(8):
-        print(plugins.taxonomy.flattenTree(tree, i))
-    #taxa = plugins.taxonomy.getSpeciesLookup(filtered_entries)
+    tree = get_taxa_tree(enzyme_code, pathways_out, paladin_out)
+    if arguments["taxa_level"] == "all":
+        levels = range(10)
+    else:
+        levels = [int(arguments["taxa_level"])]
+    for level in levels:
+        flat_tree = plugins.taxonomy.flattenTree(tree, level)
+        if flat_tree[1] > 0:
+            with open("".join([arguments["output"], "/", enzyme_code, "_taxonomy_level_", str(level), ".tsv"]), "w") as outfile:
+                print("Total\t" + str(flat_tree[1]), file=outfile)
+                for key in sorted(flat_tree[0], key=flat_tree[0].get, reverse=True):
+                    print("\t".join([key, str(flat_tree[0][key])]), file=outfile)
     
     
 def heatmap(passArguments):
@@ -581,6 +596,10 @@ def heatmap(passArguments):
     argParser.add_argument('--output', "-o",
                            help='output path',
                            required=True)
+    argParser.add_argument("--cmap",
+                           help="colormap to use, from matplotlib, case matters!",
+                           required=False,
+                           default="bone")
     try:
         arguments = vars(argParser.parse_known_args(passArguments)[0])
     except SystemExit as seer:
@@ -589,7 +608,8 @@ def heatmap(passArguments):
                         "/*.tsv")
     copymat, genome_names, en_disp = parse_files(infiles)
     render(copymat, genome_names, en_disp,
-           outname=arguments["output"] + "/heatmap.png")
+           outname=arguments["output"] + "/heatmap.png",
+           colormap = cm.get_cmap(arguments[cmap]))
 
 
 def visualize_counts(passArguments):
@@ -605,6 +625,10 @@ def visualize_counts(passArguments):
     argParser.add_argument('--kegg', "-k",
                            help='kegg id',
                            required=True)
+    argParser.add_argument("--cmap",
+                           help="colormap to use, from matplotlib, case matters!",
+                           required=False,
+                           default="bone")
     try:
         arguments = vars(argParser.parse_known_args(passArguments)[0])
     except SystemExit as seer:
@@ -621,7 +645,7 @@ def visualize_counts(passArguments):
     max_count = np.max(counts)
     kgml = download_kgml(arguments["kegg"], True)
     pathway = KGML_parser.read(kgml)
-    cmap = cm.inferno
+    cmap = cm.get_cmap(arguments["cmap"])
     for element in pathway.entries.items():
         key = element[0]
         e_object = element[1]
@@ -681,6 +705,10 @@ def visualize_taxa(passArguments):
     argParser.add_argument('--kegg', "-k",
                            help='kegg id',
                            required=True)
+    argParser.add_argument("--cmap",
+                           help="colormap to use, from matplotlib, case matters!",
+                           required=False,
+                           default="bone")
     try:
         arguments = vars(argParser.parse_known_args(passArguments)[0])
     except SystemExit as seer:
@@ -694,7 +722,7 @@ def visualize_taxa(passArguments):
         pathways_counts[words[1]] = words[-3]
     kgml = download_kgml(arguments["kegg"], True)
     pathway = KGML_parser.read(kgml)
-    cmap = cm.inferno
+    cmap = cm.get_cmap(arguments["cmap"])
     locs = []
     tax_list = []
     for element in pathway.entries.items():
@@ -761,6 +789,10 @@ def barplot_vis(passArguments):
     argParser.add_argument('--output', "-o",
                            help='output path',
                            required=True)
+    argParser.add_argument("--cmap",
+                           help="colormap to use, from matplotlib, case matters!",
+                           required=False,
+                           default="bone")
     try:
         arguments = vars(argParser.parse_known_args(passArguments)[0])
     except SystemExit as seer:
@@ -795,7 +827,7 @@ def barplot_vis(passArguments):
         else:
             organism_bins[organism].append(i)
     # Bin by brenda
-    cmap = cm.autumn
+    cmap = cm.get_cmap(arguments["cmap"])
     xloc = np.linspace(0, 1, len(organism_bins))
     org_colors = {}
     acc = 0
@@ -911,6 +943,10 @@ def piechart_vis(passArguments):
                            help="organisms to plot piecharts for, list seperated by commas, (no spaces!)",
                            required=False,
                            default="")
+    argParser.add_argument("--cmap",
+                           help="colormap to use, from matplotlib, case matters!",
+                           required=False,
+                           default="bone")
     try:
         arguments = vars(argParser.parse_known_args(passArguments)[0])
     except SystemExit as seer:
@@ -945,7 +981,7 @@ def piechart_vis(passArguments):
         else:
             organism_bins[organism].append(i)
     # Bin by brenda
-    cmap = cm.autumn
+    cmap = cm.get_cmap(arguments["cmap"])
     xloc = np.linspace(0, 1, len(organism_bins))
     org_colors = {}
     acc = 0
@@ -1045,7 +1081,37 @@ def pathwaysMain(passArguments):
                 "visualize_taxa",
                 "barplot_vis",
                 "piechart_vis"]
-        plugins.core.sendOutput("\n".join(mods), "stdout")
+        blurbs = {"main":
+                  """The primary computational process for paladin pathways,
+                  main looks for results related to the specified kegg 
+                  pathway in the paladin results.""",
+                "postprocess":
+                  """Assembles the filtered paladin output into a tsv file.
+                  main runs this, so usually you do not need to run this.""",
+                "heatmap":
+                  """Takes the tsv counts, generated by taxa_callback and makes
+                  a heatmap of counts, with annotation and taxonomy as the 
+                  two axis.""",
+                "taxa_callback":
+                  """Pulls out the taxonomic info at given rank for a given
+                  enzyme.""",
+                "visualize_counts":
+                  """Downloads the pathway from kegg and colors it based off
+                  of the counts returned by pathways.  This can have mixed
+                  results depending on the pathway.""",
+                "visualize_taxa":
+                  """Downloads the pathway from kegg and colors it based off
+                  of the taxonomy returned by pathways.  This can have mixed
+                  results depending on the pathway.""",
+                "barplot_vis":
+                  """Shows the same counts and taxa but as barplots.  This one
+                  is more trustworthy.""",
+                "piechart_vis":
+                  """Makes a piechart of specified bars from the barplot_vis.
+                  Use this for any bars you want to highlight or take a 
+                  closer look at."""}
+        for mod in mods:
+            plugins.core.sendOutput("\n".join([mod + ":", " ".join(blurbs[mod].split()), ""]), "stdout")
     # Main and Postrpocess need to be run in series, before anything else.
     if "main" in modules:
         main_pathways(passArguments)
