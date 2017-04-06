@@ -633,7 +633,7 @@ def visualize_counts(passArguments):
         arguments = vars(argParser.parse_known_args(passArguments)[0])
     except SystemExit as seer:
         return None
-    count_file = glob.glob(arguments["output"] + "/*count*")[0]
+    count_file = glob.glob(arguments["output"] + "/pathways_counts.tsv")[0]
     pathways_counts = {}
     counts = []
     with open(count_file) as cf:
@@ -705,78 +705,106 @@ def visualize_taxa(passArguments):
     argParser.add_argument('--kegg', "-k",
                            help='kegg id',
                            required=True)
+    argParser.add_argument('--paladin', "-p",
+                           help='path to PALADIN output report',
+                           required=True)
     argParser.add_argument("--cmap",
                            help="colormap to use, from matplotlib, case matters!",
                            required=False,
                            default="bone")
+    argParser.add_argument("--taxa_level",
+                           help="taxonomy level to look at, 0 is kingdom, 1 is phyla... 5 is genus, pass all to do all of them",
+                           required=False,
+                           default="all")
     try:
         arguments = vars(argParser.parse_known_args(passArguments)[0])
     except SystemExit as seer:
         return None
     count_file = glob.glob(arguments["output"] + "/pathways.tsv")[0]
-    pathways_counts = {}
+    pathways_out = arguments["output"] + "/pathways.tsv"
+    paladin_out = glob.glob(arguments["paladin"] + "/*.tsv")[0]
     with open(count_file) as cf:
         cf = cf.readlines()
+    enzymes = []
     for line in cf:
         words = line.split("\t")
-        pathways_counts[words[1]] = words[-3]
+        enzymes.append(words[1])
+    enzymes = set(enzymes)
     kgml = download_kgml(arguments["kegg"], True)
     pathway = KGML_parser.read(kgml)
     cmap = cm.get_cmap(arguments["cmap"])
-    locs = []
-    tax_list = []
-    for element in pathway.entries.items():
-        key = element[0]
-        e_object = element[1]
-        if e_object.name[3:] in pathways_counts:
-            tax_list.append(pathways_counts[e_object.name[3:]])
-    tax_list = list(set(tax_list))
-    taxa = {}.fromkeys(pathways_counts.values())
-    inds = np.linspace(0, 1, len(tax_list))
-    acc = 0
-    for key in tax_list:
-        taxa[key] = inds[acc]
-        acc += 1
-    for element in pathway.entries.items():
-        key = element[0]
-        e_object = element[1]
-        if e_object.name[3:] in pathways_counts:
-            locs.append(taxa[pathways_counts[e_object.name[3:]]])
-            normalized_count = taxa[pathways_counts[e_object.name[3:]]]
-            acc = 0
-            for graphic in e_object.graphics:
-                new_rgba_color = cmap(normalized_count)
-                rgb_color = tuple([int(255*val) for val in new_rgba_color[0:3]])
-                rgb_string = '#' +\
-                             ''.join([hex(val)[2:] for val in rgb_color]).upper()
-                e_object.graphics[acc].bgcolor = rgb_string
-                acc += 1
-        else:
-            acc = 0
-            for graphic in e_object.graphics:
-                e_object.graphics[acc].bgcolor = "#b2aba7".upper()
-                acc += 1
-        pathway.entries[key] = e_object
-    canvas = KGMLCanvas(pathway, fontsize=12, import_imagemap=True,
-                        margins=(0.1, 0.02), label_orthologs=False,
-                        label_maps=False, label_compounds=False,
-                        label_reaction_entries=True)
-    canvas.draw(arguments["output"] + "/taxa_map.pdf")
-    fig = plt.figure()
-    ax = fig.gca()
-    for value in tax_list:
-        item = (value, taxa[value])
-        plt.plot(0, 0, "s", label=item[0], color=cmap(item[1]))
-    plt.xlim((-100, -99))
-    ax.set_axis_off()
-    plt.legend()
-    plt.tight_layout()
-    plt.savefig(arguments["output"] + "/legend.pdf", bbox_inches='tight')
-    merger = PdfFileMerger()
-    for pdf in [arguments["output"] + "/taxa_map.pdf", arguments["output"] + "/legend.pdf"]:
-        merger.append(open(pdf, 'rb'))
-    with open(arguments["output"] + '/final_taxa_map.pdf', 'wb') as fout:
-        merger.write(fout)
+    if arguments["taxa_level"] == "all":
+            levels = range(7)
+    else:
+        levels = [int(arguments["taxa_level"])]
+    for level in levels:
+        pathways_counts = {}
+        for enzyme in enzymes:
+            tree = get_taxa_tree(enzyme, pathways_out, paladin_out)
+            flat_tree = plugins.taxonomy.flattenTree(tree, level)
+            if flat_tree[1] > 0:
+                max_count = 0
+                max_tax = ""
+                for items in flat_tree[0].items():
+                    if items[1] > max_count:
+                        max_count = items[1]
+                        max_tax = items[0]
+                pathways_counts[enzyme] = max_tax 
+        locs = []
+        tax_list = []
+        print(pathways_counts)
+        for element in pathway.entries.items():
+            key = element[0]
+            e_object = element[1]
+            if e_object.name[3:] in pathways_counts:
+                tax_list.append(pathways_counts[e_object.name[3:]])
+        tax_list = list(set(tax_list))
+        taxa = {}.fromkeys(pathways_counts.values())
+        inds = np.linspace(0, 1, len(tax_list))
+        acc = 0
+        for key in tax_list:
+            taxa[key] = inds[acc]
+            acc += 1
+        for element in pathway.entries.items():
+            key = element[0]
+            e_object = element[1]
+            if e_object.name[3:] in pathways_counts:
+                locs.append(taxa[pathways_counts[e_object.name[3:]]])
+                normalized_count = taxa[pathways_counts[e_object.name[3:]]]
+                acc = 0
+                for graphic in e_object.graphics:
+                    new_rgba_color = cmap(normalized_count)
+                    rgb_color = tuple([int(255*val) for val in new_rgba_color[0:3]])
+                    rgb_string = '#' +\
+                                 ''.join([hex(val)[2:] for val in rgb_color]).upper()
+                    e_object.graphics[acc].bgcolor = rgb_string
+                    acc += 1
+            else:
+                acc = 0
+                for graphic in e_object.graphics:
+                    e_object.graphics[acc].bgcolor = "#b2aba7".upper()
+                    acc += 1
+            pathway.entries[key] = e_object
+        canvas = KGMLCanvas(pathway, fontsize=12, import_imagemap=True,
+                            margins=(0.1, 0.02), label_orthologs=False,
+                            label_maps=False, label_compounds=False,
+                            label_reaction_entries=True)
+        canvas.draw(arguments["output"] + "/level_" + str(level) + "_taxa_map.pdf")
+        fig = plt.figure()
+        ax = fig.gca()
+        for value in tax_list:
+            item = (value, taxa[value])
+            plt.plot(0, 0, "s", label=item[0], color=cmap(item[1]))
+        plt.xlim((-100, -99))
+        ax.set_axis_off()
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig(arguments["output"] + "/level_"+ str(level)  +"_legend.pdf", bbox_inches='tight')
+        merger = PdfFileMerger()
+        for pdf in [arguments["output"] + "/level_" +str(level) + "_taxa_map.pdf", arguments["output"] +"/level_"+ str(level)  + "_legend.pdf"]:
+            merger.append(open(pdf, 'rb'))
+        with open(arguments["output"] + "/level_" + str(level) + "_final_taxa_map.pdf", 'wb') as fout:
+            merger.write(fout)
 
 
 def barplot_vis(passArguments):
@@ -793,13 +821,22 @@ def barplot_vis(passArguments):
                            help="colormap to use, from matplotlib, case matters!",
                            required=False,
                            default="bone")
+    argParser.add_argument('--paladin', "-p",
+                           help='path to PALADIN output report',
+                           required=True)
+    argParser.add_argument("--taxa_level",
+                           help="taxonomy level to look at, 0 is kingdom, 1 is phyla... 5 is genus, pass all to do all of them",
+                           required=False,
+                           default="all")
     try:
         arguments = vars(argParser.parse_known_args(passArguments)[0])
     except SystemExit as seer:
         return None
-    pathways_outfile = arguments["output"] + "/pathways.tsv"
-    with open(pathways_outfile) as pout:
+    pathways_out = arguments["output"] + "/pathways.tsv"
+    paladin_out = glob.glob(arguments["paladin"] + "/*.tsv")[0]
+    with open(pathways_out) as pout:
         pout = pout.readlines()
+    cmap = cm.get_cmap(arguments["cmap"])
     brendas = []
     gene_names = []
     organisms = []
@@ -809,120 +846,135 @@ def barplot_vis(passArguments):
             uniprot, brenda, gene_name, organism, count, abundance = line.rstrip().split("\t")
             brendas.append(brenda)
             gene_names.append(gene_name)
-            organisms.append(organism)
-            counts.append(count)
         except:
             pass
-    brenda_bins = {}
-    organism_bins = {}
-    for i in range(len(brendas)):
-        brenda = brendas[i]
-        organism = organisms[i]
-        if brenda not in brenda_bins:
-            brenda_bins[brenda] = [i]
-        else:
-            brenda_bins[brenda].append(i)
-        if organism not in organism_bins:
-            organism_bins[organism] = [i]
-        else:
-            organism_bins[organism].append(i)
-    # Bin by brenda
-    cmap = cm.get_cmap(arguments["cmap"])
-    xloc = np.linspace(0, 1, len(organism_bins))
-    org_colors = {}
-    acc = 0
-    for key in organism_bins.keys():
-        org_colors[key] = cmap(xloc[acc])
-        acc += 1
-    xloc = np.linspace(0, 1, len(brenda_bins))
-    brenda_colors = {}
-    acc = 0
-    for key in brenda_bins.keys():
-        brenda_colors[key] = cmap(xloc[acc])
-        acc += 1
-    acc = 0
-    plt.figure(figsize=(30, len(brenda_bins)/2), dpi=300)
-    labels = []
-    for item in brenda_bins.items():
-        brenda = item[0]
-        indicies = item[1]
-        bcount = []
-        borg = []
-        borg_org = []
-        for index in indicies:
-            borg.append(org_colors[organisms[index]])
-            borg_org.append(organisms[index])
-            bcount.append(int(counts[index]))
-        total_count = np.sum(bcount)
-        bcount = np.asarray(bcount)
-        ratio = bcount / total_count
-        acci = 1
-        for i in range(len(ratio)):
-            val = ratio[i]
-            ratio[i] = acci
-            acci = acci - val
-        labels.append(brenda)
-        pos = ratio * 0 + acc
-        plt.barh(pos, ratio, align="center", height=.94, color=borg)
-        if len(ratio) > 1:
-            for i in range(len(ratio) - 1):
-                if ratio[i] - ratio[i + 1] > len(borg_org[i])/300:
-                    plt.text(ratio[i + 1], acc, " " + borg_org[i],
-                             fontsize=10, color="k", fontweight='bold',
+    if arguments["taxa_level"] == "all":
+            levels = range(7)
+    else:
+        levels = [int(arguments["taxa_level"])]
+    for level in levels:
+        brenda_bins = {}
+        organism_bins = {}
+        organism_counts = {}
+        for i in range(len(brendas)):
+            brenda = brendas[i]
+            if brenda not in brenda_bins:
+                brenda_bins[brenda] = [i]
+            else:
+                brenda_bins[brenda].append(i)
+            tree = get_taxa_tree(brenda, pathways_out, paladin_out)
+            flat_tree = plugins.taxonomy.flattenTree(tree, level)
+            organisms = flat_tree[0].keys()
+            for organism in organisms:
+                if organism not in organism_bins:
+                    organism_bins[organism] = [i]
+                    organism_counts[organism] = {brenda:flat_tree[0][organism]}
+                else:
+                    organism_bins[organism].append(i)
+                    if brenda in organism_counts[organism]:
+                        organism_counts[organism][brenda] += flat_tree[0][organism]
+                    else:
+                        organism_counts[organism][brenda] = flat_tree[0][organism]
+        # Bin by brenda
+        xloc = np.linspace(0, 1, len(organism_bins))
+        org_colors = {}
+        acc = 0
+        for key in organism_bins.keys():
+            org_colors[key] = cmap(xloc[acc])
+            acc += 1
+        xloc = np.linspace(0, 1, len(brenda_bins))
+        brenda_colors = {}
+        acc = 0
+        for key in brenda_bins.keys():
+            brenda_colors[key] = cmap(xloc[acc])
+            acc += 1
+        acc = 0
+        plt.figure(figsize=(30, len(brenda_bins)/2), dpi=300)
+        labels = []
+        for item in brenda_bins.items():
+            brenda = item[0]
+            indicies = item[1]
+            bcount = []
+            tree = get_taxa_tree(brenda, pathways_out, paladin_out)
+            flat_tree = plugins.taxonomy.flattenTree(tree, level)
+            organisms = flat_tree[0]
+            if len(organisms) > 0:
+                borg = []
+                borg_org = []
+                for item in organisms.items():
+                    borg.append(org_colors[item[0]])
+                    borg_org.append(item[0])
+                    bcount.append(int(item[1]))
+                total_count = np.sum(bcount)
+                bcount = np.asarray(bcount)
+                ratio = bcount / total_count
+                acci = 1
+                for i in range(len(ratio)):
+                    val = ratio[i]
+                    ratio[i] = acci
+                    acci = acci - val
+                labels.append(brenda)
+                pos = ratio * 0 + acc
+                plt.barh(pos, ratio, align="center", height=.94, color=borg)
+                if len(ratio) > 1:
+                    for i in range(len(ratio) - 1):
+                        if ratio[i] - ratio[i + 1] > len(borg_org[i])/200:
+                            plt.text(ratio[i + 1], acc, " " + borg_org[i]+ ": " + '{0:.2f}'.format(100*(ratio[i] - ratio[i + 1])) + "%",
+                                     fontsize=10, color="k", fontweight='bold',
+                                     verticalalignment="center")
+                if ratio[-1] > len(borg_org[-1])/200:
+                    plt.text(0, acc, " " + borg_org[-1] + ": " + '{0:.2f}'.format(100*ratio[-1]) + "%", fontsize=10,
+                             color="k", fontweight='bold',
                              verticalalignment="center")
-        if ratio[-1] > len(borg_org[-1])/300:
-            plt.text(0, acc, " " + borg_org[-1], fontsize=10,
-                     color="k", fontweight='bold',
-                     verticalalignment="center")
-        acc += 1
-    plt.xlabel("ratio of counts: max counts per EC code")
-    plt.yticks(np.arange(len(labels)), labels)
-    for item in org_colors.items():
-        plt.plot(-1, -1, "s", color=item[1], label=item[0])
-    plt.xlim((0, 1))
-    plt.ylim((-.5, len(brenda_bins) - .5))
-    plt.savefig(arguments["output"] + "/brenda_bar.png", bbox_inches="tight", transparent=True)
-    plt.figure(figsize=(15, .5 + len(organism_bins)/5), dpi=300)
-    acc = 0
-    labels = []
-    for item in organism_bins.items():
-        organism = item[0]
-        indicies = item[1]
-        ocount = []
-        oorg = []
-        oorg_org = []
-        for index in indicies:
-            oorg.append(brenda_colors[brendas[index]])
-            oorg_org.append(brendas[index])
-            ocount.append(int(counts[index]))
-        total_count = np.sum(ocount)
-        ocount = np.asarray(ocount)
-        ratio = ocount / total_count
-        acci = 1
-        for i in range(len(ratio)):
-            val = ratio[i]
-            ratio[i] = acci
-            acci = acci - val
-        labels.append(organism)
-        pos = 0 * ratio + acc
-        plt.barh(pos, ratio, align="center", color=oorg)
-        if len(ratio) > 1:
-            for i in range(len(ratio) - 1):
-                if ratio[i] - ratio[i + 1] > len(oorg_org[i])/300*2:
-                    plt.text(ratio[i + 1], acc, " " + oorg_org[i],
-                             fontsize=10, color="k", fontweight='bold',
-                             verticalalignment="center")
-        if ratio[-1] > len(oorg_org[-1])/300*2:
-            plt.text(0, acc, " " + oorg_org[-1], fontsize=10,
-                     color="k", fontweight='bold',
-                     verticalalignment="center")
-        acc += 1
-    plt.yticks(np.arange(len(labels)), labels)
-    for item in brenda_colors.items():
-        plt.plot(-1, -1, "s", color=item[1], label=item[0])
-    plt.xlim((0, 1))
-    plt.ylim((-.5, len(organism_bins) - .5))
-    plt.savefig(arguments["output"] + "/organism_bar.png", bbox_inches='tight', transparent=True)
+                acc += 1
+        plt.xlabel("ratio of counts: max counts per EC code")
+        plt.yticks(np.arange(len(labels)), labels)
+        for item in org_colors.items():
+            plt.plot(-1, -1, "s", color=item[1], label=item[0])
+        plt.xlim((0, 1))
+        plt.ylim((-.5, len(brenda_bins) - .5))
+        plt.savefig(arguments["output"] + "/level_" + str(level) + "_brenda_bar.png", bbox_inches="tight", transparent=True)
+        plt.figure(figsize=(15, .5 + len(organism_bins)/5), dpi=300)
+        acc = 0
+        labels = []
+        for item in organism_bins.items():
+            organism = item[0]
+            indicies = item[1]
+            ocount = []
+            oorg = []
+            oorg_org = []
+            for counts in organism_counts[organism].items():
+                oorg_org.append(counts[0])
+                oorg.append(brenda_colors[counts[0]])
+                ocount.append(int(counts[1]))
+            total_count = np.sum(ocount)
+            ocount = np.asarray(ocount)
+            ratio = ocount / total_count
+            acci = 1
+            for i in range(len(ratio)):
+                val = ratio[i]
+                ratio[i] = acci
+                acci = acci - val
+            labels.append(organism)
+            pos = 0 * ratio + acc
+            plt.barh(pos, ratio, align="center", color=oorg)
+            if len(ratio) > 1:
+                for i in range(len(ratio) - 1):
+                    if ratio[i] - ratio[i + 1] > len(oorg_org[i])/300*2:
+                        plt.text(ratio[i + 1], acc, " " + oorg_org[i] + ": " + '{0:.2f}'.format(100*(ratio[i] - ratio[i + 1])) + "%",
+                                 fontsize=10, color="k", fontweight='bold',
+                                 verticalalignment="center")
+            if ratio[-1] > len(oorg_org[-1])/300*2:
+                plt.text(0, acc, " " + oorg_org[-1] + ": " + '{0:.2f}'.format(100*ratio[-1]) + "%", fontsize=10,
+                         color="k", fontweight='bold',
+                         verticalalignment="center")
+            acc += 1
+        plt.yticks(np.arange(len(labels)), labels)
+        for item in brenda_colors.items():
+            plt.plot(-1, -1, "s", color=item[1], label=item[0])
+        plt.xlim((0, 1))
+        plt.ylim((-.5, len(organism_bins) - .5))
+        plt.savefig(arguments["output"] + "/level_" + str(level) + "_organism_bar.png", bbox_inches='tight', transparent=True)
     
 
 def piechart_vis(passArguments):
@@ -947,6 +999,14 @@ def piechart_vis(passArguments):
                            help="colormap to use, from matplotlib, case matters!",
                            required=False,
                            default="bone")
+    argParser.add_argument('--paladin', "-p",
+                           help='path to PALADIN output report',
+                           required=True)
+    argParser.add_argument("--taxa_level",
+                           help="taxonomy level to look at, 0 is kingdom, 1 is phyla... 5 is genus, pass all to do all of them",
+                           required=False,
+                           default="all")
+    paladin_out = glob.glob(arguments["paladin"] + "/*.tsv")[0]
     try:
         arguments = vars(argParser.parse_known_args(passArguments)[0])
     except SystemExit as seer:
@@ -958,83 +1018,123 @@ def piechart_vis(passArguments):
     gene_names = []
     organisms = []
     counts = []
+    
+    cmap = cm.get_cmap(arguments["cmap"])
+    brendas = []
+    gene_names = []
+    organisms = []
+    counts = []
     for line in pout[1:]:
         try:
             uniprot, brenda, gene_name, organism, count, abundance = line.rstrip().split("\t")
             brendas.append(brenda)
             gene_names.append(gene_name)
-            organisms.append(organism)
-            counts.append(count)
         except:
             pass
-    brenda_bins = {}
-    organism_bins = {}
-    for i in range(len(brendas)):
-        brenda = brendas[i]
-        organism = organisms[i]
-        if brenda not in brenda_bins:
-            brenda_bins[brenda] = [i]
-        else:
-            brenda_bins[brenda].append(i)
-        if organism not in organism_bins:
-            organism_bins[organism] = [i]
-        else:
-            organism_bins[organism].append(i)
-    # Bin by brenda
-    cmap = cm.get_cmap(arguments["cmap"])
-    xloc = np.linspace(0, 1, len(organism_bins))
-    org_colors = {}
-    acc = 0
-    for key in organism_bins.keys():
-        org_colors[key] = cmap(xloc[acc])
-        acc += 1
-    xloc = np.linspace(0, 1, len(brenda_bins))
-    brenda_colors = {}
-    acc = 0
-    for key in brenda_bins.keys():
-        brenda_colors[key] = cmap(xloc[acc])
-        acc += 1
-    for brenda in arguments["piechart_brenda"].split(","):
-        if brenda != "":
-            plt.figure()
-            indicies = brenda_bins[brenda]
-            bcount = []
-            borg = []
-            borg_org = []
-            for index in indicies:
-                borg.append(org_colors[organisms[index]])
-                borg_org.append(organisms[index])
-                bcount.append(int(counts[index]))
-            bcount = np.asarray(bcount)
-            ratio = bcount / np.sum(bcount)
-            explode = np.fmin(np.ones_like(ratio) * .2, -np.log10(ratio)/10)
-            explode = np.logspace(-3, -.7, len(ratio), base=2)
-            plt.pie(bcount,  labels=borg_org, autopct='%1.1f%%', explode=explode,
-                    shadow=True, startangle=90, colors=borg)
-            plt.gca().axis('equal')
-            plt.savefig(arguments["output"] + "/pie_" + brenda + ".png",
-                        bbox_inches="tight", transparent=True)
-    for organism in arguments["piechart_organism"].split(","):
-        if organism != "":
-            plt.figure()
-            indicies = organism_bins[organism]
-            ocount = []
-            oorg = []
-            oorg_org = []
-            for index in indicies:
-                oorg.append(brenda_colors[brendas[index]])
-                oorg_org.append(brendas[index])
-                ocount.append(int(counts[index]))
-            ocount = np.asarray(ocount)
-            ratio = ocount / np.sum(ocount)
-            explode = np.fmin(np.ones_like(ratio) * .2, -np.log10(ratio)/10)
-            explode = np.logspace(-3, -.7, len(ratio), base=2)
-            plt.pie(ocount, labels=oorg_org, autopct='%1.1f%%', explode=explode,
-                    shadow=True, startangle=90, colors=oorg)
-            plt.gca().axis('equal')
-            plt.savefig(arguments["output"] + "/pie_" +
-                        ''.join(e for e in organism if e.isalnum())+".png",
-                        bbox_inches="tight", transparent=True)
+    if arguments["taxa_level"] == "all":
+            levels = range(7)
+    else:
+        levels = [int(arguments["taxa_level"])]
+    for level in levels:
+        brenda_bins = {}
+        organism_bins = {}
+        organism_counts = {}
+        for i in range(len(brendas)):
+            brenda = brendas[i]
+            if brenda not in brenda_bins:
+                brenda_bins[brenda] = [i]
+            else:
+                brenda_bins[brenda].append(i)
+            tree = get_taxa_tree(brenda, pathways_out, paladin_out)
+            flat_tree = plugins.taxonomy.flattenTree(tree, level)
+            organisms = flat_tree[0].keys()
+            for organism in organisms:
+                if organism not in organism_bins:
+                    organism_bins[organism] = [i]
+                    organism_counts[organism] = {brenda:flat_tree[0][organism]}
+                else:
+                    organism_bins[organism].append(i)
+                    if brenda in organism_counts[organism]:
+                        organism_counts[organism][brenda] += flat_tree[0][organism]
+                    else:
+                        organism_counts[organism][brenda] = flat_tree[0][organism]
+        # Bin by brenda
+        xloc = np.linspace(0, 1, len(organism_bins))
+        org_colors = {}
+        acc = 0
+        for key in organism_bins.keys():
+            org_colors[key] = cmap(xloc[acc])
+            acc += 1
+        xloc = np.linspace(0, 1, len(brenda_bins))
+        brenda_colors = {}
+        acc = 0
+        for key in brenda_bins.keys():
+            brenda_colors[key] = cmap(xloc[acc])
+            acc += 1
+        for brenda in arguments["piechart_brenda"].split(","):
+            if brenda != "":
+                plt.figure()
+                indicies = item[1]
+                bcount = []
+                tree = get_taxa_tree(brenda, pathways_out, paladin_out)
+                flat_tree = plugins.taxonomy.flattenTree(tree, level)
+                organisms = flat_tree[0]
+                if len(organisms) > 0:
+                    borg = []
+                    borg_org = []
+                    for item in organisms.items():
+                        borg.append(org_colors[item[0]])
+                        borg_org.append(item[0])
+                        bcount.append(int(item[1]))
+                    total_count = np.sum(bcount)
+                    bcount = np.asarray(bcount)
+                    ratio = bcount / total_count
+                    acci = 1
+                    for i in range(len(ratio)):
+                        val = ratio[i]
+                        ratio[i] = acci
+                        acci = acci - val
+                    labels.append(brenda)
+                    pos = ratio * 0 + acc
+                    plt.figure()
+                    indicies = brenda_bins[brenda]
+                    bcount = []
+                    borg = []
+                    borg_org = []
+                    for index in indicies:
+                        borg.append(org_colors[organisms[index]])
+                        borg_org.append(organisms[index])
+                        bcount.append(int(counts[index]))
+                    bcount = np.asarray(bcount)
+                    ratio = bcount / np.sum(bcount)
+                    explode = np.fmin(np.ones_like(ratio) * .2, -np.log10(ratio)/10)
+                    explode = np.logspace(-3, -.7, len(ratio), base=2)
+                    plt.pie(bcount,  labels=borg_org, autopct='%1.1f%%', explode=explode,
+                            shadow=True, startangle=90, colors=borg)
+                    plt.gca().axis('equal')
+                    plt.savefig(arguments["output"] + "/pie_" + brenda + ".png",
+                                bbox_inches="tight", transparent=True)
+        for organism in arguments["piechart_organism"].split(","):
+            if organism != "":
+                plt.figure()
+                indicies = organism_bins[organism]
+                ocount = []
+                oorg = []
+                oorg_org = []
+                for index in indicies:
+                    oorg.append(brenda_colors[brendas[index]])
+                    oorg_org.append(brendas[index])
+                    ocount.append(int(counts[index]))
+                ocount = np.asarray(ocount)
+                ratio = ocount / np.sum(ocount)
+                explode = np.fmin(np.ones_like(ratio) * .2, -np.log10(ratio)/10)
+                explode = np.logspace(-3, -.7, len(ratio), base=2)
+                plt.pie(ocount, labels=oorg_org, autopct='%1.1f%%', explode=explode,
+                        shadow=True, startangle=90, colors=oorg)
+                plt.gca().axis('equal')
+                plt.savefig(arguments["output"] + "/pie_" +
+                            ''.join(e for e in organism if e.isalnum())+".png",
+                            bbox_inches="tight", transparent=True)
 
 
 def pathwaysMain(passArguments):
