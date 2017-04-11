@@ -33,7 +33,7 @@ def pluginConnect(passDefinition):
     passDefinition.dependencies = ["taxonomy"]
     # passDefinition.callbackInit = templateInit
     passDefinition.callbackMain = pathwaysMain
-
+    plugins.pathways.moduleDefinition = passDefinition
     
 def log(f, line, verbose=False):
     """
@@ -253,6 +253,7 @@ def render(copymat, genome_names, en_disp,
     cb.set_label('copy number')
     plt.tight_layout()
     plt.savefig(outname)
+    plt.close()
 
 
 """
@@ -681,6 +682,7 @@ def visualize_counts(passArguments):
     cb1.set_label("log(count)/max(log(count))")
     plt.tight_layout()
     plt.savefig(arguments["output"] + "/colorbar.pdf")
+    plt.close()
     watermark = PdfFileReader(open(arguments["output"] + "/colorbar.pdf", "rb"))
     output_file = PdfFileWriter()
     input_file = PdfFileReader(open(arguments["output"] + "/fab_map_new_colours.pdf", "rb"))
@@ -752,7 +754,6 @@ def visualize_taxa(passArguments):
                 pathways_counts[enzyme] = max_tax 
         locs = []
         tax_list = []
-        print(pathways_counts)
         for element in pathway.entries.items():
             key = element[0]
             e_object = element[1]
@@ -800,6 +801,7 @@ def visualize_taxa(passArguments):
         plt.legend()
         plt.tight_layout()
         plt.savefig(arguments["output"] + "/level_"+ str(level)  +"_legend.pdf", bbox_inches='tight')
+        plt.close()
         merger = PdfFileMerger()
         for pdf in [arguments["output"] + "/level_" +str(level) + "_taxa_map.pdf", arguments["output"] +"/level_"+ str(level)  + "_legend.pdf"]:
             merger.append(open(pdf, 'rb'))
@@ -934,6 +936,7 @@ def barplot_vis(passArguments):
         plt.xlim((0, 1))
         plt.ylim((-.5, len(brenda_bins) - .5))
         plt.savefig(arguments["output"] + "/level_" + str(level) + "_brenda_bar.png", bbox_inches="tight", transparent=True)
+        plt.close()
         plt.figure(figsize=(15, .5 + len(organism_bins)/5), dpi=300)
         acc = 0
         labels = []
@@ -975,7 +978,7 @@ def barplot_vis(passArguments):
         plt.xlim((0, 1))
         plt.ylim((-.5, len(organism_bins) - .5))
         plt.savefig(arguments["output"] + "/level_" + str(level) + "_organism_bar.png", bbox_inches='tight', transparent=True)
-    
+        plt.close()
 
 def piechart_vis(passArguments):
     """
@@ -1006,19 +1009,14 @@ def piechart_vis(passArguments):
                            help="taxonomy level to look at, 0 is kingdom, 1 is phyla... 5 is genus, pass all to do all of them",
                            required=False,
                            default="all")
-    paladin_out = glob.glob(arguments["paladin"] + "/*.tsv")[0]
     try:
         arguments = vars(argParser.parse_known_args(passArguments)[0])
     except SystemExit as seer:
         return None
-    pathways_outfile = arguments["output"] + "/pathways.tsv"
-    with open(pathways_outfile) as pout:
+    pathways_out = arguments["output"] + "/pathways.tsv"
+    paladin_out = glob.glob(arguments["paladin"] + "/*.tsv")[0]
+    with open(pathways_out) as pout:
         pout = pout.readlines()
-    brendas = []
-    gene_names = []
-    organisms = []
-    counts = []
-    
     cmap = cm.get_cmap(arguments["cmap"])
     brendas = []
     gene_names = []
@@ -1074,37 +1072,20 @@ def piechart_vis(passArguments):
         for brenda in arguments["piechart_brenda"].split(","):
             if brenda != "":
                 plt.figure()
-                indicies = item[1]
                 bcount = []
                 tree = get_taxa_tree(brenda, pathways_out, paladin_out)
                 flat_tree = plugins.taxonomy.flattenTree(tree, level)
                 organisms = flat_tree[0]
                 if len(organisms) > 0:
-                    borg = []
-                    borg_org = []
-                    for item in organisms.items():
-                        borg.append(org_colors[item[0]])
-                        borg_org.append(item[0])
-                        bcount.append(int(item[1]))
-                    total_count = np.sum(bcount)
-                    bcount = np.asarray(bcount)
-                    ratio = bcount / total_count
-                    acci = 1
-                    for i in range(len(ratio)):
-                        val = ratio[i]
-                        ratio[i] = acci
-                        acci = acci - val
-                    labels.append(brenda)
-                    pos = ratio * 0 + acc
                     plt.figure()
                     indicies = brenda_bins[brenda]
                     bcount = []
                     borg = []
                     borg_org = []
-                    for index in indicies:
-                        borg.append(org_colors[organisms[index]])
-                        borg_org.append(organisms[index])
-                        bcount.append(int(counts[index]))
+                    for organism in organisms.keys():
+                        borg.append(org_colors[organism])
+                        borg_org.append(organism)
+                        bcount.append(int(organisms[organism]))
                     bcount = np.asarray(bcount)
                     ratio = bcount / np.sum(bcount)
                     explode = np.fmin(np.ones_like(ratio) * .2, -np.log10(ratio)/10)
@@ -1112,8 +1093,9 @@ def piechart_vis(passArguments):
                     plt.pie(bcount,  labels=borg_org, autopct='%1.1f%%', explode=explode,
                             shadow=True, startangle=90, colors=borg)
                     plt.gca().axis('equal')
-                    plt.savefig(arguments["output"] + "/pie_" + brenda + ".png",
+                    plt.savefig(arguments["output"] + "/pie_level_" + str(level) + "_" + brenda + ".png",
                                 bbox_inches="tight", transparent=True)
+                    plt.close()
         for organism in arguments["piechart_organism"].split(","):
             if organism != "":
                 plt.figure()
@@ -1124,7 +1106,7 @@ def piechart_vis(passArguments):
                 for index in indicies:
                     oorg.append(brenda_colors[brendas[index]])
                     oorg_org.append(brendas[index])
-                    ocount.append(int(counts[index]))
+                    ocount.append(int(organism_counts[organism][brendas[index]]))
                 ocount = np.asarray(ocount)
                 ratio = ocount / np.sum(ocount)
                 explode = np.fmin(np.ones_like(ratio) * .2, -np.log10(ratio)/10)
@@ -1132,9 +1114,10 @@ def piechart_vis(passArguments):
                 plt.pie(ocount, labels=oorg_org, autopct='%1.1f%%', explode=explode,
                         shadow=True, startangle=90, colors=oorg)
                 plt.gca().axis('equal')
-                plt.savefig(arguments["output"] + "/pie_" +
+                plt.savefig(arguments["output"] + "/pie_level_" + str(level) + "_" +
                             ''.join(e for e in organism if e.isalnum())+".png",
                             bbox_inches="tight", transparent=True)
+                plt.close()
 
 
 def pathwaysMain(passArguments):
