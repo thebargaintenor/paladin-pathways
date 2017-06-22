@@ -311,7 +311,6 @@ def run_postprocess(input_path, output_path, verbose):
                                 records.append('{0},{1},{2},{3},{4},{5}\n'.format(
                                     fields[5], fields[7][ecidx+4:ecidx+e], format_value(desc),
                                     format_value(fields[6]), fields[0], fields[1]))
-                                print(fields[7][ecidx:])
                                 if len(records) > 1000:  # conditionals
                                     # dump buffer to file
                                     dump_records(records, outfile)
@@ -459,7 +458,6 @@ def main_pathways(arguments):
                     if len(matches) > 0:
                         writer.writerow(row)  # gib whole row plox.
                         for match in matches:  # there could be more than one given wildcards
-                            print(row)
                             enzyme_counts[match] += int(row[4])  # use count from file
                             if row[2] and not enzyme_names[match]:
                                 enzyme_names[match] = row[2]
@@ -601,6 +599,10 @@ def heatmap(passArguments):
                            help="colormap to use, from matplotlib, case matters!",
                            required=False,
                            default="bone")
+    argParser.add_argument("--img_fmt",
+                           help="output image format, ie png or pdf or jpeg",
+                           required=False,
+                           default="png")
     try:
         arguments = vars(argParser.parse_known_args(passArguments)[0])
     except SystemExit as seer:
@@ -609,8 +611,8 @@ def heatmap(passArguments):
                         "/*.tsv")
     copymat, genome_names, en_disp = parse_files(infiles)
     render(copymat, genome_names, en_disp,
-           outname=arguments["output"] + "/heatmap.png",
-           colormap = cm.get_cmap(arguments[cmap]))
+           outname=arguments["output"] + "/heatmap."+ arguments["img_fmt"],
+           colormap = cm.get_cmap(arguments["cmap"]))
 
 
 def visualize_counts(passArguments):
@@ -830,6 +832,10 @@ def barplot_vis(passArguments):
                            help="taxonomy level to look at, 0 is kingdom, 1 is phyla... 5 is genus, pass all to do all of them",
                            required=False,
                            default="all")
+    argParser.add_argument("--img_fmt",
+                           help="output image format, ie png or pdf or jpeg",
+                           required=False,
+                           default="png")
     try:
         arguments = vars(argParser.parse_known_args(passArguments)[0])
     except SystemExit as seer:
@@ -935,7 +941,7 @@ def barplot_vis(passArguments):
             plt.plot(-1, -1, "s", color=item[1], label=item[0])
         plt.xlim((0, 1))
         plt.ylim((-.5, len(brenda_bins) - .5))
-        plt.savefig(arguments["output"] + "/level_" + str(level) + "_brenda_bar.png", bbox_inches="tight", transparent=True)
+        plt.savefig(arguments["output"] + "/level_" + str(level) + "_brenda_bar." + arguments["img_fmt"], bbox_inches="tight", transparent=True)
         plt.close()
         plt.figure(figsize=(15, .5 + len(organism_bins)/5), dpi=300)
         acc = 0
@@ -977,7 +983,7 @@ def barplot_vis(passArguments):
             plt.plot(-1, -1, "s", color=item[1], label=item[0])
         plt.xlim((0, 1))
         plt.ylim((-.5, len(organism_bins) - .5))
-        plt.savefig(arguments["output"] + "/level_" + str(level) + "_organism_bar.png", bbox_inches='tight', transparent=True)
+        plt.savefig(arguments["output"] + "/level_" + str(level) + "_organism_bar." + arguments["img_fmt"], bbox_inches='tight', transparent=True)
         plt.close()
 
 def piechart_vis(passArguments):
@@ -985,7 +991,7 @@ def piechart_vis(passArguments):
     For each taxa or enzyme code it will plot the present enzyme codes or taxonomies.
     """
     argParser = argparse.ArgumentParser(
-                        description='PALADIN Pipeline Plugins: pathways',
+                        description='PALADIN Pipeline Plugins: pathways piechart_vis',
                         prog='pathways')
     argParser.add_argument('--output', "-o",
                            help='output path',
@@ -1009,6 +1015,10 @@ def piechart_vis(passArguments):
                            help="taxonomy level to look at, 0 is kingdom, 1 is phyla... 5 is genus, pass all to do all of them",
                            required=False,
                            default="all")
+    argParser.add_argument("--img_fmt",
+                           help="output image format, ie png or pdf or jpeg",
+                           required=False,
+                           default="png")
     try:
         arguments = vars(argParser.parse_known_args(passArguments)[0])
     except SystemExit as seer:
@@ -1093,7 +1103,7 @@ def piechart_vis(passArguments):
                     plt.pie(bcount,  labels=borg_org, autopct='%1.1f%%', explode=explode,
                             shadow=True, startangle=90, colors=borg)
                     plt.gca().axis('equal')
-                    plt.savefig(arguments["output"] + "/pie_level_" + str(level) + "_" + brenda + ".png",
+                    plt.savefig(arguments["output"] + "/pie_level_" + str(level) + "_" + brenda + "." +arguments["img_fmt"],
                                 bbox_inches="tight", transparent=True)
                     plt.close()
         for organism in arguments["piechart_organism"].split(","):
@@ -1115,7 +1125,7 @@ def piechart_vis(passArguments):
                         shadow=True, startangle=90, colors=oorg)
                 plt.gca().axis('equal')
                 plt.savefig(arguments["output"] + "/pie_level_" + str(level) + "_" +
-                            ''.join(e for e in organism if e.isalnum())+".png",
+                            ''.join(e for e in organism if e.isalnum()) + "." + arguments["img_fmt"],
                             bbox_inches="tight", transparent=True)
                 plt.close()
 
