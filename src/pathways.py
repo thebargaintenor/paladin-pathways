@@ -19,7 +19,7 @@ from Bio.KEGG.KGML import KGML_parser
 from Bio.Graphics.KGML_vis import KGMLCanvas
 from PyPDF2 import PdfFileWriter, PdfFileReader, PdfFileMerger
 from multiprocessing import Pool
-
+import sys
 
 def pluginConnect(passDefinition):
     """
@@ -96,29 +96,42 @@ def kegg_get(pathway_id, overwrite=False, kegg_db=None):
     Load KGML from either the local database or KEGG
     (caching the new KGML)
     '''
+    """
     if kegg_db:
         path = kegg_db
     else:
         path = plugins.core.getCacheDir(plugins.pathways.moduleDefinition) + '/kgmlcache.db'
     db = dataset.connect('sqlite:///' + path)
     kgml_table = db.get_table('kgml')
-    if not kgml_table:
-        record = download_kgml(pathway_id)
-        kgml_table.insert(record, ['id'])
-        kgml_table.create_index(['id'], 'pathway_id')
-        kgml = record['kgml']
-    elif overwrite:
-        record = download_kgml(pathway_id)
-        kgml_table.upsert(record, ['id'])
-        kgml = record['kgml']
-    else:
-        record = kgml_table.find_one(id=pathway_id)
-        if record:
-            kgml = record['kgml']
-        else:
-            record = download_kgml(pathway_id)
-            kgml_table.insert(record)
-            kgml = record['kgml']
+    """
+    #path = os.path.dirname(__file__)
+    # I stubbornly insist on continued windows compatibility
+    #if sys.platform == 'win32':
+    #    path += '\\'
+    #else:
+    #    path += '/'
+    
+    # database is stored in folder with scripts so that changing the working
+    # directory doesn't require a new cache (plus it can be shared with multiple users)
+    #db = dataset.connect('sqlite:///' + 'kgmlcache.db')
+    #kgml_table = db.get_table('kgml')
+    #if not kgml_table:
+    #    record = download_kgml(pathway_id)
+    #    kgml_table.insert(record, ['id'])
+    #    kgml_table.create_index(['id'], 'pathway_id')
+    #    kgml = record['kgml']
+    #elif overwrite:
+    record = download_kgml(pathway_id)
+    #    kgml_table.upsert(record, ['id'])
+    kgml = record['kgml']
+    #else:
+    #    record = kgml_table.find_one(id=pathway_id)
+    #    if record:
+    #        kgml = record['kgml']
+    #    else:
+    #        record = download_kgml(pathway_id)
+    #        kgml_table.insert(record)
+    #        kgml = record['kgml']
     if kgml:
         return json.loads(kgml)  # return none if no pathway json found
 
