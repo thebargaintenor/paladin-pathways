@@ -1,5 +1,10 @@
 # PALADIN _Pathways_
 
+## It's moved!
+In the meantime, the core functionality has been forked, cleaned, and wholesale moved over as an official plugin for PALADIN. The active repo can be found [here](https://github.com/twestbrookunh/paladin-plugins).  This repo exists mostly for posterity in terms of the original MCBS913 final project.
+
+## Original Overview
+
 The goal of this project was to create an extension of [PALADIN](https://github.com/twestbrookunh/paladin) to elaborate on the pathway output produced by PALADIN Align. In order to create an extension for the PALADIN program to output functional pathway data, we compared several pathway databases or size, accessibility, level of completeness, and inclusion of both common and uncommon bacterial pathways. The analytic scripts for the Pathways pipeline were written in both Python and bash to produce a working bioinformatics tool. Pathways was applied to a sample dataset from PCE contaminated drinking water and analyzed for the chloroalkane and chloroalkene degradation pathway. The results show the enrichment of the enzymes needed for chloroalkene degradation through two visualization tools and demonstrated the potential for the Pathways tool to search for community function within WMS data. Our PALADIN Pathways tool allows the user to investigate whole metagenomes for well-characterized protein pathways and determine the relative completeness. It is our hope that PALADIN Pathways will provide novel insights into microbial communities and streamline functional metagenomic studies.
 
 _NB: This is still technically pre-release software that we are making available for wider testing.  It's functional, but there are still bugs.  Please let us know if you find one so that we can address it.  Thanks!_
